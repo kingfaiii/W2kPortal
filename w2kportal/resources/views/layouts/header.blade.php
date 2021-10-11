@@ -18,7 +18,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-  <nav>
+  <nav class="navbar navbar-dark navbar-expand-lg py-4 bg-dark">
     @auth
         
     @endauth

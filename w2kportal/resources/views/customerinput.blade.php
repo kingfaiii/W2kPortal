@@ -1,4 +1,4 @@
-@extends('layouts.header')
+@extends('layouts.app')
 
 
 @section('content')
@@ -7,7 +7,6 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-2">
-
                 </div>
                 <div class="col-md-8">
                     <div class="card">
@@ -117,7 +116,6 @@
                     </div>
                 </div>
                 <div class="col-md-2">
-
                 </div>
             </div>
         </div>
