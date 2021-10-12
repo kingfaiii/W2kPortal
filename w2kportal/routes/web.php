@@ -23,9 +23,9 @@ Route::get('/', function () {
 
 // Group Routes
 
-Route::group(['middleware' => 'prevent-back'],function(){
+Route::group(['middleware' => 'prevent-back'], function () {
     Auth::routes();
-	Route::get('/home', 'HomeController@index');
+    Route::get('/home', 'HomeController@index');
     //Route::resource('order', OrderController::class);
     Route::resource('home', HomeController::class);
     Route::resource('list', CustomerlistController::class);
@@ -39,8 +39,5 @@ Route::group(['middleware' => 'prevent-back'],function(){
     Route::get('/order/delete/{id}', [App\Http\Controllers\OrderController::class, 'DestroyActivity'])->name('DestroyActivity');
     Route::get('/list/delete/{id}', [App\Http\Controllers\HomeController::class, 'Destroy'])->name('DestroyCustomer');
 
+    Route::get('/customer/query', [App\Http\Controllers\CustomerlistController::class, 'queryCustomerList']);
 });
-
-
-
-
