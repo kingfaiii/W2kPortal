@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 
 use App\Models\customerlist;
-use GuzzleHttp\Psr7\Response;
-use Illuminate\Http\Client\Response as ClientResponse;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class CustomerlistController extends Controller
 {
@@ -45,14 +43,20 @@ class CustomerlistController extends Controller
             $query['date_to']   .= ' 23:59:59';
         }
 
-        $results = $this->dynamicQuery->when($query['search_value'], function ($q, $role) {
-            return $q->where('customer_fname', 'LIKE', '%' . $role . '%')
-                ->orWhere('customer_lname', 'LIKE', '%' . $role . '%');
-        })->when($query['order_by'], function ($q, $role) {
-            return $q->orderBy($role, 'DESC');
-        })->when($query['date_from'] && $query['date_to'],  function ($q) use ($query) {
-            return $q->whereBetween('created_at', [$query['date_from'], $query['date_to']]);
+
+        $results = $this->dynamicQuery->when($query['is_refresh'] === '1', function ($q) {
+            return $q;
+        })->when(!empty($query['search_value']), function ($q) use ($query) {
+            return $q->where('customer_fname', 'LIKE', '%' . trim($query['search_value']) . '%')
+                ->orWhereBetween('created_at', [trim($query['date_from']), trim($query['date_to'])])
+                ->orWhere('customer_lname', 'LIKE', '%' . trim($query['search_value']) . '%')
+                ->orWhere('customer_email', 'LIKE', '%' . trim($query['search_value']) . '%')
+                ->orWhere('customer_status', 'LIKE', '%' . trim($query['search_value']) . '%');
+        })->when($query['order_by'], function ($q) use ($query) {
+            return $q->orderBy($query['order_by'], 'DESC')
+                ->WhereBetween('created_at', [trim($query['date_from']), trim($query['date_to'])]);
         });
+
 
         return response()->json($results->get(), 200);
     }

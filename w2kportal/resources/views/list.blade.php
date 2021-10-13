@@ -23,38 +23,41 @@
                     </div>
                     @endif
 
-                    <div class="row">
-                        <div class="col">
-                            <label for="">Date From: </label>
-                            <input type="date" class="form-control" id="customers_datefrom">
-                        </div>
-
-                        <div class="col">
-                            <label for="">Date To: </label>
-                            <input type="date" class="form-control" id="customers_dateend">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="">Sort List: </label>
-                            <select class="custom-select" name="" id="customer_sort">
-                                <option value="" selected>-- Select Option ---</option>
-                                <option value="customer_fname">Firstname</option>
-                                <option value="customer_lname">Lastname</option>
-                                <option value="created_at">Date Created</option>
-                            </select>
-                        </div>
-
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="">Search List</label>
-                                <input type="text" id="search_customers" class="form-control" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="container">
+                        <form action="" id="customerForm_values">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Date From: </label>
+                                    <input type="date" class="form-control" id="customers_datefrom">
+                                </div>
+
+                                <div class="col">
+                                    <label for="">Date To: </label>
+                                    <input type="date" class="form-control" id="customers_dateend">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Sort List: </label>
+                                    <select class="custom-select" name="" id="customer_sort">
+                                        <option value="" selected>-- Select Option ---</option>
+                                        <option value="customer_fname">Firstname</option>
+                                        <option value="customer_lname">Lastname</option>
+                                        <option value="created_at">Date Created</option>
+                                    </select>
+                                </div>
+
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="">Search List:</label>
+                                        <input type="text" id="search_customers" class="form-control" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
                         <div class="row">
+                            <button class="btn btn-primary" id="customers_refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
                             <div class="col-md-12">
 
                                 <table id="customerlist_table" class="table table-stripped">
@@ -82,7 +85,7 @@
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <a href="{{ route('DestroyCustomer',[$row->id]) }}" class="btn btn-danger col-12 delete-confirm">Delete</a>
+                                                        <button data-id="{{$row->id}}" class="btn btn-danger col-12 delete-confirm">Delete</button>
                                                     </div>
                                                 </div>
                                             </td>
@@ -120,8 +123,6 @@
             $('#customerlist_body').empty()
             if (arr.length > 0) {
                 arr.map((k, i) => {
-                    let destroyCustomer = "{{route('DestroyCustomer', ['id'])}}".replace('id', k.id)
-
                     $('#customerlist_body').append(
                         `   
                                 <tr class="text-center">
@@ -136,7 +137,7 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <a href="${destroyCustomer}" class="btn btn-danger col-12 delete-confirm">Delete</a>
+                                                <a data-id="${k.id}" class="btn btn-danger col-12 delete-confirm">Delete</a>
                                             </div>
                                         </div>
                                     </td>
@@ -144,31 +145,83 @@
                             `
                     )
                 })
+
             } else {
                 $('#customerlist_table').after('<h1 class="text-center" id="no-results">No Results Found</h1>')
             }
         }
 
-        $('.delete-confirm').on('click', function(event) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "This Customer will be deleted permanently",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }, function(result) {
-                if (result.isConfirmed) {
-                    window.location.href = $(this).attr('href');
-                }
+        $('.delete-confirm').each(function() {
+            let self = this
+            $(self).on('click', function(e) {
+                e.preventDefault()
+                let customer_id = $(this).data('id')
+                const url = "{{route('DestroyCustomer', ['id'])}}".replace('id', customer_id)
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This Customer will be deleted permanently",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        ajaxRequest('GET', url,
+                            function(arr, textStatus, xhr) {
+                                if (xhr.status === 200) {
+                                    const refresh_url = `/customer/query?search_value=${$('#search_customers').val()}
+                                            &order_by=${$('#customer_sort').val()}
+                                            &date_from=${$('#customers_datefrom').val()}
+                                            &date_to=${$('#customers_dateend').val()}&is_refresh=0`;
+
+                                    ajaxRequest('GET', refresh_url,
+                                        function(arr_refresh, textStatus_refresh, xhr_refresh) {
+                                            if (xhr_refresh.status === 200) {
+                                                getTableBody(arr_refresh)
+                                            }
+                                        },
+                                        function(data) {
+                                            console.log(data);
+                                        })
+
+                                }
+                            },
+                            function(data) {
+                                console.log(data);
+                            })
+                    }
+                })
             })
+
+
         });
+
+        $('#customers_refresh').on('click', function() {
+            $("#customerForm_values :input").each(function() {
+                $(this).val('')
+                const url = `/customer/query?search_value=${$('#search_customers').val()}
+                            &order_by=${$('#customer_sort').val()}
+                            &date_from=${$('#customers_datefrom').val()}
+                            &date_to=${$('#customers_dateend').val()}&is_refresh=1`;
+
+                ajaxRequest('GET', url,
+                    function(arr, textStatus, xhr) {
+                        if (xhr.status === 200) {
+                            getTableBody(arr)
+                        }
+                    },
+                    function(data) {
+                        console.log(data);
+                    })
+            });
+        })
 
         $('#customers_dateend').on('change', function() {
             const url = `/customer/query?order_by=${$('#customer_sort').val()}
-            &search_value=${$('#search_customers').val()}&date_from=${$('#customers_datefrom').val()}&date_to=${this.value}`;
+            &search_value=${$('#search_customers').val()}&date_from=${$('#customers_datefrom').val()}
+            &date_to=${this.value}&is_refresh=0`;
             ajaxRequest('GET', url,
                 function(arr, textStatus, xhr) {
 
@@ -189,7 +242,7 @@
 
         $('#customer_sort').on('change', function() {
             const url = `/customer/query?order_by=${this.value}&search_value=${ $('#search_customers').val()}
-            &date_from=${$('#customers_datefrom').val()}&date_to=${$('#customers_dateend').val()}`;
+            &date_from=${$('#customers_datefrom').val()}&date_to=${$('#customers_dateend').val()}&is_refresh=0`;
             ajaxRequest('GET', url,
                 function(arr, textStatus, xhr) {
 
@@ -203,11 +256,26 @@
         })
 
         $('#search_customers').keyup(function() {
-            const search = $(this).val();
+            const search = $.trim($(this).val());
             const url = `/customer/query?search_value=${search}&order_by=${$('#customer_sort').val()}
-            &date_from=${$('#customers_datefrom').val()}&date_to=${$('#customers_dateend').val()}`;
+            &date_from=${$('#customers_datefrom').val()}&date_to=${$('#customers_dateend').val()}&is_refresh=0`;
             // SET TIME OUT PARA DI MAGOVERLOAD YUNG SERVER
-            setTimeout(() => {
+            if (search.length > 2) {
+                setTimeout(() => {
+                    ajaxRequest('GET', url,
+                        function(arr, textStatus, xhr) {
+                            if (xhr.status === 200) {
+                                getTableBody(arr)
+                            }
+                        },
+                        function(data) {
+                            console.log(data);
+                        })
+
+                }, 300);
+            }
+
+            if (search.length === 0) {
                 ajaxRequest('GET', url,
                     function(arr, textStatus, xhr) {
                         if (xhr.status === 200) {
@@ -217,9 +285,9 @@
                     function(data) {
                         console.log(data);
                     })
-
-            }, 300);
+            }
         });
+
 
     })
 </script>
