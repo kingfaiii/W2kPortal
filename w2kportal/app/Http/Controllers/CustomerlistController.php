@@ -44,17 +44,18 @@ class CustomerlistController extends Controller
         }
 
 
-        $results = $this->dynamicQuery->when($query['is_refresh'] === '1', function ($q) {
+        $results = $this->dynamicQuery->when($query['date_from'] && $query['date_to'],  function ($q) use ($query) {
+            return $q->WhereBetween('created_at', [trim($query['date_from']), trim($query['date_to'])]);
+        })->when($query['is_refresh'] === '1', function ($q) {
             return $q;
         })->when(!empty($query['search_value']), function ($q) use ($query) {
             return $q->where('customer_fname', 'LIKE', '%' . trim($query['search_value']) . '%')
-                ->orWhereBetween('created_at', [trim($query['date_from']), trim($query['date_to'])])
+                ->WhereBetween('created_at', [trim($query['date_from']), trim($query['date_to'])])
                 ->orWhere('customer_lname', 'LIKE', '%' . trim($query['search_value']) . '%')
                 ->orWhere('customer_email', 'LIKE', '%' . trim($query['search_value']) . '%')
                 ->orWhere('customer_status', 'LIKE', '%' . trim($query['search_value']) . '%');
         })->when($query['order_by'], function ($q) use ($query) {
-            return $q->orderBy($query['order_by'], 'DESC')
-                ->WhereBetween('created_at', [trim($query['date_from']), trim($query['date_to'])]);
+            return $q->orderBy($query['order_by'], 'DESC');
         });
 
 

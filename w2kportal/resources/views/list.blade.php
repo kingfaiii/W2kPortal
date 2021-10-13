@@ -199,23 +199,24 @@
         });
 
         $('#customers_refresh').on('click', function() {
-            $("#customerForm_values :input").each(function() {
-                $(this).val('')
-                const url = `/customer/query?search_value=${$('#search_customers').val()}
+            const url = `/customer/query?search_value=${$('#search_customers').val()}
                             &order_by=${$('#customer_sort').val()}
                             &date_from=${$('#customers_datefrom').val()}
                             &date_to=${$('#customers_dateend').val()}&is_refresh=1`;
 
-                ajaxRequest('GET', url,
-                    function(arr, textStatus, xhr) {
-                        if (xhr.status === 200) {
-                            getTableBody(arr)
-                        }
-                    },
-                    function(data) {
-                        console.log(data);
-                    })
+            $("#customerForm_values :input").each(function() {
+                $(this).val('')
             });
+
+            ajaxRequest('GET', url,
+                function(arr, textStatus, xhr) {
+                    if (xhr.status === 200) {
+                        getTableBody(arr)
+                    }
+                },
+                function(data) {
+                    console.log(data);
+                })
         })
 
         $('#customers_dateend').on('change', function() {
