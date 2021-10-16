@@ -67,6 +67,7 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Status</th>
+                                            <th>Remarks</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -78,6 +79,7 @@
                                             <td>{{ $row->customer_fname }} {{$row->customer_lname}}</td>
                                             <td>{{ $row->customer_email }}</td>
                                             <td>{{ $row->customer_status }}</td>
+                                            <td>{{$row->remarks ? $row->remarks : 'No Remarks' }}</td>
                                             <td>
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -92,6 +94,7 @@
                                         </tr>
                                         @endforeach
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>
@@ -130,6 +133,7 @@
                                     <td>${k.customer_fname}  ${k.customer_lname}</td>
                                     <td>${k.customer_email} </td>
                                     <td>${k.customer_status}</td>
+                                    <td>${k.remarks ? k.remarks : 'No Remarks'}</td>
                                     <td>
                                         <div class="row">
                                             <div class="col-md-6">
@@ -199,14 +203,14 @@
         });
 
         $('#customers_refresh').on('click', function() {
+            $("#customerForm_values :input").each(function() {
+                $(this).val('')
+            });
+
             const url = `/customer/query?search_value=${$('#search_customers').val()}
                             &order_by=${$('#customer_sort').val()}
                             &date_from=${$('#customers_datefrom').val()}
                             &date_to=${$('#customers_dateend').val()}&is_refresh=1`;
-
-            $("#customerForm_values :input").each(function() {
-                $(this).val('')
-            });
 
             ajaxRequest('GET', url,
                 function(arr, textStatus, xhr) {

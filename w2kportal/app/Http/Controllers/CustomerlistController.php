@@ -7,17 +7,19 @@ use App\Models\Customer;
 use App\Models\customerlist;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CustomerlistController extends Controller
 {
     private $home;
     private $dynamicQuery;
-    private $customers_table = 'customers';
+    private $c_table = 'customers';
 
     public function __construct()
     {
-        $this->dynamicQuery = Customer::query();
-        $this->home = Customer::all();
+        $this->home = DB::table('customers')
+            ->select('customers.*', 'orders.remarks')
+            ->leftJoin('orders', 'customers.last_activity', '=', 'orders.id');
     }
 
     /**
@@ -27,7 +29,10 @@ class CustomerlistController extends Controller
      */
     public function index(Request $request)
     {
-        return view('list', ['home' => $this->home]);
+
+        return view('list', [
+            'home' => $this->home->get()
+        ]);
     }
 
 
@@ -35,30 +40,23 @@ class CustomerlistController extends Controller
     {
         $query = $request->all();
 
-        if (empty($query['date_from']) && empty($query['date_to'])) {
-            $query['date_from'] = '';
-            $query['date_to']   = '';
-        } else {
+        if (!empty($query['date_from']) && !empty($query['date_to'])) {
             $query['date_from'] .=  ' 00:00:00';
             $query['date_to']   .= ' 23:59:59';
         }
 
 
-        $results = $this->dynamicQuery->when(!empty($query['search_value']), function ($q) use ($query) {
-            return $q->where('customer_fname', 'LIKE', '%' . trim($query['search_value']) . '%')
-                ->orWhere('customer_lname', 'LIKE', '%' . trim($query['search_value']) . '%')
-                ->orWhere('customer_email', 'LIKE', '%' . trim($query['search_value']) . '%')
-                ->orWhere('customer_status', 'LIKE', '%' . trim($query['search_value']) . '%');
+        $results = $this->home->when(!empty($query['search_value']), function ($q) use ($query) {
+            return $q->where('customers.customer_fname', 'LIKE', '%' . trim($query['search_value']) . '%')
+                ->orWhere('customers.customer_lname', 'LIKE', '%' . trim($query['search_value']) . '%')
+                ->orWhere('customers.customer_email', 'LIKE', '%' . trim($query['search_value']) . '%')
+                ->orWhere('customers.customer_status', 'LIKE', '%' . trim($query['search_value']) . '%')
+                ->orWhere('orders.remarks', 'LIKE', '%' . trim($query['search_value']) . '%');
         })->when($query['order_by'], function ($q) use ($query) {
-            return $q->orderBy($query['order_by'], 'DESC');
+            return $q->orderBy('customers.' . $query['order_by'], 'DESC');
         })->when($query['date_from'] && $query['date_to'], function ($q) use ($query) {
-            return $q->whereBetween('created_at', [$query['date_from'], $query['date_to']]);
+            return $q->whereBetween('customers.created_at', [$query['date_from'], $query['date_to']]);
         });
-
-
-        if ($query['is_refresh'] === '1') {
-            return response()->json($this->home, 200);
-        }
 
         return response()->json($results->get(), 200);
     }

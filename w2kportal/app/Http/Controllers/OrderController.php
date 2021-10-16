@@ -56,14 +56,18 @@ class OrderController extends Controller
 
         ]);
 
-        Order::create($request->all());
+        $last_activity = Order::create($request->all());
+        $status = customer::find(request()->input('customer_id'));
+        $status->last_activity = $last_activity['id'];
 
+        $status->update();
         return back();
     }
     public function show()
     {
         return view('order');
     }
+
     public function update(request $request, $id)
     {
 
