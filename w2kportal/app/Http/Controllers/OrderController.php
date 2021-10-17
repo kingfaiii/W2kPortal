@@ -55,19 +55,20 @@ class OrderController extends Controller
             'remarks' => 'required',
 
         ]);
-
-        $last_activity = Order::create($request->all());
-        $status = customer::find(request()->input('customer_id'));
-        $status->last_activity = $last_activity['id'];
-
+        $status = Customer::find(request()->input('customer_id'));
+        $status->reason_hold = null;
+        $status->reason_lost = null;
+        $status->reason_hold_date = null;
+        $status->customer_status = "Answered";
         $status->update();
+        Order::create($request->all());
+
         return back();
     }
     public function show()
     {
         return view('order');
     }
-
     public function update(request $request, $id)
     {
 
@@ -81,28 +82,49 @@ class OrderController extends Controller
             $status->reason_hold_date = null;
             $status->customer_status = request()->input('customer_status');
             $status->update();
+
+            $activity = new Order;
+            $activity->created_at = Carbon::now()->toDateTimeString();
+            $activity->updated_at = Carbon::now()->toDateTimeString();
+            $activity->customer_id = request()->input('updatestatuscustomerid');
+            $activity->user_id = request()->input('updatestatususerid');
+            $activity->sales_rep = request()->input('updatestatususername');
+            $activity->remarks = "Update Status(Answered)";
+            $activity->save();
+            
         } elseif (request()->input('customer_status') == "Lost") {
             $status->reason_hold = null;
             $status->reason_hold_date = null;
             $status->reason_lost = request()->input('Reasonlost');
             $status->customer_status = request()->input('customer_status');
             $status->update();
+            // For Remarks
+            $activity = new Order;
+            $activity->created_at = Carbon::now()->toDateTimeString();
+            $activity->updated_at = Carbon::now()->toDateTimeString();
+            $activity->customer_id = request()->input('updatestatuscustomerid');
+            $activity->user_id = request()->input('updatestatususerid');
+            $activity->sales_rep = request()->input('updatestatususername');
+            $activity->remarks = "Update Status (Lost)";
+            $activity->save();
         } elseif (request()->input('customer_status') == "Hold") {
             $status->reason_lost = null;
             $status->reason_hold = request()->input('reason_hold');
             $status->reason_hold_date = request()->input('reason_hold_date');
             $status->customer_status = request()->input('customer_status');
             $status->update();
+
+            $activity = new Order;
+            $activity->created_at = Carbon::now()->toDateTimeString();
+            $activity->updated_at = Carbon::now()->toDateTimeString();
+            $activity->customer_id = request()->input('updatestatuscustomerid');
+            $activity->user_id = request()->input('updatestatususerid');
+            $activity->sales_rep = request()->input('updatestatususername');
+            $activity->remarks = "Update Status (Hold)";
+            $activity->save();
         }
 
-        $activity = new Order;
-        $activity->created_at = Carbon::now()->toDateTimeString();
-        $activity->updated_at = Carbon::now()->toDateTimeString();
-        $activity->customer_id = request()->input('updatestatuscustomerid');
-        $activity->user_id = request()->input('updatestatususerid');
-        $activity->sales_rep = request()->input('updatestatususername');
-        $activity->remarks = "Update Status";
-        $activity->save();
+      
         //$customer->update($request->all());
         return back()->with('success', 'Customer status Successfully Updated');
     }
