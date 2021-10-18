@@ -102,6 +102,7 @@ class OrderController extends Controller
             $activity->user_id = request()->input('updatestatususerid');
             $activity->sales_rep = request()->input('updatestatususername');
             $activity->remarks = "Update Status (Lost)";
+            $activity->customer_status = request()->input('customer_status');
             $activity->save();
         } elseif (request()->input('customer_status') == "Hold") {
             $status->reason_lost = null;
@@ -117,9 +118,9 @@ class OrderController extends Controller
             $activity->user_id = request()->input('updatestatususerid');
             $activity->sales_rep = request()->input('updatestatususername');
             $activity->remarks = "Update Status (Hold)";
+            $activity->customer_status = request()->input('customer_status');
             $activity->save();
         }
-
 
         //$customer->update($request->all());
         return back()->with('success', 'Customer status Successfully Updated');

@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->string('user_id');
             $table->string('customer_id');
+            $table->string('customer_status')->nullable();
             $table->string('sales_rep');
             $table->string('remarks');
             $table->string('customer_book')->nullable();
