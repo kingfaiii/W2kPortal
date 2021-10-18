@@ -67,6 +67,7 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Status</th>
+                                            <th>Remarks</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -78,6 +79,7 @@
                                             <td>{{ $row->customer_fname }} {{$row->customer_lname}}</td>
                                             <td>{{ $row->customer_email }}</td>
                                             <td>{{ $row->customer_status }}</td>
+                                            <td>{{$row->remarks ? $row->remarks : 'No Remarks' }}</td>
                                             <td>
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -92,6 +94,7 @@
                                         </tr>
                                         @endforeach
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>
@@ -103,7 +106,9 @@
 </div>
 <script>
     $(document).ready(function() {
+
         function ajaxRequest(method = "GET", url, success = null, error = null) {
+
             $.ajax({
                 type: method, //THIS NEEDS TO BE GET
                 url: url,
@@ -111,9 +116,11 @@
                 error: error
             });
         }
+
         if (!$('#customers_datefrom').val()) {
             $('#customers_dateend').prop('disabled', true);
         }
+
         function getTableBody(arr = []) {
             $('#no-results').remove()
             $('#customerlist_body').empty()
@@ -126,11 +133,13 @@
                                     <td>${k.customer_fname}  ${k.customer_lname}</td>
                                     <td>${k.customer_email} </td>
                                     <td>${k.customer_status}</td>
+                                    <td>${k.remarks ? k.remarks : 'No Remarks'}</td>
                                     <td>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <a href="/order/${k.id}" class="btn btn-success col-12">Edit</a>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <a data-id="${k.id}" class="btn btn-danger col-12 delete-confirm">Delete</a>
                                             </div>
@@ -140,16 +149,19 @@
                             `
                     )
                 })
+
             } else {
                 $('#customerlist_table').after('<h1 class="text-center" id="no-results">No Results Found</h1>')
             }
         }
+
         $('.delete-confirm').each(function() {
             let self = this
             $(self).on('click', function(e) {
                 e.preventDefault()
                 let customer_id = $(this).data('id')
                 const url = "{{route('DestroyCustomer', ['id'])}}".replace('id', customer_id)
+
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "This Customer will be deleted permanently",
@@ -167,6 +179,7 @@
                                             &order_by=${$('#customer_sort').val()}
                                             &date_from=${$('#customers_datefrom').val()}
                                             &date_to=${$('#customers_dateend').val()}&is_refresh=0`;
+
                                     ajaxRequest('GET', refresh_url,
                                         function(arr_refresh, textStatus_refresh, xhr_refresh) {
                                             if (xhr_refresh.status === 200) {
@@ -176,6 +189,7 @@
                                         function(data) {
                                             console.log(data);
                                         })
+
                                 }
                             },
                             function(data) {
@@ -184,15 +198,20 @@
                     }
                 })
             })
+
+
         });
+
         $('#customers_refresh').on('click', function() {
+            $("#customerForm_values :input").each(function() {
+                $(this).val('')
+            });
+
             const url = `/customer/query?search_value=${$('#search_customers').val()}
                             &order_by=${$('#customer_sort').val()}
                             &date_from=${$('#customers_datefrom').val()}
                             &date_to=${$('#customers_dateend').val()}&is_refresh=1`;
-            $("#customerForm_values :input").each(function() {
-                $(this).val('')
-            });
+
             ajaxRequest('GET', url,
                 function(arr, textStatus, xhr) {
                     if (xhr.status === 200) {
@@ -203,12 +222,14 @@
                     console.log(data);
                 })
         })
+
         $('#customers_dateend').on('change', function() {
             const url = `/customer/query?order_by=${$('#customer_sort').val()}
             &search_value=${$('#search_customers').val()}&date_from=${$('#customers_datefrom').val()}
             &date_to=${this.value}&is_refresh=0`;
             ajaxRequest('GET', url,
                 function(arr, textStatus, xhr) {
+
                     if (xhr.status === 200) {
                         getTableBody(arr)
                     }
@@ -217,16 +238,19 @@
                     console.log(data);
                 })
         })
+
         $('#customers_datefrom').on('change', function() {
             if (this.value) {
                 $('#customers_dateend').prop('disabled', false);
             }
         })
+
         $('#customer_sort').on('change', function() {
             const url = `/customer/query?order_by=${this.value}&search_value=${ $('#search_customers').val()}
             &date_from=${$('#customers_datefrom').val()}&date_to=${$('#customers_dateend').val()}&is_refresh=0`;
             ajaxRequest('GET', url,
                 function(arr, textStatus, xhr) {
+
                     if (xhr.status === 200) {
                         getTableBody(arr)
                     }
@@ -235,6 +259,7 @@
                     console.log(data);
                 })
         })
+
         $('#search_customers').keyup(function() {
             const search = $.trim($(this).val());
             const url = `/customer/query?search_value=${search}&order_by=${$('#customer_sort').val()}
@@ -251,8 +276,10 @@
                         function(data) {
                             console.log(data);
                         })
+
                 }, 300);
             }
+
             if (search.length === 0) {
                 ajaxRequest('GET', url,
                     function(arr, textStatus, xhr) {
@@ -265,6 +292,8 @@
                     })
             }
         });
+
+
     })
 </script>
 @endsection
