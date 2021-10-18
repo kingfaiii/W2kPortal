@@ -19,11 +19,11 @@ class CreateCustomersTable extends Migration
             $table->string('customer_fname');
             $table->string('customer_lname');
             $table->string('customer_status');
+            $table->string("last_activity")->nullable();
             $table->string('reason_hold')->nullable();
             $table->string('reason_lost')->nullable();
             $table->date('reason_hold_date')->nullable();
             $table->timestamps();
-
         });
     }
 

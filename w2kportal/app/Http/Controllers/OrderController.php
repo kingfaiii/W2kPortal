@@ -55,14 +55,11 @@ class OrderController extends Controller
             'remarks' => 'required',
 
         ]);
-        $status = Customer::find(request()->input('customer_id'));
-        $status->reason_hold = null;
-        $status->reason_lost = null;
-        $status->reason_hold_date = null;
-        $status->customer_status = "Answered";
-        $status->update();
-        Order::create($request->all());
+        $last_activity = Order::create($request->all());
+        $status = customer::find(request()->input('customer_id'));
+        $status->last_activity = $last_activity['id'];
 
+        $status->update();
         return back();
     }
     public function show()
@@ -91,7 +88,6 @@ class OrderController extends Controller
             $activity->sales_rep = request()->input('updatestatususername');
             $activity->remarks = "Update Status(Answered)";
             $activity->save();
-            
         } elseif (request()->input('customer_status') == "Lost") {
             $status->reason_hold = null;
             $status->reason_hold_date = null;
@@ -124,7 +120,7 @@ class OrderController extends Controller
             $activity->save();
         }
 
-      
+
         //$customer->update($request->all());
         return back()->with('success', 'Customer status Successfully Updated');
     }
