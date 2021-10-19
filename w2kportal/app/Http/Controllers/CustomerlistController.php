@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\DB;
 class CustomerlistController extends Controller
 {
     private $home;
-    private $dynamicQuery;
-    private $c_table = 'customers';
 
     public function __construct()
     {

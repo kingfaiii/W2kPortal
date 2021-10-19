@@ -108,7 +108,6 @@
     $(document).ready(function() {
 
         function ajaxRequest(method = "GET", url, success = null, error = null) {
-
             $.ajax({
                 type: method, //THIS NEEDS TO BE GET
                 url: url,
