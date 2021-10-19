@@ -74,7 +74,7 @@
               </div>
               <div id="reasonhold" class="col-md-6">
                 <input type="date" class="form-control" value="{{ $customers->reason_hold_date }}" name="reason_hold_date" id="">
-                <textarea style="resize:none;" name="reason_hold" value="" placeholder="Reason for Holding Customer" id="" class="form-control" cols="10" rows="10">{{ $customers->reason_hold }}</textarea>
+                <input name="reason_hold"  placeholder="Reason for Holding Customer" id="" class="form-control" value="{{ $customers->reason_hold }}">
               </div>
             </div>
             @endforeach

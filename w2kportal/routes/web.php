@@ -31,6 +31,8 @@ Route::group(['middleware' => 'prevent-back'], function () {
     Route::resource('list', CustomerlistController::class);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/list', [App\Http\Controllers\CustomerlistController::class, 'index'])->name('list');
+    Route::get('/report', [App\Http\Controllers\ReportController::class, 'index'])->name('Report');
+    Route::get('/report/list/{id}', [App\Http\Controllers\ReportController::class, 'indexReportList'])->name('ReportList');
     Route::get('/customerinput', [App\Http\Controllers\CustomerController::class, 'index'])->name('customer');
     Route::get('/order/{id}', [App\Http\Controllers\OrderController::class, 'index'])->name('order');
     Route::post('/order/store', [App\Http\Controllers\OrderController::class, 'Store'])->name('StoreOrder');
@@ -38,6 +40,5 @@ Route::group(['middleware' => 'prevent-back'], function () {
     Route::post('/order/ActivityUpdate/{id}', [App\Http\Controllers\OrderController::class, 'updateactivity'])->name('UpdateActivity');
     Route::get('/order/delete/{id}', [App\Http\Controllers\OrderController::class, 'DestroyActivity'])->name('DestroyActivity');
     Route::get('/list/delete/{id}', [App\Http\Controllers\HomeController::class, 'Destroy'])->name('DestroyCustomer');
-
     Route::get('/customer/query', [App\Http\Controllers\CustomerlistController::class, 'queryCustomerList']);
 });

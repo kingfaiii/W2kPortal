@@ -17,6 +17,7 @@ class CustomerlistController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->home = DB::table('customers')
             ->select('customers.*', 'orders.remarks')
             ->leftJoin('orders', 'customers.last_activity', '=', 'orders.id');
