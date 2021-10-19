@@ -120,6 +120,16 @@
             $('#reports_row_count').text(`Number of Rows: ${arr.current_count}`)
         }
 
+        if (!$('#orders_datefrom').val()) {
+            $('#orders_dateend').prop('disabled', true)
+        }
+
+        $('#orders_datefrom').on('change', function() {
+            if ($(this).val()) {
+                $('#orders_dateend').prop('disabled', false)
+            }
+        })
+
         $('#orders_dateend').on('change', function() {
             baseURL += `?date_from=${$('#orders_datefrom').val()}&date_to=${$(this).val()}&act=api`
 
@@ -144,6 +154,8 @@
             ajaxRequest('GET', baseURL, (arr, textStatus, xhr) => {
                 if (xhr.status === 200) {
                     appendRow(arr)
+
+                    $('#orders_dateend').prop('disabled', true)
                 }
             })
 
