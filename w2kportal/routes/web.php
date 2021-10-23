@@ -39,6 +39,7 @@ Route::group(['middleware' => 'prevent-back'], function () {
     Route::post('/order/update/{id}', [App\Http\Controllers\OrderController::class, 'update'])->name('UpdateOrder');
     Route::post('/order/ActivityUpdate/{id}', [App\Http\Controllers\OrderController::class, 'updateactivity'])->name('UpdateActivity');
     Route::get('/order/delete/{id}', [App\Http\Controllers\OrderController::class, 'DestroyActivity'])->name('DestroyActivity');
+    Route::post('/order/convert', [App\Http\Controllers\OrderController::class, 'ConvertCustomer'])->name('convert');
     Route::get('/list/delete/{id}', [App\Http\Controllers\HomeController::class, 'Destroy'])->name('DestroyCustomer');
     Route::get('/customer/query', [App\Http\Controllers\CustomerlistController::class, 'queryCustomerList']);
 });

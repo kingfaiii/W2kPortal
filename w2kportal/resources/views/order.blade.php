@@ -133,7 +133,9 @@
               </button>
             </div>
             <div class="col-md-4">
-              <a href="" class="btn text-white btn-info col-12">Convert Customer</a>
+              <button type="button" class="btn text-white btn-info col-12" data-toggle="modal" data-target="#ConvertCustomer">
+                Convert Customer
+              </button>
             </div>
           </div>
         </div>
@@ -144,6 +146,8 @@
     </div>
   </div>
 </form>
+
+{{-- Add Activity --}}
 <form action="{{ route('StoreOrder') }}" Method="POST">
   @csrf
   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -180,7 +184,9 @@
     </div>
   </div>
 </form>
+{{-- Add Activity --}}
 
+{{-- Update Activity --}}
 @foreach ($order as $row)
 <form action="{{ route('UpdateActivity',[$row->id]) }}" Method="POST">
   @csrf
@@ -216,6 +222,38 @@
   </div>
 </form>
 @endforeach
+{{-- Update Activity --}}
+
+{{-- Convert Customer --}}
+<form action="{{ route('convert') }}" Method="POST">
+  @csrf
+  <div class="modal fade" id="ConvertCustomer" tabindex="-1" role="dialog" aria-labelledby="ConvertCustomer" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content bg-dark">
+        <div class="modal-header text-center">
+          <h5 class="modal-title text-white" id="exampleModalLongTitle">Add Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span class="text-white" aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="text" hidden name="user_id" value="{{Auth::user()->id; }}" id="" class="form-control ">
+          @foreach ($customer as $row)
+          <input type="text" hidden name="customer_id" value="{{$row->id}}" id="" class="form-control ">
+          @endforeach
+          <input type="text" required name="customer_book" value="" placeholder="Book Title" id="" class="form-control mb-5">
+          <input type="text" hidden name="sales_rep" value="{{ Auth::user()->name; }}" id="" class="form-control">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input type="submit" value="Convert" name="addactivitybtn" class="btn btn-success">
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{{-- Convert Customer --}}
+
 <script>
   // SweetAlert2
   $('.delete-confirm').on('click', function(event) {
@@ -253,6 +291,10 @@
       document.getElementById('reasonlabel').style.display = "block";
       reasonhold.style.display = "none";
     } else if (select.value === "Answered" || select === 'Answered') {
+      document.getElementById('ReasonLost').style.display = "none";
+      reasonhold.style.display = "none";
+      document.getElementById('reasonlabel').style.display = "none";
+    }else if (select.value === "Won" || select === 'Won') {
       document.getElementById('ReasonLost').style.display = "none";
       reasonhold.style.display = "none";
       document.getElementById('reasonlabel').style.display = "none";

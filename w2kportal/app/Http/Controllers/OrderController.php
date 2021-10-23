@@ -142,4 +142,28 @@ class OrderController extends Controller
         $order->delete();
         return back()->with('deleted', 'Customer Activity Successfully Deleted!');
     }
+
+    Public function ConvertCustomer(request $request)
+    {
+
+        $status = customer::find(request()->input('customer_id'));
+        $status->customer_status = 'Won';
+        $status->reason_hold = null;
+        $status->reason_lost = null;
+        $status->reason_hold_date = null;
+        $status->update();
+
+        $activity = new Order;
+        $activity->created_at = Carbon::now()->toDateTimeString();
+        $activity->updated_at = Carbon::now()->toDateTimeString();
+        $activity->customer_id = request()->input('customer_id');
+        $activity->user_id = request()->input('user_id');
+        $activity->sales_rep = request()->input('sales_rep');
+        $activity->customer_book = request()->input('customer_book');
+        $activity->remarks = "Won";
+        $activity->save();
+
+        return back();
+        
+    }
 }
