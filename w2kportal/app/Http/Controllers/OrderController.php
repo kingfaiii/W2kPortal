@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\won_customer;
 use App\Models\Order;
 use App\Models\Customer;
+use App\Models\service_package;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
@@ -40,9 +42,11 @@ class OrderController extends Controller
         $customer = Customer::all()
             ->where('id', $id);
 
+        $packages = service_package::all();
+
 
         //$save = $order->sales_rep;
-        return view('order', ['order' => $order], ['customer' => $customer])->with("id", $id);
+        return view('order', ['order' => $order, 'customer' => $customer, 'packages' => $packages])->with("id", $id);
         //dd($order);
     }
 
@@ -58,8 +62,8 @@ class OrderController extends Controller
         $last_activity = Order::create($request->all());
         $status = customer::find(request()->input('customer_id'));
         $status->last_activity = $last_activity['id'];
-        $status->customer_status="Answered";
-        $status->reason_hold=null;
+        $status->customer_status = "Answered";
+        $status->reason_hold = null;
         $status->reason_lost = null;
         $status->reason_hold_date = null;
         $status->update();
@@ -143,7 +147,7 @@ class OrderController extends Controller
         return back()->with('deleted', 'Customer Activity Successfully Deleted!');
     }
 
-    Public function ConvertCustomer(request $request)
+    public function ConvertCustomer(request $request)
     {
 
         $status = customer::find(request()->input('customer_id'));
@@ -163,7 +167,15 @@ class OrderController extends Controller
         $activity->remarks = "Won";
         $activity->save();
 
+
+        $convert = new won_customer;
+        $convert->package_id = request()->input('Packages');
+        $convert->customer_id = request()->input('customer_id');
+        $convert->status = 'won';
+        $convert->transaction_ID = request()->input('transaction_id');
+        $convert->book_title = request()->input('customer_book');
+        $convert->save();
+
         return back();
-        
     }
 }

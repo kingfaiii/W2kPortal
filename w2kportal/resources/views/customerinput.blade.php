@@ -13,48 +13,59 @@
                     </div>
                     <div class="card-body">
                         <div class="row pl-5">
+                            @foreach ($information as $item)
+                            
                             <div class="col-md-12">
                                 <div class="form-group row">
                                     <p class="text-dark col-sm-2">Customer Name:</p>
                                     <div class="col-sm-6">
                                       {{-- <p>Dito I output yung Name ng customer</p> --}}
+                                  
+                                     {{$item->customer_fname}} {{$item->customer_lname}}
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p class="text-dark col-sm-2">Email Address:</p>
                                     <div class="col-sm-6">
                                       {{-- <p>Dito I output yung Email ng customer</p> --}}
+                                      {{$item->customer_email}}
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p class="text-dark col-sm-2">Date Inquire:</p>
                                     <div class="col-sm-6">
+                                        {{$item->customer_createdAt}}
                                       {{-- <p>Dito I output yung date ng customer kung kelan siya na create</p> --}}
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p class="text-dark col-sm-2">Payment Date:</p>
                                     <div class="col-sm-6">
+                                        {{$item->won_createdAt}}
                                       {{-- <p>Dito I output yung date ng customer kung kelan siya naging won</p> --}}
                                     </div>
                                 </div>
+
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group row">
                                     <p class="text-dark col-sm-2">Transaction ID:</p>
                                     <div class="col-sm-6">
+                                        {{$item->transaction_ID}}
                                       {{-- <p>Dito I output yung Transacion ID ng customer</p> --}}
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p class="text-dark col-sm-2">Book Title:</p>
                                     <div class="col-sm-6">
+                                        {{$item->book_title}}
                                       {{-- <p>Dito I output yung title ng book ng customer na na won</p> --}}
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <p class="text-dark col-sm-2">Service:</p>
                                     <div class="col-sm-6">
+                                        {{$item->package_name}}
                                       {{-- <p>Dito I output yung service ng customer na na won</p> --}}
                                     </div>
                                 </div>
@@ -65,6 +76,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endforeach      
                            
                         </div>
                        

@@ -74,7 +74,7 @@
               </div>
               <div id="reasonhold" class="col-md-6">
                 <input type="date" class="form-control" value="{{ $customers->reason_hold_date }}" name="reason_hold_date" id="">
-                <input name="reason_hold"  placeholder="Reason for Holding Customer" id="" class="form-control" value="{{ $customers->reason_hold }}">
+                <input name="reason_hold" placeholder="Reason for Holding Customer" id="" class="form-control" value="{{ $customers->reason_hold }}">
               </div>
             </div>
             @endforeach
@@ -241,7 +241,15 @@
           @foreach ($customer as $row)
           <input type="text" hidden name="customer_id" value="{{$row->id}}" id="" class="form-control ">
           @endforeach
-          <input type="text" required name="customer_book" value="" placeholder="Book Title" id="" class="form-control mb-5">
+          <input type="text" required name="customer_book" value="" placeholder="Book Title" id="" class="form-control">
+          <input type="text" required name="transaction_id" value="" placeholder="Transaction ID" id="" class="form-control mb-5">
+          <select name="Packages" class="form-control" id="">
+            @foreach ($packages as $item)
+          
+            <option value="{{ $item->id }}">{{ $item->package_name }}</option>
+            @endforeach
+            
+          </select>
           <input type="text" hidden name="sales_rep" value="{{ Auth::user()->name; }}" id="" class="form-control">
         </div>
         <div class="modal-footer">
@@ -294,7 +302,7 @@
       document.getElementById('ReasonLost').style.display = "none";
       reasonhold.style.display = "none";
       document.getElementById('reasonlabel').style.display = "none";
-    }else if (select.value === "Won" || select === 'Won') {
+    } else if (select.value === "Won" || select === 'Won') {
       document.getElementById('ReasonLost').style.display = "none";
       reasonhold.style.display = "none";
       document.getElementById('reasonlabel').style.display = "none";
