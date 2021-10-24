@@ -4,120 +4,120 @@
 @section('content')
 <main>
     <div>
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h1 class="text-dark font-weight-bold text-center">Register Customer Information</h1>
-                        </div>
-                        <form action="" method="post">
-                            <div class="card-body bg-warning">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="formGroupExampleInput">Full Name:</label>
-                                            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Full Name">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="formGroupExampleInput2">Email:</label>
-                                            <input type="email" class="form-control" id="formGroupExampleInput2" placeholder="Email">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="PackagePurchased">Package Purchased:</label>
-                                            <input type="text" placeholder="Package Purchased" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="TransactionID">Transaction ID:</label>
-                                            <input type="text" placeholder="Transaction ID" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="PaymentDate">Payment Date:</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="Amount">Payment:</label>
-                                            <input type="text" placeholder="$9999" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="Booktitle">Book Title:</label>
-                                            <input type="text" name="" placeholder="Book Title" id="" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="Service">Service:</label>
-                                              <select class="form-control">
-                                                <option>Default select</option>
-                                              </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="Service">Status:</label>
-                                              <select class="form-control">
-                                                <option>Default select</option>
-                                              </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="CommitmmentDate">Commitment Date:</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="CompletedDate">Completed Date:</label>
-                                            <input type="date" name="" id="" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="DownladableLink">Download Link:</label>
-                                            <input type="text" class="form-control" placeholder="Download Link">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                            <input class="btn btn-outline-success px-5 btn-lg col-md-12" type="submit" Value="Register" name="customerregbtn">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input class="btn btn-danger px-5 btn-lg col-md-12" type="submit" Value="Cancel" name="customerregbtn">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+        <div class="container-fluid mt-3">
+           <div class="row">
+               <div class="col-md-12">
+                   <div class="card mt-5">
+                    <div class="card-header">
+                        <h2 class="text-dark">Convert Customer Details</h2>
                     </div>
-                </div>
-                <div class="col-md-2">
-                </div>
-            </div>
+                    <div class="card-body">
+                        <div class="row pl-5">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <p class="text-dark col-sm-2">Customer Name:</p>
+                                    <div class="col-sm-6">
+                                      {{-- <p>Dito I output yung Name ng customer</p> --}}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p class="text-dark col-sm-2">Email Address:</p>
+                                    <div class="col-sm-6">
+                                      {{-- <p>Dito I output yung Email ng customer</p> --}}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p class="text-dark col-sm-2">Date Inquire:</p>
+                                    <div class="col-sm-6">
+                                      {{-- <p>Dito I output yung date ng customer kung kelan siya na create</p> --}}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p class="text-dark col-sm-2">Payment Date:</p>
+                                    <div class="col-sm-6">
+                                      {{-- <p>Dito I output yung date ng customer kung kelan siya naging won</p> --}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <p class="text-dark col-sm-2">Transaction ID:</p>
+                                    <div class="col-sm-6">
+                                      {{-- <p>Dito I output yung Transacion ID ng customer</p> --}}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p class="text-dark col-sm-2">Book Title:</p>
+                                    <div class="col-sm-6">
+                                      {{-- <p>Dito I output yung title ng book ng customer na na won</p> --}}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p class="text-dark col-sm-2">Service:</p>
+                                    <div class="col-sm-6">
+                                      {{-- <p>Dito I output yung service ng customer na na won</p> --}}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <p class="text-dark col-sm-2">Total Project Cost:</p>
+                                    <div class="col-sm-6">
+                                      {{-- <p>Dito I output yung Total Project Cost ng customer na na won</p> --}}
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                       
+                        <div class="table-wrapper-scroll-x my-custom-scrollbar">
+                            <table style="width:300px;overflow-x:auto;" class="table table-stripped">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Service Inclusions</th>
+                                        <th>Project Cost</th>
+                                        <th>Layout</th>
+                                        <th>Page/Word Count</th>
+                                        <th>Project Classification</th>
+                                        <th>Turnaround Time</th>
+                                        <th>Status</th>
+                                        <th>Task</th>
+                                        <th>Commitment Date</th>
+                                        <th>Owner</th>
+                                        <th>Job Cost</th>
+                                        <th>Date Assigned</th>
+                                        <th>Date Completed</th>
+                                        <th>QA</th>
+                                        <th>QA Score</th>
+                                        <th>UID</th>
+                                        <th>Project Link</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-center">
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                        <td>Noob</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                   </div>
+               </div>
+           </div>
         </div>
     </div>
 </main>

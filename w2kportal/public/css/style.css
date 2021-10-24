@@ -69,3 +69,11 @@
 .fadeIn-bottom {
     top: 80%;
 }
+.my-custom-scrollbar {
+    position: relative;
+    width: 100%;
+    overflow: auto;
+    }
+.table-wrapper-scroll-x {
+    display: block;
+}
