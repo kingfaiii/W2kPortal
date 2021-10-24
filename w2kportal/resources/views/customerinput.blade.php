@@ -80,8 +80,8 @@
                            
                         </div>
                        
-                        <div class="table-wrapper-scroll-x my-custom-scrollbar">
-                            <table style="width:300px;overflow-x:auto;" class="table table-stripped">
+                        <div style="width:100%;overflow-x:auto;" class="table-wrapper-scroll-x my-custom-scrollbar">
+                            <table class="table table-stripped">
                                 <thead>
                                     <tr class="text-center">
                                         <th>Service Inclusions</th>
@@ -110,7 +110,7 @@
                                         <td>Noob</td>
                                         <td>Noob</td>
                                         <td>Noob</td>
-                                        <td>Noob</td>
+                                        <td>Nooasdadasdasdadsadadasdb</td>
                                         <td>Noob</td>
                                         <td>Noob</td>
                                         <td>Noob</td>
