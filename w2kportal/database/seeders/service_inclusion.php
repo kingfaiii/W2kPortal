@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class service_inclusions extends Seeder
+class service_inclusion extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,4 +15,12 @@ class service_inclusions extends Seeder
     {
         //
     }
+
+    // private function generateInclusions() {
+    //     return [
+    //         [
+
+    //         ]
+    //     ]
+    // }
 }

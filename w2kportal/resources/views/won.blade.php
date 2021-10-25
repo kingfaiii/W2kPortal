@@ -33,30 +33,22 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Status</th>
-                                            <th>Transaction ID</th>
-                                            <th>Book TItle</th>
-                                            <th>Package</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="customerlist_body">
                                         @foreach ($information as $row)
                                         <tr class="text-center">
-                                            <td>W2k-{{ $row->id }}</td>
+                                            <td>W2k-{{ $row->customer_id }}</td>
                                             <td>{{ $row->customer_fname }} {{ $row->customer_lname }}</td>
                                             <td>{{ $row->customer_email }}</td>
                                             <td>{{ $row->status }}</td>
-                                            <td>{{ $row->transaction_ID }}</td>
-                                            <td>{{ $row->book_title }}</td>
-                                            <td>{{ $row->package_name }}</td>
                                             <td>
                                                 <div class="row">
-                                                    <div class="col-md-6">
-                                                        <a href="{{route('ReportList',[$row->id])}}" class="btn btn-success col-12">view</a>
+                                                    <div class="col-md-12">
+                                                        <a href="{{route('WonCustomersbooklist',[$row->customer_id])}}" class="btn btn-success col-12">view</a>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <a href="{{route('customer',[$row->id])}}" class="btn btn-warning col-12">edit</a>
-                                                    </div>
+                                                    
                                                 </div>
                                             </td>
                                         </tr>

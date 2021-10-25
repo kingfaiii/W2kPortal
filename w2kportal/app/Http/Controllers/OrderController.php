@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\won_customer;
-use App\Models\Order;
 use App\Models\Customer;
+use App\Models\Order;
+use App\Models\Book;
+use App\Models\service_inclusion;
 use App\Models\service_package;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -13,6 +15,20 @@ use Carbon\Carbon;
 class OrderController extends Controller
 {
     //
+    private $inclusions_array = [
+        [
+            "service_name" => "interior formatting",
+        ],
+
+        [
+            "service_name" => "premium book cover art",
+        ],
+
+        [
+            "service_name" => "e-book conversion",
+
+        ]
+    ];
     public function __construct()
     {
         $this->middleware('auth');
@@ -168,13 +184,33 @@ class OrderController extends Controller
         $activity->save();
 
 
-        $convert = new won_customer;
-        $convert->package_id = request()->input('Packages');
-        $convert->customer_id = request()->input('customer_id');
-        $convert->status = 'won';
-        $convert->transaction_ID = request()->input('transaction_id');
-        $convert->book_title = request()->input('customer_book');
-        $convert->save();
+
+        $is_won_exist = won_customer::where('customer_id', '=', $request->input('customer_id'))->first();
+        $convert = [];
+        if ($is_won_exist === null) {
+            $convert = new won_customer;
+            $convert->package_id = request()->input('Packages');
+            $convert->customer_id = request()->input('customer_id');
+            $convert->status = 'won';
+            $convert->save();
+        }
+
+        $book = [];
+        $book = new Book;
+        $book->book_title = request()->input('customer_book');
+        $book->transaction_ID = request()->input('transaction_id');
+        $book->won_id = request()->input('customer_id');
+        $book->save();
+
+        if (request()->input('Packages') == 1) {
+
+            foreach ($this->inclusions_array as $key => $inclusion) {
+                $inclusion['won_id'] = request()->input('customer_id');
+                $inclusion['package_id'] = request()->input('Packages');
+                $inclusion['book_id'] = $book['id'];
+                service_inclusion::insert($inclusion);
+            }
+        }
 
         return back();
     }

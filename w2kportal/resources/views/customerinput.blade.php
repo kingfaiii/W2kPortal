@@ -13,7 +13,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row pl-5">
-                            @foreach ($information as $item)
+                            @foreach ($customer_information as $item)
                             
                             <div class="col-md-12">
                                 <div class="form-group row">
@@ -104,25 +104,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="text-center">
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Nooasdadasdasdadsadadasdb</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                        <td>Noob</td>
-                                    </tr>
+                                   
+                                       @foreach ($book_information as $item)
+                                       <tr class="text-center">
+                                           <td>  {{ $item->service_name}} </td>
+                                           <td>  {{ $item->project_cost}} </td>
+                                           <td>  {{ $item->layout}} </td>
+                                           <td>  {{ $item->page_count}} </td>
+                                           <td>  {{ $item->project_classification}} </td>
+                                           <td>  {{ $item->turnaround_time}} </td>
+                                           <td>  {{ $item->status}} </td>
+                                           <td>  {{ $item->task}} </td>
+                                           <td>  {{ $item->commitment_date}} </td>
+                                           <td>  {{ $item->owner}} </td>
+                                           <td>  {{ $item->job_cost}} </td>
+                                           <td>  {{ $item->date_assigned}} </td>
+                                           <td>  {{ $item->date_completed}} </td>
+                                           <td>  {{ $item->quality_assurance}} </td>
+                                           <td>  {{ $item->quality_score}} </td>
+                                           <td>  {{ $item->uid}} </td>
+                                           <td>  {{ $item->project_link}} </td>
+                                       </tr>
+                                       @endforeach
+                                   
                                 </tbody>
                             </table>
                         </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\won_customer;
+use App\Models\book;
 use App\Models\customer;
 
 use Illuminate\Http\Request;
@@ -21,6 +22,19 @@ class WonCustomerController extends Controller
             ->where('won_customers.status', '=', 'won');
 
         return view('won', ['information' => $information->get()]);
+    }
+
+    public function woncustomerview($id)
+    {
+
+        $user = won_customer::join('customers', 'won_customers.customer_id', '=', 'customers.id')
+            ->where('won_customers.customer_id', '=', $id);
+
+        $information = won_customer::join('customers', 'won_customers.customer_id', '=', 'customers.id')
+            ->join('books', 'won_customers.customer_id', '=', 'books.won_id')
+            ->where('books.won_id', '=', $id);
+
+        return view('customerwon', ['information' => $information->get(), 'user' => $user->get()]);
     }
 
     /**

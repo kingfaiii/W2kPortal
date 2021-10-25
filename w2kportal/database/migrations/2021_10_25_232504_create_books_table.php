@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWonCustomersTable extends Migration
+class CreateBooksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateWonCustomersTable extends Migration
      */
     public function up()
     {
-        Schema::create('won_customers', function (Blueprint $table) {
+        Schema::create('books', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('package_id');
-            $table->string('customer_id');
-            $table->string('status');
+            $table->string('transaction_ID')->nullable();
+            $table->string('book_title')->nullable();
+            $table->string('won_id')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateWonCustomersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('won_customers');
+        Schema::dropIfExists('books');
     }
 }
