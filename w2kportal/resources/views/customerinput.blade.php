@@ -4,6 +4,9 @@
 @section('content')
 <main>
     <div>
+        <form action="" method="POST">
+            @csrf
+        
         <div class="container-fluid mt-3">
            <div class="row">
                <div class="col-md-12">
@@ -106,7 +109,7 @@
                                 <tbody>
                                    
                                        @foreach ($book_information as $item)
-                                       <tr class="text-center">
+                                       <tr data-id="{{$item->id}}" class="text-center">
                                            <td>  {{ $item->service_name}} </td>
                                            <td>  {{ $item->project_cost}} </td>
                                            <td>  {{ $item->layout}} </td>
@@ -131,10 +134,21 @@
                             </table>
                         </div>
                     </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="submit" class="btn btn-success col-12" value="Update">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="submit" class="btn btn-danger col-12" value="Cancel">
+                            </div>
+                        </div>
+                    </div>
                    </div>
                </div>
            </div>
         </div>
+    </form>
     </div>
 </main>
 @endsection
