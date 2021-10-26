@@ -83,7 +83,7 @@
                            
                         </div>
                        
-                        <div style="width:100%;overflow-x:auto;" class="table-wrapper-scroll-x my-custom-scrollbar">
+                        <div style="width:100%;" class="table-wrapper-scroll-x my-custom-scrollbar">
                             <table class="table table-stripped">
                                 <thead>
                                     <tr class="text-center">
@@ -96,6 +96,49 @@
                                         <th>Status</th>
                                         <th>Task</th>
                                         <th>Commitment Date</th>
+                                      
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   
+                                       @foreach ($book_information as $item)
+                                       <tr data-id="{{$item->id}}" class="text-center">
+                                           <td>  {{ $item->service_name}} </td>
+                                           <td>  {{ $item->project_cost}} </td>
+                                           <td>
+                                               <select class="form-control" name="Layout" id="">
+                                                   <option selected value="{{ $item->layout}} ">{{ $item->layout}} </option>
+                                                    <option value="">Data</option>
+                                                </select>
+                                           </td>
+                                           <td>  <input type="text" value="{{ $item->page_count}}" class="form-control" name="page_count" id=""> </td>
+                                           <td> 
+                                                <select class="form-control" name="Layout" id="">
+                                                    <option selected value=" {{ $item->project_classification}}"> {{ $item->project_classification}} </option>
+                                                    <option value="">Data</option>
+                                                </select>
+                                          </td>
+                                           <td> <input type="text" name="turnaround_time" value="{{ $item->turnaround_time}}" id="" class="form-control">   </td>
+                                           <td>  
+                                            <select class="form-control" name="Layout" id="">
+                                                <option selected value="  {{ $item->status}}">  {{ $item->status}} </option>
+                                                <option value="Completed">Completed</option>
+                                                <option value="On-going">On-going</option>
+                                                <option value="On Hold">On Hold</option>
+                                            </select>
+                                              
+                                          </td>
+                                           <td>  {{ $item->task}} </td>
+                                           <td> <input type="date" name="commitment_date" value="{{ $item->commitment_date}} " id="" class="form-control"> </td>
+                                         
+                                       </tr>
+                                       @endforeach
+                                   
+                                </tbody>
+                            </table>
+                            <table class="table table-stripped">
+                                <thead>
+                                    <tr class="text-center">
                                         <th>Owner</th>
                                         <th>Job Cost</th>
                                         <th>Date Assigned</th>
@@ -110,23 +153,24 @@
                                    
                                        @foreach ($book_information as $item)
                                        <tr data-id="{{$item->id}}" class="text-center">
-                                           <td>  {{ $item->service_name}} </td>
-                                           <td>  {{ $item->project_cost}} </td>
-                                           <td>  {{ $item->layout}} </td>
-                                           <td>  {{ $item->page_count}} </td>
-                                           <td>  {{ $item->project_classification}} </td>
-                                           <td>  {{ $item->turnaround_time}} </td>
-                                           <td>  {{ $item->status}} </td>
-                                           <td>  {{ $item->task}} </td>
-                                           <td>  {{ $item->commitment_date}} </td>
-                                           <td>  {{ $item->owner}} </td>
-                                           <td>  {{ $item->job_cost}} </td>
-                                           <td>  {{ $item->date_assigned}} </td>
-                                           <td>  {{ $item->date_completed}} </td>
-                                           <td>  {{ $item->quality_assurance}} </td>
-                                           <td>  {{ $item->quality_score}} </td>
-                                           <td>  {{ $item->uid}} </td>
-                                           <td>  {{ $item->project_link}} </td>
+                                            <td> 
+                                                <select name="owner" id="" class="form-control">
+                                                    <option value="{{ $item->owner}} ">{{ $item->owner}} </option>
+                                                    <option value="data ">data </option>
+                                                </select> 
+                                            </td>
+                                           <td> <input type="text" name="job_cost" value="{{ $item->job_cost}} " id="" class="form-control"> </td>
+                                           <td> <input type="date" name="date_assigned" valuie="{{ $item->date_assigned}}" id="" class="form-control">   </td>
+                                           <td> <input type="date" name="date_completed" valuie="  {{ $item->date_completed}}" id="" class="form-control">   </td>
+                                           <td>
+                                               <select name="qa" id="" class="form-control">
+                                                   <option selected value=" {{ $item->quality_assurance}} "> {{ $item->quality_assurance}} </option>
+                                                   <option value=" {{ $item->quality_assurance}} ">data </option>
+                                               </select> 
+                                            </td>
+                                           <td> <input type="text" name="quality_score" value="{{ $item->quality_score}} " id="" class="form-control"></td>
+                                           <td> <input type="text" name="uid" value="{{ $item->uid}}" id="" class="form-control"></td>
+                                           <td> <input type="text" name="project_link" value="{{ $item->project_link}} " id="" class="form-control"> </td>
                                        </tr>
                                        @endforeach
                                    

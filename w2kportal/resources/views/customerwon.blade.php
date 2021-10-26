@@ -65,10 +65,7 @@
                                             <td>{{ $row->transaction_ID }}</td>
                                             <td>
                                                 <div class="row">
-                                                    <div class="col-md-6">
-                                                        <a href="{{route('WonCustomersbooklist',[$row->customer_id])}}" class="btn btn-success col-12">View</a>
-                                                    </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-12">
                                                         <a href="{{route('customer',[$row->id])}}" class="btn btn-secondary col-12">Edit</a>
                                                     </div>
                                                 </div>
