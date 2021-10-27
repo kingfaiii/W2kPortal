@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class QualityAssurance extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'qa_fname', 'qa_lname', 'qa_email'
+    ];
 }

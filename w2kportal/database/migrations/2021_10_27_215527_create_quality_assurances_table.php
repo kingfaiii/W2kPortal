@@ -15,6 +15,9 @@ class CreateQualityAssurancesTable extends Migration
     {
         Schema::create('quality_assurances', function (Blueprint $table) {
             $table->id();
+            $table->string('qa_fname');
+            $table->string('qa_lname');
+            $table->string('qa_email');
             $table->timestamps();
         });
     }
