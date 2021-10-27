@@ -197,38 +197,22 @@
 </main>
 
 
-{{-- <script>
+<script>
   $(document).ready(function () {
 
         $('#customerinput_update').on('click', function(e) {
             e.preventDefault()
-            let values = []
+            let values = {},
+                group =[]
 
-            $('#customerinput_form').find('table:first tbody tr').each(function() {
-                const service_id = $(this).closest('tr')
-                const form_inputs = $(this).find(':input').map(function(){return $(this).val();}).get();
 
-                values.push({service_id,...form_inputs})
-
-                // $(this).closest('tr').find(':input').each(function(i, field) {
-                //     values.push({
-                //         id: service_id,
-                //         layout: 
-                //     })
-                // })
-            
+            $('#customerinput_form').find('table tbody tr').each(function(i, el) {
+                console.log($(el).find(':input'))
             });
 
-
-            $('#customerinput_form').find('table:nth-child(2) tbody tr').each(function() {
-                 console.log(this)
-            })
-               
-
-      
         })  
 
      
     });
-</script> --}}
+</script>
 @endsection
