@@ -60,6 +60,25 @@
                                 </li>
                             @endif
                         @else
+                                <li class="nav-item">
+                                    <a href="{{ route('WonCustomers') }}" class="nav-link">Won</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('Report') }}" class="nav-link">Reports</a>
+                                </li>
+                               <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                   Admin
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a href="{{ route('owner') }}" class="dropdown-item">
+                                        Owner
+                                    </a>
+                                    <a href="" class="dropdown-item">
+                                        QA
+                                    </a>
+                                </div>
+                               </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{  Auth::user()->name;
