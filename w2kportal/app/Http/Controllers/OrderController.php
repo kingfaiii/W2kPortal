@@ -73,13 +73,239 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "sdsd",
-            "project_cost" => 50,
-            "task" => "FB Page Creation",
+            "service_name" => "eBook Conversion (EB)",
+            "project_cost" => 0,
+            "task" => "Conversion",
+            "parent" => 2,
+            "calculate" => 1
+        ],
+
+        [
+            "service_name" => "Basic eBook Cover Art (EB)",
+            "project_cost" => 0,
+            "task" => "Art Work - Cover",
             "parent" => 2,
             "calculate" => 0
         ],
 
+
+        [
+            "service_name" => "eBook Conversion (EV)",
+            "project_cost" => 0,
+            "task" => "Conversion",
+            "parent" => 3,
+            "calculate" => 1
+        ],
+
+        [
+            "service_name" => "Basic eBook Cover Art (EV)",
+            "project_cost" => 0,
+            "task" => "Art Work - Cover",
+            "parent" => 3,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Facebook Banner (EV)",
+            "project_cost" => 0,
+            "task" => "Art Work - FB Cover",
+            "parent" => 3,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Facebook Page Creation",
+            "project_cost" => 50,
+            "task" => "FB Page Creation",
+            "parent" => 3,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "eBook Conversion (ED)",
+            "project_cost" => 0,
+            "task" => "Conversion",
+            "parent" => 4,
+            "calculate" => 1
+        ],
+
+        [
+            "service_name" => "Premium eBook Cover Art (ED)",
+            "project_cost" => 100,
+            "task" => "Art Work - Cover",
+            "parent" => 4,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Amazon eBook Upload (ED)",
+            "project_cost" => 50,
+            "task" => "eBook Upload",
+            "parent" => 4,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Facebook Banner (ED)",
+            "project_cost" => 0,
+            "task" => "Art Work - FB Cover",
+            "parent" => 4,
+            "calculate" => 0
+        ],
+
+
+        [
+            "service_name" => "Facebook Page Creation (ED)",
+            "project_cost" => 50,
+            "task" => "FB Page Creation",
+            "parent" => 4,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Interior Formatting (PB)",
+            "project_cost" => 0,
+            "task" => "Interior Formatting",
+            "parent" => 5,
+            "calculate" => 1
+        ],
+
+        [
+            "service_name" => "Interior Formatting (PV)",
+            "project_cost" => 0,
+            "task" => "Interior Formatting",
+            "parent" => 6,
+            "calculate" => 1
+        ],
+
+
+        [
+            "service_name" => "Premium Book Covert Art (PV)",
+            "project_cost" => 100,
+            "task" => "Interior Formatting",
+            "parent" => 6,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Interior Formatting (PD)",
+            "project_cost" => 0,
+            "task" => "Interior Formatting",
+            "parent" => 7,
+            "calculate" => 1
+        ],
+
+
+        [
+            "service_name" => "Premium Book Cover Art (PD)",
+            "project_cost" => 100,
+            "task" => "Art Work - Cover",
+            "parent" => 7,
+            "calculate" => 0
+        ],
+
+
+        [
+            "service_name" => "Amazon Print Upload (PD)",
+            "project_cost" => 50,
+            "task" => "Print Upload",
+            "parent" => 7,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Facebook Banner (PD)",
+            "project_cost" => 0,
+            "task" => "Art Work - FB Cover",
+            "parent" => 7,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Facebook Page Creation (PD)",
+            "project_cost" => 50,
+            "task" => "FB Page Creation",
+            "parent" => 7,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Interior Formatting (EPB)",
+            "project_cost" => 0,
+            "task" => "Interior Formatting",
+            "parent" => 8,
+            "calculate" => 1
+        ],
+
+
+        [
+            "service_name" => "eBook Conversion (EPB)",
+            "project_cost" => 80,
+            "task" => "Conversion",
+            "parent" => 8,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Basic eBook Cover Art (EPB)",
+            "project_cost" => 0,
+            "task" => "Art Work - Cover",
+            "parent" => 8,
+            "calculate" => 0
+        ],
+
+
+        [
+            "service_name" => "Interior Formatting (EPV)",
+            "project_cost" => 0,
+            "task" => "Interior Formatting",
+            "parent" => 9,
+            "calculate" => 1
+        ],
+
+
+        [
+            "service_name" => "eBook Conversion (EPV)",
+            "project_cost" => 100,
+            "task" => "Art Work - Cover",
+            "parent" => 9,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Basic eBook Cover Art (EPV)",
+            "project_cost" => 49,
+            "task" => "Conversion",
+            "parent" => 9,
+            "calculate" => 0
+        ],
+
+
+        [
+            "service_name" => "Web Design",
+            "project_cost" => 0,
+            "task" => "Web Creation",
+            "parent" => 10,
+            "calculate" => 1
+        ],
+
+
+        [
+            "service_name" => "Physical to Digital",
+            "project_cost" => 99,
+            "task" => "Conversion",
+            "parent" => 11,
+            "calculate" => 0
+        ],
+
+
+        [
+            "service_name" => "Physical to eBook (Depends on the quote)",
+            "project_cost" => 99,
+            "task" => "Conversion",
+            "parent" => 11,
+            "calculate" => 0
+        ],
     ];
 
     public function __construct()
@@ -105,7 +331,7 @@ class OrderController extends Controller
         //     $join->on("customers.id", "=", "orders.id");
         // })->where('orders.id',$id)->get();
 
-        $order = Order::join('service_packages','orders.Package_id','=','service_packages.id')
+        $order = Order::join('service_packages', 'orders.Package_id', '=', 'service_packages.id')
             ->where('customer_id', $id)
             ->get();
 
@@ -114,7 +340,7 @@ class OrderController extends Controller
 
         $packages = service_package::all();
 
-       
+
 
         //$save = $order->sales_rep;
         return view('order', ['order' => $order, 'customer' => $customer, 'packages' => $packages])->with("id", $id);
@@ -259,12 +485,57 @@ class OrderController extends Controller
         $book->total_project_cost = request()->input('project_cost');
         $book->save();
 
-        if (request()->input('Packages') == 1) {
-            $this->createInclusions($this->inclusions_array, $book, 1, $request);
-        } else if (request()->input('Packages') == 2) {
-            $this->createInclusions($this->inclusions_array, $book, 2, $request);
+        $chosen_num = 0;
+        switch (request()->input('Packages')) {
+            case 1:
+                $chosen_num = 1;
+                break;
+
+            case 2:
+                $chosen_num = 2;
+                break;
+
+            case 3:
+                $chosen_num = 3;
+                break;
+
+            case 4:
+                $chosen_num = 4;
+                break;
+
+            case 5:
+                $chosen_num = 5;
+                break;
+
+            case 6:
+                $chosen_num = 6;
+                break;
+
+            case 7:
+                $chosen_num = 7;
+                break;
+            case 8:
+                $chosen_num = 8;
+                break;
+
+            case 9:
+                $chosen_num = 9;
+                break;
+
+            case 10:
+                $chosen_num = 10;
+                break;
+
+            case 11:
+                $chosen_num = 11;
+                break;
+
+            default:
+                # code...
+                break;
         }
 
+        $this->createInclusions($this->inclusions_array, $book, $chosen_num, $request);
         return back();
     }
 
