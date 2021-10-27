@@ -86,7 +86,7 @@
                        
                         <div style="width:100%;" class="table-wrapper-scroll-x my-custom-scrollbar">
                             <table class="table table-stripped">
-                                <thead>
+                                <thead class="text-center">
                                         <th>Service Inclusions</th>
                                         <th>Project Cost</th>
                                         <th>Layout</th>
@@ -101,11 +101,11 @@
                                 <tbody>
                                    
                                        @foreach ($book_information as $item)
-                                       <tr data-id="{{$item->id}}" class="text-center">
+                                       <tr data-id="{{$item->id}}" class="text-center align-center justify-content-center">
                                            <td>  {{ $item->service_name}} </td>
                                            <td>  {{ $item->project_cost}} </td>
                                            <td>
-                                               <select class="form-control" name="Layout-{{$item->serID}}" id="">
+                                               <select class="form-control" style="width:115%" name="item[{{$item->serID}}][layout]" id="">
                                                    <option selected value="{{ $item->layout}} ">{{ $item->layout}} </option>
                                                     <option value="Reflowable">Reflowable</option>
                                                     <option value="Fixed Virtual">Fixed Virtual</option>
@@ -113,16 +113,19 @@
                                                     <option value="Combination">Combination</option>
                                                 </select>
                                            </td>
-                                           <td>  <input type="text" value="{{ $item->page_count}}" class="form-control" name="page_count-{{$item->serID}}" id=""> </td>
+                                           <td>  <input type="text" value="{{ $item->page_count}}" style="margin-left:25%" class="form-control justify-content-center col-6" name="item[{{$item->serID}}][page_count]" id=""> </td>
                                            <td> 
-                                                <select class="form-control" name="project_classification-{{$item->serID}}" id="">
+                                                <select class="form-control" name="item[{{$item->serID}}][project_classification]" id="">
                                                     <option selected value=" {{ $item->project_classification}}"> {{ $item->project_classification}} </option>
-                                                    <option value="">Data</option>
+                                                    <option value="Simple">Simple</option>
+                                                    <option value="Moderate">Moderate</option>
+                                                    <option value="Complex">Complex</option>
+                                                    <option value="Difficult">Difficult</option>
                                                 </select>
                                           </td>
-                                           <td> <input type="text" name="turnaround_time-{{$item->serID}}" value="{{ $item->turnaround_time}}" id="" class="form-control">   </td>
+                                           <td> <input type="text" name="item[{{$item->serID}}][turnaround_time]" value="{{ $item->turnaround_time}}" id="" style="margin-left:25%" class="form-control col-6">   </td>
                                            <td>  
-                                            <select class="form-control" name="status-{{$item->serID}}" id="">
+                                            <select class="form-control" style="width:136%;margin-left:-28%;" name="item[{{$item->serID}}][status]" id="">
                                                 <option selected value="  {{ $item->status}}">  {{ $item->status}} </option>
                                                 <option value="Completed">Completed</option>
                                                 <option value="On-going">On-going</option>
@@ -131,15 +134,14 @@
                                               
                                           </td>
                                            <td>  {{ $item->task}} </td>
-                                           <td> <input type="date" name="commitment_date-{{$item->serID}}" value="{{ $item->commitment_date}} " id="" class="form-control"> </td>
-                                         
+                                           <td> <input type="date" name="item[{{$item->serID}}][commitment_date]" value="{{ $item->commitment_date}}" style="margin-left:5%" id="" class="form-control col-11"> </td>
                                        </tr>
                                        @endforeach
                                    
                                 </tbody>
                             </table>
                             <table class="table table-stripped">
-                                <thead>
+                                <thead class="text-center">
                                         <th>Service Inclusions</th>
                                         <th>Owner</th>
                                         <th>Job Cost</th>
@@ -154,26 +156,25 @@
                                    
                                        @foreach ($book_information as $item)
                                        <tr data-id="{{$item->id}}" class="text-center">
-                                        <td><input type="text"  name="incID[]" value="{{$item->serID}}" id="" class="form-control"></td>
                                         <td>  {{ $item->service_name}} </td>    
                                             <td> 
-                                                <select name="owner-{{ $item->serID}}" id="" class="form-control">
+                                                <select name="item[{{$item->serID}}][owner]" id="" style="width:190%;margin-left:-20%" class="form-control">
                                                     <option value="{{ $item->owner}} ">{{ $item->owner}} </option>
-                                                    <option value="data ">data </option>
+                                                    <option value="data ">data</option>
                                                 </select> 
                                             </td>
-                                           <td> <input type="text" name="job_cost-{{ $item->serID}}" value="{{ $item->job_cost}} " id="" class="form-control"> </td>
-                                           <td> <input type="date" name="date_assigned-{{ $item->serID}}" valuie="{{ $item->date_assigned}}" id="" class="form-control">   </td>
-                                           <td> <input type="date" name="date_completed-{{ $item->serID}}" valuie="  {{ $item->date_completed}}" id="" class="form-control">   </td>
+                                           <td> <input type="text" name="item[{{$item->serID}}][job_cost]" style="margin-left:40%" value="{{ $item->job_cost}} " id="" class="form-control col-8"> </td>
+                                           <td> <input type="date" name="item[{{$item->serID}}][date_assigned]" value="{{ $item->date_assigned}}" style="margin-left:-5%" id="" class="form-control col-11">   </td>
+                                           <td> <input type="date" name="item[{{$item->serID}}][date_completed]" value="{{ $item->date_completed}}" style="margin-left:-5%" id="" class="form-control col-11">   </td>
                                            <td>
-                                               <select name="qa" id="" class="form-control">
+                                               <select name="item[{{$item->serID}}][quality_assurance]" id="" style="margin-left:-30%;width:180%" class="form-control">
                                                    <option selected value=" {{ $item->quality_assurance}} "> {{ $item->quality_assurance}} </option>
-                                                   <option value=" {{ $item->quality_assurance}} ">data </option>
+                                                   <option value="King Fai">KingFai</option>
                                                </select> 
                                             </td>
-                                           <td> <input type="text" name="quality_score-{{ $item->serID}}" value="{{ $item->quality_score}} " id="" class="form-control"></td>
-                                           <td> <input type="text" name="uid-{{ $item->serID}}" value="{{ $item->uid}}" id="" class="form-control"></td>
-                                           <td> <input type="text" name="project_link[]" value="{{ $item->project_link}} " id="" class="form-control"> </td>
+                                           <td> <input type="text" name="item[{{$item->serID}}][quality_score]" value="{{ $item->quality_score}} " style="margin-left:25px;width:50%"id="" class="form-control"></td>
+                                           <td> <input type="text" name="item[{{$item->serID}}][uid]" value="{{ $item->uid}}" id="" class="form-control"></td>
+                                           <td> <input type="text" name="item[{{$item->serID}}][project_link]" value="{{ $item->project_link}} " id="" class="form-control"> </td>
                                        </tr>
                                        @endforeach
                                    
@@ -205,14 +206,44 @@
 
         $('#customerinput_update').on('click', function(e) {
             e.preventDefault()
-            let values = {},
-                group =[]
+        
+           let formInputs = $('#customerinput_form').serializeArray()
 
-
-            $('#customerinput_form').find('table tbody tr').each(function(i, el) {
-                console.log($(el).find(':input'))
+            let result =  {items:[]};
+            formInputs.forEach(function(input){
+                nameArray = input.name.split(/[[\]]/);
+                item = nameArray[1];
+                prop = nameArray[3];
+                if(typeof result.items[item] !== 'object'){
+                    result.items[item]={};
+                }
+                
+                if(typeof result.items[item][prop] !== 'undefined'){
+                //Consistency check the name attribute
+                    console.log('Warning duplicate "name" property =' + input.name);
+                }
+                
+                if(prop) {
+                    result.items[item][prop]=input.value;
+                }
             });
 
+            // $('#customerinput_form').find('table tbody tr').each(function() {
+            //     let service_id = $(this).data('id');
+            
+            // })
+
+                
+            result.items.map((k, i) => {
+                   if(i > 0) {
+                    k['service_id'] = i
+                   }
+            })
+            console.log(result.items)
+            $.post('/update/service/inclusions', {item: result.items,  _token: "{{ csrf_token() }}"},function(response) {
+                        // Log the response to the console
+                console.log("Response: "+response);
+            });
         })  
 
      

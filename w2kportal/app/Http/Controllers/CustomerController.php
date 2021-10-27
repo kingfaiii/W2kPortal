@@ -47,17 +47,17 @@ class CustomerController extends Controller
 
     public function update(request $request)
     {
-
-
-        foreach ($request->incID as $key => $value) {
-            $id = request()->input('incID[]');
-            $data = array(
-                'project_link' => $request->project_link[$key],
-
-            );
-            service_inclusion::where('id', $id)
-                ->update($data);
-            return back();
+        $query = $request->all();
+        if (!empty($query['item'])) {
+            foreach ($query['item'] as $key => $inclusions) {
+                if (!empty($inclusions)) {
+                    $service = service_inclusion::where('id', $inclusions['service_id']);
+                    unset($inclusions['service_id']);
+                    $service->update($inclusions);
+                }
+            }
         }
+
+        return back();
     }
 }

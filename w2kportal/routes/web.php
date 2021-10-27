@@ -45,4 +45,6 @@ Route::group(['middleware' => 'prevent-back'], function () {
     Route::post('/order/convert', [App\Http\Controllers\OrderController::class, 'ConvertCustomer'])->name('convert');
     Route::get('/list/delete/{id}', [App\Http\Controllers\HomeController::class, 'Destroy'])->name('DestroyCustomer');
     Route::get('/customer/query', [App\Http\Controllers\CustomerlistController::class, 'queryCustomerList']);
+
+    Route::post('/update/service/inclusions', [App\Http\Controllers\CustomerController::class, 'update'])->name('updateInclusions');
 });
