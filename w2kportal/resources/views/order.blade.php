@@ -243,6 +243,7 @@
           @endforeach
           <input type="text" required name="customer_book" value="" placeholder="Book Title" id="" class="form-control">
           <input type="text" required name="transaction_id" value="" placeholder="Transaction ID" id="" class="form-control mb-5">
+          <input type="text" name="project_cost" placeholder="Total Project Cost" id="" class="form-control">
           <select name="Packages" class="form-control" id="">
             @foreach ($packages as $item)
           

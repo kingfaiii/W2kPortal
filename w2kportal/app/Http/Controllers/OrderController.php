@@ -17,18 +17,71 @@ class OrderController extends Controller
     //
     private $inclusions_array = [
         [
-            "service_name" => "interior formatting",
+            "service_name" => "Interior Formatting",
+            "project_cost" => 150,
+            "task" => "Interior Formatting",
+            "parent" => 1,
+            "calculate" => 0
         ],
 
         [
-            "service_name" => "premium book cover art",
+            "service_name" => "Premium Book Cover Art",
+            "project_cost" => 100,
+            "task" => "Art Work - Cover",
+            "parent" => 1,
+            "calculate" => 0
         ],
 
         [
-            "service_name" => "e-book conversion",
+            "service_name" => "Ebook Conversion",
+            "project_cost" => 0,
+            "task" => "Conversion",
+            "parent" => 1,
+            "calculate" => 1
+        ],
 
-        ]
+        [
+            "service_name" => "Amazon Ebook Upload",
+            "project_cost" => 50,
+            "task" => "eBook Upload",
+            "parent" => 1,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Amazon Print Upload",
+            "project_cost" => "",
+            "task" => "Print Upload",
+            "parent" => 1,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Facebook Banner",
+            "project_cost" => "",
+            "task" => "Art Work - FB Cover",
+            "parent" => 1,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Facebook Page Creation",
+            "project_cost" => 50,
+            "task" => "FB Page Creation",
+            "parent" => 1,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "sdsd",
+            "project_cost" => 50,
+            "task" => "FB Page Creation",
+            "parent" => 2,
+            "calculate" => 0
+        ],
+
     ];
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -191,7 +244,7 @@ class OrderController extends Controller
             $convert = new won_customer;
             $convert->package_id = request()->input('Packages');
             $convert->customer_id = request()->input('customer_id');
-            $convert->status = 'won';
+            $convert->status = 'Won';
             $convert->save();
         }
 
@@ -200,18 +253,48 @@ class OrderController extends Controller
         $book->book_title = request()->input('customer_book');
         $book->transaction_ID = request()->input('transaction_id');
         $book->won_id = request()->input('customer_id');
+        $book->total_project_cost = request()->input('project_cost');
+
         $book->save();
 
         if (request()->input('Packages') == 1) {
+            $this->createInclusions($this->inclusions_array, $book, 1, $request);
+        } else if (request()->input('Packages') == 2) {
+            $this->createInclusions($this->inclusions_array, $book, 2, $request);
+        }
 
-            foreach ($this->inclusions_array as $key => $inclusion) {
+        return back();
+    }
+
+
+    private function createInclusions($arr_inclusions, $book, $parent_id, request $request)
+    {
+        foreach ($arr_inclusions as $key => $inclusion) {
+            if ($inclusion['parent'] === $parent_id) {
+                if ($inclusion['calculate'] === 1) {
+                    $inclusion['project_cost'] = $this->caculateInclusionCost($arr_inclusions, $request, $parent_id);
+                }
+                unset($inclusion['parent']);
+                unset($inclusion['calculate']);
                 $inclusion['won_id'] = request()->input('customer_id');
                 $inclusion['package_id'] = request()->input('Packages');
                 $inclusion['book_id'] = $book['id'];
                 service_inclusion::insert($inclusion);
             }
         }
+    }
 
-        return back();
+
+    private function caculateInclusionCost($item, request $request, $parent_id)
+    {
+        $total = 0;
+        $total_cost = request()->input('project_cost');
+        foreach ($item as $key => $inclusion) {
+            if ($inclusion['project_cost'] > 0  && $inclusion['parent'] === $parent_id) {
+                $total_cost =  $total_cost -  $inclusion['project_cost'];
+            }
+        }
+
+        return $total_cost;
     }
 }

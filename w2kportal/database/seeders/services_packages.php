@@ -26,7 +26,7 @@ class services_packages extends Seeder
     {
         return [
             ["package_name" => "eBook & Deluxe Package"],
-            ["package_name" => "Ordinary Package"],
+            ["package_name" => "Print Basic Package"],
             ["package_name" => "Super Package"],
         ];
     }
