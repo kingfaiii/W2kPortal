@@ -49,4 +49,5 @@ Route::group(['middleware' => 'prevent-back'], function () {
     Route::post('/update/service/inclusions', [App\Http\Controllers\CustomerController::class, 'update'])->name('updateInclusions');
     Route::post('/owner/add', [App\Http\Controllers\OwnerController::class, 'create'])->name('OwnerAdd');
     Route::post('/owner/Update/{id}', [App\Http\Controllers\OwnerController::class, 'update'])->name('OwnerUpdate');
+    Route::get('/owner/Delete/{id}', [App\Http\Controllers\OwnerController::class, 'destroy'])->name('OwnerDelete');
 });

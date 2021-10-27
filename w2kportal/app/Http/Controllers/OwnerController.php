@@ -117,8 +117,11 @@ class OwnerController extends Controller
      * @param  \App\Models\owner  $owner
      * @return \Illuminate\Http\Response
      */
-    public function destroy(owner $owner)
+    public function destroy(owner $owner, $id)
     {
         //
+        $order = Owner::find($id);
+        $order->delete();
+        return back();
     }
 }
