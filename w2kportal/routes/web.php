@@ -49,4 +49,8 @@ Route::group(['middleware' => 'prevent-back'], function () {
     Route::post('/update/service/inclusions', [App\Http\Controllers\CustomerController::class, 'update'])->name('updateInclusions');
     Route::post('/owner/add', [App\Http\Controllers\OwnerController::class, 'create'])->name('OwnerAdd');
     Route::post('/owner/Update/{id}', [App\Http\Controllers\OwnerController::class, 'update'])->name('OwnerUpdate');
+
+    Route::get('/qualityassurance', [App\Http\Controllers\QualityAssuranceController::class, 'index'])->name('qualityassurance');
+    Route::post('/qualityassurance/add', [App\Http\Controllers\QualityAssuranceController::class, 'create'])->name('qaCreate');
+    Route::post('/qualityassurance/update/{id}', [App\Http\Controllers\QualityAssuranceController::class, 'update'])->name('qaUpdate');
 });
