@@ -107,7 +107,10 @@
                                            <td>
                                                <select class="form-control" name="Layout-{{$item->serID}}" id="">
                                                    <option selected value="{{ $item->layout}} ">{{ $item->layout}} </option>
-                                                    <option value="">Data</option>
+                                                    <option value="Reflowable">Reflowable</option>
+                                                    <option value="Fixed Virtual">Fixed Virtual</option>
+                                                    <option value="ixed Hidden">Fixed Hidden</option>
+                                                    <option value="Combination">Combination</option>
                                                 </select>
                                            </td>
                                            <td>  <input type="text" value="{{ $item->page_count}}" class="form-control" name="page_count-{{$item->serID}}" id=""> </td>

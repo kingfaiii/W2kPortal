@@ -100,7 +100,13 @@
                   <td class="pt-3">
                     {{ $orders->remarks }}
                   </td>
-                  <td>{{ $orders->customer_book }}</td>
+                  <td>{{ $orders->customer_book }}<br>
+               
+                    <small>
+                      ({{$orders->package_name}})
+                    </small>
+                   
+                  </td>
                   @if($orders->sales_rep == Auth::user()->name)
                   <td>
                     <div class="row">

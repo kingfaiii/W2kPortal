@@ -105,14 +105,16 @@ class OrderController extends Controller
         //     $join->on("customers.id", "=", "orders.id");
         // })->where('orders.id',$id)->get();
 
-        $order = Order::all()
-            ->where('customer_id', $id);
+        $order = Order::join('service_packages','orders.Package_id','=','service_packages.id')
+            ->where('customer_id', $id)
+            ->get();
 
         $customer = Customer::all()
             ->where('id', $id);
 
         $packages = service_package::all();
 
+       
 
         //$save = $order->sales_rep;
         return view('order', ['order' => $order, 'customer' => $customer, 'packages' => $packages])->with("id", $id);
@@ -234,6 +236,7 @@ class OrderController extends Controller
         $activity->sales_rep = request()->input('sales_rep');
         $activity->customer_book = request()->input('customer_book');
         $activity->remarks = "Won";
+        $activity->Package_id = request()->input('Packages');
         $activity->save();
 
 
@@ -254,7 +257,6 @@ class OrderController extends Controller
         $book->transaction_ID = request()->input('transaction_id');
         $book->won_id = request()->input('customer_id');
         $book->total_project_cost = request()->input('project_cost');
-
         $book->save();
 
         if (request()->input('Packages') == 1) {

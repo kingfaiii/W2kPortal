@@ -25,9 +25,17 @@ class services_packages extends Seeder
     public function generatePackage()
     {
         return [
-            ["package_name" => "eBook & Deluxe Package"],
+            ["package_name" => "eBook & Print Deluxe Package"],
+            ["package_name" => "eBook Basic Package"],
+            ["package_name" => "eBook Value Package"],
+            ["package_name" => "eBook Deluxe Package"],
             ["package_name" => "Print Basic Package"],
-            ["package_name" => "Super Package"],
+            ["package_name" => "Print Value Package"],
+            ["package_name" => "Print Deluxe Package"],
+            ["package_name" => "eBook & Print Basic Package"],
+            ["package_name" => "eBook & Print Value Package"],
+            ["package_name" => "Website Development"],
+            ["package_name" => "Physical To Digital/Ebook"],
         ];
     }
 }
