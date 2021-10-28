@@ -92,7 +92,7 @@
               <tbody>
                 @foreach ($order as $orders)
                 <tr class="text-center">
-                  <td class="pt-3">{{ $orders->updated_at }}</td>
+                  <td class="pt-3">{{ $orders->orderupdated }}</td>
                   <td class="pt-3">{{ $orders->user_id }}</td>
                   <td class="pt-3">
                     {{$orders->sales_rep}}
@@ -101,25 +101,31 @@
                     {{ $orders->remarks }}
                   </td>
                   <td>{{ $orders->customer_book }}<br>
-               
+                    @if ($orders->PackID === null)
+                    
+                    @else
                     <small>
                       ({{$orders->package_name}})
                     </small>
-                   
+                    @endif
                   </td>
                   @if($orders->sales_rep == Auth::user()->name)
-                  <td>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <button type="button" class="btn btn-success col-12" data-toggle="modal" data-target="#activity{{ $orders->id }}">
-                          Edit
-                        </button>
-                      </div>
-                      <div class="col-md-6">
-                        <a href="{{ route('DestroyActivity',[$orders->id]) }}" class="btn btn-danger delete-confirm col-12">Delete</a>
-                      </div>
-                    </div>
-                  </td>
+                      @if ($orders->PackID === null)
+                      <td>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <button type="button" class="btn btn-success col-12" data-toggle="modal" data-target="#activity{{ $orders->ActivityID }}">
+                              Edit
+                            </button>
+                          </div>
+                          <div class="col-md-6">
+                            <a href="{{ route('DestroyActivity',[$orders->ActivityID]) }}" class="btn btn-danger delete-confirm col-12">Delete</a>
+                          </div>
+                        </div>
+                      </td>
+                      @else
+
+                      @endif
                   @endif
                 </tr>
                 @endforeach
@@ -172,7 +178,7 @@
           @endforeach
           <input type="text" name="customer_book" value="" placeholder="Book Title" id="" class="form-control mb-5">
           <p class="text-white">Choose Activity:</p>
-          <input type="text" name="sales_rep" value="{{ Auth::user()->name; }}" id="" class="form-control">
+          <input type="text" hidden name="sales_rep" value="{{ Auth::user()->name; }}" id="" class="form-control">
           <select name="remarks" id="" class="form-control col-12" Value="Reply to Customer">
             <option value="Reply to Customer">Reply to Customer</option>
             <option value="Quote Sent">Quote Sent</option>
@@ -194,13 +200,13 @@
 
 {{-- Update Activity --}}
 @foreach ($order as $row)
-<form action="{{ route('UpdateActivity',[$row->id]) }}" Method="POST">
+<form action="{{ route('UpdateActivity',[$row->ActivityID]) }}" Method="POST">
   @csrf
-  <div class="modal fade" id="activity{{ $row->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal fade" id="activity{{ $row->ActivityID }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content bg-dark">
         <div class="modal-header text-center">
-          <h5 class="modal-title text-white" id="exampleModalLongTitle">Add Details</h5>
+          <h5 class="modal-title text-white" id="exampleModalLongTitle">Update Details</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span class="text-white" aria-hidden="true">&times;</span>
           </button>
@@ -237,7 +243,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content bg-dark">
         <div class="modal-header text-center">
-          <h5 class="modal-title text-white" id="exampleModalLongTitle">Add Details</h5>
+          <h5 class="modal-title text-white" id="exampleModalLongTitle">Add Convert Details</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span class="text-white" aria-hidden="true">&times;</span>
           </button>

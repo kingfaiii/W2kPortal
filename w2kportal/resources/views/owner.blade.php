@@ -1,60 +1,51 @@
+@extends('layouts.table')
 @extends('layouts.app')
 
 @section('content')
 @include('sweet::alert')   
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header bg-secondary">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <h3 class="text-left text-white font-weight-bold">
-                                    Owner's List
-                                </h3>
-                            </div>
-                            <div class="col-md-2">
-                                <a type="button" href="#" class="btn btn-success col-5" data-toggle="modal" data-target="#exampleModalCenter">ADD</a>
-                            </div>
-                        </div>
+              @section('header')
+                    <div class="col-md-10">
+                      <h3 class="text-left text-white font-weight-bold">
+                          Owner's List
+                      </h3>
                     </div>
-                    <div class="card-body">
-                            <table class="table table-stripped">
-                                <thead id="">
-                                    <tr class="text-center">
-                                        <th>ID #</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Date Created</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($owner as $item)
-                                    <tr class="text-center">
-                                        <td>{{ $item->id }}</td>
-                                        <td>{{ $item->owner_fname }} {{ $item->owner_lname }}</td>
-                                        <td>{{ $item->owner_email }}</td>
-                                        <td>{{ $item->created_at }}</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <a type="button" href="#" class="btn btn-success col-12" data-toggle="modal" data-target="#exampleModalCenter{{ $item->id }}">Edit</a>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <a href="{{ route('OwnerDelete',[$item->id]) }}" class="btn btn-danger col-12">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                    <div class="col-md-2">
+                      <a type="button" href="#" class="btn btn-success col-5" data-toggle="modal" data-target="#exampleModalCenter">ADD</a>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
+              @endsection
+              @section('table')
+              <table class="table table-stripped">
+                <thead id="">
+                    <tr class="text-center">
+                        <th>ID #</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Date Created</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($owner as $item)
+                    <tr class="text-center">
+                        <td>{{ $item->id }}</td>
+                        <td>{{ $item->owner_fname }} {{ $item->owner_lname }}</td>
+                        <td>{{ $item->owner_email }}</td>
+                        <td>{{ $item->created_at }}</td>
+                        <td>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a type="button" href="#" class="btn btn-success col-12" data-toggle="modal" data-target="#exampleModalCenter{{ $item->id }}">Edit</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{{ route('OwnerDelete',[$item->id]) }}" class="btn btn-danger col-12">Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+              @endsection
     {{-- Add Owner Modal --}}
     <form action="{{ route('OwnerAdd') }}" Method="POST">
         @csrf

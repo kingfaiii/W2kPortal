@@ -1,109 +1,108 @@
+@extends('layouts.table')
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row ">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header h3 font-weight-bold">
+
+                @section('header')
+                <div class="col-md-10 pl-5">
+                    <h3 class="text-left text-white font-weight-bold">
+                        {{ __('List of Customers') }}
+                    </h3>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary col-12" id="customers_refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
+                </div>
+               
+                @endsection
+                @section('otherforms')
+                <form action="" id="customerForm_values" class="pl-3 mt-2">
                     <div class="row">
-                        <div class="col-md-8 pl-5">
-                            {{ __('List of Customers') }}
+                        <div class="col">
+                            <label class="text-white"for="">Date From: </label>
+                            <input type="date" class="form-control" id="customers_datefrom">
                         </div>
 
+                        <div class="col">
+                            <label class="text-white" for="">Date To: </label>
+                            <input type="date" class="form-control" id="customers_dateend">
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <label class="text-white" for="">Sort List: </label>
+                            <select class="custom-select" name="" id="customer_sort">
+                                <option value="" selected>-- Select Option ---</option>
+                                <option value="customer_fname">Firstname</option>
+                                <option value="customer_lname">Lastname</option>
+                                <option value="created_at">Date Created</option>
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="text-white" for="">Search List:</label>
+                                <input type="text" id="search_customers" class="form-control" placeholder="Search...">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                @endsection
+
+                @section('table')
+                @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
                 </div>
+                @endif
 
+                <div class="container">
+                   
 
+                    <div class="row">
+                       
+                        <div class="col-md-12">
 
-                <div class="card-body">
-                    @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                    @endif
+                            <table id="customerlist_table" class="table table-stripped">
+                                <thead id="customerlist_header">
+                                    <tr class="text-center">
+                                        <th>ID #</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Remarks</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
 
-                    <div class="container">
-                        <form action="" id="customerForm_values">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="">Date From: </label>
-                                    <input type="date" class="form-control" id="customers_datefrom">
-                                </div>
-
-                                <div class="col">
-                                    <label for="">Date To: </label>
-                                    <input type="date" class="form-control" id="customers_dateend">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="">Sort List: </label>
-                                    <select class="custom-select" name="" id="customer_sort">
-                                        <option value="" selected>-- Select Option ---</option>
-                                        <option value="customer_fname">Firstname</option>
-                                        <option value="customer_lname">Lastname</option>
-                                        <option value="created_at">Date Created</option>
-                                    </select>
-                                </div>
-
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="">Search List:</label>
-                                        <input type="text" id="search_customers" class="form-control" placeholder="">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-
-                        <div class="row">
-                            <button class="btn btn-primary" id="customers_refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
-                            <div class="col-md-12">
-
-                                <table id="customerlist_table" class="table table-stripped">
-                                    <thead id="customerlist_header">
-                                        <tr class="text-center">
-                                            <th>ID #</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Status</th>
-                                            <th>Remarks</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody id="customerlist_body">
-                                        @foreach ($home as $row)
-                                        <tr class="text-center">
-                                            <td>W2k-{{ $row->id }}</td>
-                                            <td>{{ $row->customer_fname }} {{$row->customer_lname}}</td>
-                                            <td>{{ $row->customer_email }}</td>
-                                            <td>{{ $row->customer_status }}</td>
-                                            <td>{{$row->remarks ? $row->remarks : 'No Remarks' }}</td>
-                                            <td>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <a href="{{route('order',[$row->id])}}" class="btn btn-success col-12">Edit</a>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <button data-id="{{$row->id}}" class="btn btn-danger col-12 delete-confirm">Delete</button>
-                                                    </div>
+                                <tbody id="customerlist_body">
+                                    @foreach ($home as $row)
+                                    <tr class="text-center">
+                                        <td>W2k-{{ $row->id }}</td>
+                                        <td>{{ $row->customer_fname }} {{$row->customer_lname}}</td>
+                                        <td>{{ $row->customer_email }}</td>
+                                        <td>{{ $row->customer_status }}</td>
+                                        <td>{{$row->remarks ? $row->remarks : 'No Remarks' }}</td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <a href="{{route('order',[$row->id])}}" class="btn btn-success col-12">Edit</a>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
 
-                                </table>
-                            </div>
+                                                <div class="col-md-6">
+                                                    <button data-id="{{$row->id}}" class="btn btn-danger col-12 delete-confirm">Delete</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+                @endsection
+         
 <script>
     $(document).ready(function() {
 

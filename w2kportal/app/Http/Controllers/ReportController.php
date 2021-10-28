@@ -41,6 +41,7 @@ class ReportController extends Controller
             ->join('orders', 'users.id', '=', 'orders.user_id')
             ->join('customers', 'orders.customer_id', '=', 'customers.id')
             ->select('customers.customer_fname', 'customers.customer_lname', 'customers.customer_email', 'orders.remarks', 'orders.created_at')
+            ->where('orders.user_id','=',$id)
             ->when(!empty($query['date_from']) && !empty($query['date_to']), function ($q) use ($query) {
                 return $q->whereBetween('orders.created_at', [$query['date_from'] . '%', $query['date_to'] . '%']);
             });

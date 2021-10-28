@@ -60,6 +60,13 @@
                                 </li>
                             @endif
                         @else
+                                @if (Route::is('list'))
+                                
+                                @else
+                                <li class="nav-item">
+                                    <a href="{{ route('list') }}" class="nav-link">List</a>
+                                </li>
+                                @endif
                                 <li class="nav-item">
                                     <a href="{{ route('WonCustomers') }}" class="nav-link">Won</a>
                                 </li>
@@ -74,7 +81,7 @@
                                     <a href="{{ route('owner') }}" class="dropdown-item">
                                         Owner
                                     </a>
-                                    <a href="" class="dropdown-item">
+                                    <a href="{{ route('qualityassurance') }}" class="dropdown-item">
                                         QA
                                     </a>
                                 </div>

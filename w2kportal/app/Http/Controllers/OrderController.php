@@ -331,7 +331,8 @@ class OrderController extends Controller
         //     $join->on("customers.id", "=", "orders.id");
         // })->where('orders.id',$id)->get();
 
-        $order = Order::join('service_packages', 'orders.Package_id', '=', 'service_packages.id')
+        $order = Order::leftJoin('service_packages', 'orders.Package_id', '=', 'service_packages.id')
+            ->select('orders.*','service_packages.*','orders.updated_at AS orderupdated', 'orders.Package_id AS PackID' ,'orders.id AS ActivityID')
             ->where('customer_id', $id)
             ->get();
 
@@ -340,6 +341,7 @@ class OrderController extends Controller
 
         $packages = service_package::all();
 
+        
 
 
         //$save = $order->sales_rep;

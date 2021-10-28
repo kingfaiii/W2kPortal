@@ -1,90 +1,73 @@
+@extends('layouts.table')
 @extends('layouts.app')
 
 @section('content')
 
-<div class="container">
-    <div class="row ">
-        <div class="col-md-12">
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="row h3 font-weight-bold">
-                        <div class="col pl-5">
-
-                            @foreach ($user as $item)
-                            {{ $item->name }} Report Details
-                            @endforeach
-                        </div>
-                        <div class="col" id="reports_row_count">
-                            Number of Rows: {{$count}}
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                    @endif
-
-
-                    <div class=" h4 font-weight-bold">
-                        <form action="" class="row" id="orders_form">
-                            <div class="col-4">
-                                <div class=" mr-4">
-                                    <label for="">Date From: </label>
-                                    <input type="date" class="form-control" id="orders_datefrom">
-                                </div>
-                            </div>
-
-                            <div class="col-4">
-                                <div class="">
-                                    <label for="">Date To: </label>
-                                    <input type="date" class="form-control" id="orders_dateend">
-                                </div>
-                            </div>
-
-                            <div class="col-4 text-center pt-4">
-                                <button class="btn btn-primary" id="reports_refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table id="reports_table" class="table table-stripped">
-                                    <thead id="reports_header">
-                                        <tr class="text-center">
-                                            <th>Customer Name</th>
-                                            <th>Email</th>
-                                            <th>Remarks</th>
-                                            <th>Activity Date & Time</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="reports_body">
-                                        @foreach ($home as $row)
-                                        <tr class="text-center">
-                                            <td>{{ $row->customer_fname }} {{$row->customer_lname}}</td>
-                                            <td>{{ $row->customer_email}}</td>
-                                            <td>{{ $row->remarks }}</td>
-                                            <td>{{ $row->created_at }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            @section('header')
+            <div class="col-3">
+                <h3 class="text-white font-weight-bold">
+                    @foreach ($user as $item)
+                    {{ $item->name }} Report Details
+                    @endforeach
+                </h3>
+                <small  id="reports_row_count" class="text-white h6">Number of Activities: <span class="font-weight-bolder">{{$count}}<span></small>
             </div>
+            <div class="col-9">
+                <form action="" class="row" id="orders_form">
+                    <div class="col-5">
+                        <div class="">
+                            <label class="text-white" for="">Date From: </label>
+                            <input type="date" class="form-control" id="orders_datefrom">
+                        </div>
+                    </div>
+    
+                    <div class="col-5">
+                        <div class="">
+                            <label class="text-white" for="">Date To: </label>
+                            <input type="date" class="form-control" id="orders_dateend">
+                        </div>
+                    </div>
+                    <div class="col-2 mt-4">
+                        <button class="btn btn-primary mt-2 col-12" id="reports_refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
+                    </div>
+                </form>
+            </div>
+            @endsection
 
-        </div>
-    </div>
-</div>
+            @section('table')
+            @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+            </div>
+            @endif
+
+            <table id="reports_table" class="table table-stripped">
+                <thead id="reports_header">
+                    <tr class="text-center">
+                        <th>Customer Name</th>
+                        <th>Email</th>
+                        <th>Remarks</th>
+                        <th>Activity Date & Time</th>
+                    </tr>
+                </thead>
+                <tbody id="reports_body">
+                    @foreach ($home as $row)
+                    <tr class="text-center">
+                        <td>{{ $row->customer_fname }} {{$row->customer_lname}}</td>
+                        <td>{{ $row->customer_email}}</td>
+                        <td>{{ $row->remarks }}</td>
+                        <td>{{ $row->created_at }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+
+            </table>
+            @endsection
+
+            @section('otherforms')
+            
+            @endsection
+            
 <script>
     $(document).ready(function() {
         let baseURL = document.URL
