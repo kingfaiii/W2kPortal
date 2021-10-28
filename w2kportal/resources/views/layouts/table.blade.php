@@ -1,5 +1,5 @@
     
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -10,8 +10,14 @@
                             @yield('otherforms')
                     </div>
                     <div class="card-body">
+                        @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                        @endif
                             @yield('table')
                     </div>
+                            @yield('footer')
                 </div>
             </div>
         </div>

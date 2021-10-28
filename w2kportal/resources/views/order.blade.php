@@ -16,8 +16,8 @@
       </div>
       <div class="col-md-10 bg-light mt-5">
         <div class="card bg-light">
-          <div class="card-header">
-            <h1 class="text-dark font-weight-bolder">Customer Information</h1>
+          <div class="card-header bg-secondary">
+            <h1 class="text-white font-weight-bolder">Customer Information</h1>
           </div>
           <div class="card-body">
             <div class="form-group row">
@@ -110,7 +110,7 @@
                     @endif
                   </td>
                   @if($orders->sales_rep == Auth::user()->name)
-                      @if ($orders->PackID === null)
+                      @if ($orders->PackID == null)
                       <td>
                         <div class="row">
                           <div class="col-md-6">
@@ -134,7 +134,7 @@
           </div>
 
         </div>
-        <div class="card-footer">
+        <div class="card-footer bg-secondary">
           <div class="row">
             <div class="col-md-4">
               <input type="submit" value="Update Record" class="btn col-12 btn-success">

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\won_customer;
 use App\Models\book;
+use App\Models\owner;
+use App\Models\QualityAssurance;
 use App\Models\service_package;
 use App\Models\service_inclusion;
 use Illuminate\Http\Request;
@@ -29,7 +31,7 @@ class CustomerController extends Controller
             ->select(
 
                 'customers.id',
-                'customers.customer_lname',
+                'customers.customer_fname',
                 'customers.customer_lname',
                 'books.transaction_ID',
                 'books.book_title',
@@ -42,7 +44,9 @@ class CustomerController extends Controller
             // ->where('won_customers.status', '=', 'won')
             ->where('books.id', '=', $id);
 
-        return View('customerinput', ['customer_information' =>  $customer_information->get(), 'book_information' => $book_information->get()]);
+            $owner = owner::all();
+            $qa = QualityAssurance::all();
+        return View('customerinput', ['customer_information' =>  $customer_information->get(), 'book_information' => $book_information->get(),'owner' => $owner, 'qa' => $qa]);
     }
 
     public function update(request $request)
