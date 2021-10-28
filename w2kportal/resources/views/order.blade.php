@@ -262,10 +262,16 @@
             @endforeach
           </select>
       
-          <select name="" class="form-control" id="fixed_inclusions">
-           <option value="" >King</option>
+          <select name="fixed_inclusion" class="form-control" id="fixed_inclusions">
+           <option value="Physical to Digital" >Physical to Digital</option>
+           <option value="Physical to eBook" >Physical to eBook</option>
           </select>
-
+          <select name="fixed_editing" class="form-control" id="fixed_editing">
+            <option value="Copyediting" >Copyediting</option>
+            <option value="Proofreading" >Proofreading</option>
+            <option value="Development Editing" >Development Editing</option>
+           </select>
+ 
 
           <p class="text-white"><small>Note:</small> Choose One Only</p>
           <input type="text" hidden name="sales_rep" value="{{ Auth::user()->name; }}" id="" class="form-control">
@@ -303,12 +309,17 @@
   let reasonContainer = document.getElementById('reason_container')
   let reasonhold = document.getElementById('reasonhold')
 
-  $('#fixed_inclusions').hide()
+  $('#fixed_editing, #fixed_inclusions').hide()
   $('#orders_packages').on('change', function() {
-      if($(this).val() === "11") {
+      if($(this).val() === "11" ) {
           $('#fixed_inclusions').show()
       } else {
           $('#fixed_inclusions').hide()
+      }
+      if($(this).val() === "12") {
+          $('#fixed_editing').show()
+      } else {
+          $('#fixed_editing').hide()
       }
   })
 

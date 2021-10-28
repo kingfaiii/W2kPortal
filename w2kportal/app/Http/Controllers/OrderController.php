@@ -292,8 +292,8 @@ class OrderController extends Controller
 
         [
             "service_name" => "Physical to Digital",
-            "project_cost" => 99,
-            "task" => "Conversion",
+            "project_cost" => 0,
+            "task" => "Physical to Digital",
             "parent" => 11,
             "calculate" => 0
         ],
@@ -301,9 +301,33 @@ class OrderController extends Controller
 
         [
             "service_name" => "Physical to eBook",
-            "project_cost" => 99,
-            "task" => "Conversion",
+            "project_cost" => 0,
+            "task" => "Physical to eBook",
             "parent" => 11,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Copyediting",
+            "project_cost" => 0,
+            "task" => "Copyediting",
+            "parent" => 12,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Proofreading",
+            "project_cost" => 0,
+            "task" => "Proofreading",
+            "parent" => 12,
+            "calculate" => 0
+        ],
+
+        [
+            "service_name" => "Development Editing",
+            "project_cost" => 0,
+            "task" => "Development Editing",
+            "parent" => 12,
             "calculate" => 0
         ],
     ];
@@ -332,7 +356,7 @@ class OrderController extends Controller
         // })->where('orders.id',$id)->get();
 
         $order = Order::leftJoin('service_packages', 'orders.Package_id', '=', 'service_packages.id')
-            ->select('orders.*','service_packages.*','orders.updated_at AS orderupdated', 'orders.Package_id AS PackID' ,'orders.id AS ActivityID')
+            ->select('orders.*', 'service_packages.*', 'orders.updated_at AS orderupdated', 'orders.Package_id AS PackID', 'orders.id AS ActivityID')
             ->where('customer_id', $id)
             ->get();
 
@@ -341,7 +365,7 @@ class OrderController extends Controller
 
         $packages = service_package::all();
 
-        
+
 
 
         //$save = $order->sales_rep;
@@ -532,6 +556,10 @@ class OrderController extends Controller
                 $chosen_num = 11;
                 break;
 
+            case 12:
+                $chosen_num = 12;
+                break;
+
             default:
                 # code...
                 break;
@@ -544,17 +572,49 @@ class OrderController extends Controller
 
     private function createInclusions($arr_inclusions, $book, $parent_id, request $request)
     {
-        foreach ($arr_inclusions as $key => $inclusion) {
-            if ($inclusion['parent'] === $parent_id) {
-                if ($inclusion['calculate'] === 1) {
-                    $inclusion['project_cost'] = $this->caculateInclusionCost($arr_inclusions, $request, $parent_id);
+        if ($parent_id === 11) {
+            $found = "";
+            foreach ($arr_inclusions as $key => $inclusion) {
+                if ($inclusion['parent'] === $parent_id  && $inclusion['service_name'] === request()->input('fixed_inclusion')) {
+                    $found = $inclusion['task'];
                 }
-                unset($inclusion['parent']);
-                unset($inclusion['calculate']);
-                $inclusion['won_id'] = request()->input('customer_id');
-                $inclusion['package_id'] = request()->input('Packages');
-                $inclusion['book_id'] = $book['id'];
-                service_inclusion::insert($inclusion);
+            }
+            service_inclusion::insert([
+                "project_cost" => request()->input('project_cost'),
+                "book_id" => $book['id'],
+                "package_id" => request()->input('Packages'),
+                "won_id" =>  request()->input('customer_id'),
+                "service_name" => request()->input('fixed_inclusion'),
+                "task" =>  $found
+            ]);
+        } elseif ($parent_id === 12) {
+            $found = "";
+            foreach ($arr_inclusions as $key => $inclusion) {
+                if ($inclusion['parent'] === $parent_id  && $inclusion['service_name'] === request()->input('fixed_editing')) {
+                    $found = $inclusion['task'];
+                }
+            }
+            service_inclusion::insert([
+                "project_cost" => request()->input('project_cost'),
+                "book_id" => $book['id'],
+                "package_id" => request()->input('Packages'),
+                "won_id" =>  request()->input('customer_id'),
+                "service_name" => request()->input('fixed_editing'),
+                "task" =>  $found
+            ]);
+        } else {
+            foreach ($arr_inclusions as $key => $inclusion) {
+                if ($inclusion['parent'] === $parent_id) {
+                    if ($inclusion['calculate'] === 1) {
+                        $inclusion['project_cost'] = $this->caculateInclusionCost($arr_inclusions, $request, $parent_id);
+                    }
+                    unset($inclusion['parent']);
+                    unset($inclusion['calculate']);
+                    $inclusion['won_id'] = request()->input('customer_id');
+                    $inclusion['package_id'] = request()->input('Packages');
+                    $inclusion['book_id'] = $book['id'];
+                    service_inclusion::insert($inclusion);
+                }
             }
         }
     }
