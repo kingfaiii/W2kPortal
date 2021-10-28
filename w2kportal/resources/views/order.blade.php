@@ -261,6 +261,11 @@
             <option value="{{ $item->id }}">{{ $item->package_name }}</option>
             @endforeach
           </select>
+      
+          <select name="" class="form-control" id="">
+           <option value="" {{ $item->id == 1 ? 'selected' : ''  }}>King</option>
+          </select>
+          <p class="text-white"><small>Note:</small> Choose One Only</p>
           <input type="text" hidden name="sales_rep" value="{{ Auth::user()->name; }}" id="" class="form-control">
         </div>
         <div class="modal-footer">
