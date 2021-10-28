@@ -44,9 +44,9 @@ class CustomerController extends Controller
             // ->where('won_customers.status', '=', 'won')
             ->where('books.id', '=', $id);
 
-            $owner = owner::all();
-            $qa = QualityAssurance::all();
-        return View('customerinput', ['customer_information' =>  $customer_information->get(), 'book_information' => $book_information->get(),'owner' => $owner, 'qa' => $qa]);
+        $owner = owner::all();
+        $qa = QualityAssurance::all();
+        return View('customerinput', ['customer_information' =>  $customer_information->get(), 'book_information' => $book_information->get(), 'owner' => $owner, 'qa' => $qa]);
     }
 
     public function update(request $request)
@@ -62,6 +62,6 @@ class CustomerController extends Controller
             }
         }
 
-        return back();
+        return response()->json(200);
     }
 }
