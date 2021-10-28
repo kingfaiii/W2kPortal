@@ -159,7 +159,6 @@
                     <th>Project Link</th>
             </thead>
             <tbody>
-               
                    @foreach ($book_information as $item)
                    <tr data-id="{{$item->id}}" class="text-center">
                     <td>  {{ $item->service_name}} </td>    
@@ -170,6 +169,7 @@
                                 <option value="{{ $owner_row->owner_fname}} {{ $owner_row->owner_lname }}">{{ $owner_row->owner_fname}} {{ $owner_row->owner_lname}}</option>
                                 @endforeach
                             </select> 
+
                         </td>
                        <td> <input type="text" name="item[{{$item->serID}}][job_cost]" style="margin-left:40%" value="{{ $item->job_cost}} " id="" class="form-control col-8"> </td>
                        <td> <input type="date" name="item[{{$item->serID}}][date_assigned]" value="{{ $item->date_assigned}}" style="margin-left:-5%" id="" class="form-control col-11">   </td>

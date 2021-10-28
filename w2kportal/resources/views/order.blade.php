@@ -256,15 +256,17 @@
           <input type="text" required name="customer_book" value="" placeholder="Book Title" id="" class="form-control">
           <input type="text" required name="transaction_id" value="" placeholder="Transaction ID" id="" class="form-control mb-5">
           <input type="text" name="project_cost" placeholder="Total Project Cost" id="" class="form-control">
-          <select name="Packages" class="form-control" id="">
+          <select name="Packages" class="form-control" id="orders_packages">
             @foreach ($packages as $item)
             <option value="{{ $item->id }}">{{ $item->package_name }}</option>
             @endforeach
           </select>
       
-          <select name="" class="form-control" id="">
-           <option value="" {{ $item->id == 1 ? 'selected' : ''  }}>King</option>
+          <select name="" class="form-control" id="fixed_inclusions">
+           <option value="" >King</option>
           </select>
+
+
           <p class="text-white"><small>Note:</small> Choose One Only</p>
           <input type="text" hidden name="sales_rep" value="{{ Auth::user()->name; }}" id="" class="form-control">
         </div>
@@ -300,6 +302,15 @@
   // SweetAlert2
   let reasonContainer = document.getElementById('reason_container')
   let reasonhold = document.getElementById('reasonhold')
+
+  $('#fixed_inclusions').hide()
+  $('#orders_packages').on('change', function() {
+      if($(this).val() === "11") {
+          $('#fixed_inclusions').show()
+      } else {
+          $('#fixed_inclusions').hide()
+      }
+  })
 
   function show(select) {
 
