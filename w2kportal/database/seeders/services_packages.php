@@ -36,6 +36,7 @@ class services_packages extends Seeder
             ["package_name" => "eBook & Print Value Package"],
             ["package_name" => "Website Development"],
             ["package_name" => "Physical To Digital/Ebook"],
+            ["package_name" => "Editing Service"],
         ];
     }
 }

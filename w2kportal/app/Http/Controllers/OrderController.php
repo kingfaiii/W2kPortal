@@ -300,7 +300,7 @@ class OrderController extends Controller
 
 
         [
-            "service_name" => "Physical to eBook (Depends on the quote)",
+            "service_name" => "Physical to eBook",
             "project_cost" => 99,
             "task" => "Conversion",
             "parent" => 11,

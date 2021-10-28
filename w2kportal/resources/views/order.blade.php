@@ -258,10 +258,8 @@
           <input type="text" name="project_cost" placeholder="Total Project Cost" id="" class="form-control">
           <select name="Packages" class="form-control" id="">
             @foreach ($packages as $item)
-          
             <option value="{{ $item->id }}">{{ $item->package_name }}</option>
             @endforeach
-            
           </select>
           <input type="text" hidden name="sales_rep" value="{{ Auth::user()->name; }}" id="" class="form-control">
         </div>
