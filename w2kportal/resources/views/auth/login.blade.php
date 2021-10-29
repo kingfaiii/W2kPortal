@@ -5,7 +5,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header bg-secondary">
+                    <h5 class="text-white font-weight-bold">
+                    {{ __('Login') }}
+                    </h5>
+                </div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -15,7 +19,10 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text rounded-0"><i class="bi bi-person-fill"></i></div>
+                                <input placeholder="Email Address" id="email" type="email" class="rounded-0 form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                </div>
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -29,8 +36,10 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text rounded-0"><i class="bi bi-lock-fill"></i></div>
+                                <input placeholder="Password" id="password" type="password" class="form-control rounded-0 @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                </div>
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
