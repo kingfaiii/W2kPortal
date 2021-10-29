@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\won_customer;
 use App\Models\book;
+use App\Models\inclusions_log;
 use App\Models\owner;
 use App\Models\QualityAssurance;
 use App\Models\service_package;
@@ -44,9 +45,16 @@ class CustomerController extends Controller
             // ->where('won_customers.status', '=', 'won')
             ->where('books.id', '=', $id);
 
+        $inclusions_backlog = inclusions_log::orderBy('created_at', 'DESC')->where('book_id', $id)->limit(1)->get();
+
         $owner = owner::all();
         $qa = QualityAssurance::all();
-        return View('customerinput', ['customer_information' =>  $customer_information->get(), 'book_information' => $book_information->get(), 'owner' => $owner, 'qa' => $qa]);
+        return View('customerinput', [
+            'customer_information' =>  $customer_information->get(),
+            'book_information' => $book_information->get(),
+            'owner' => $owner, 'qa' => $qa,
+            "history" => $inclusions_backlog
+        ]);
     }
 
     public function update(request $request)
