@@ -14,27 +14,12 @@ class CreateInclusionsLogsTable extends Migration
     public function up()
     {
         Schema::create('inclusions_logs', function (Blueprint $table) {
-            $table->id();
-            $table->string('project_cost')->nullable();
+            $table->increments('id');
+            $table->string('service_id')->nullable();
+            $table->string('updated_by')->nullable();
             $table->string('won_id')->nullable();
             $table->string('package_id')->nullable();
             $table->string('book_id')->nullable();
-            $table->string('service_name')->nullable();
-            $table->string('layout')->nullable();
-            $table->string('page_count')->nullable();
-            $table->string('project_classification')->nullable();
-            $table->string('turnaround_time')->nullable();
-            $table->string('status')->nullable();
-            $table->string('task')->nullable();
-            $table->string('commitment_date')->nullable();
-            $table->string('owner')->nullable();
-            $table->string('job_cost')->nullable();
-            $table->string('date_assigned')->nullable();
-            $table->string('date_completed')->nullable();
-            $table->string('quality_assurance')->nullable();
-            $table->string('quality_score')->nullable();
-            $table->string('uid')->nullable();
-            $table->string('project_link')->nullable();
             $table->timestamps();
         });
     }

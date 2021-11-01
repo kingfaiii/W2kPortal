@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\won_customer;
 use App\Models\book;
 use App\Models\inclusions_log;
@@ -59,17 +60,47 @@ class CustomerController extends Controller
 
     public function update(request $request)
     {
-        $query = $request->all();
-        if (!empty($query['item'])) {
-            foreach ($query['item'] as $key => $inclusions) {
-                if (!empty($inclusions)) {
-                    $service = service_inclusion::where('id', $inclusions['service_id']);
-                    unset($inclusions['service_id']);
-                    $service->update($inclusions);
-                }
+        $request_items = [];
+
+        $request_items = array_map('array_filter', request()->input('items'));
+        $request_items = array_filter($request_items);
+
+        if (!empty($request_items)) {
+            foreach ($request_items as $key => $inclusions) {
+                $service = service_inclusion::where('id', $inclusions['service_id']);
+                unset($inclusions['service_id']);
+                $service->update($inclusions);
             }
         }
 
-        return response()->json(200);
+
+        $this->create_logs($request_items);
+
+        return response()->json(["msg" => true], 200);
+    }
+
+
+    public function create_logs($user_logs)
+    {
+        if (!empty($user_logs)) {
+            foreach ($user_logs as $key => $inclusions) {
+                $service = service_inclusion::where('id', $inclusions['service_id'])->get();
+                $service_array = $service->toArray()[0];
+
+                $inclusions['id'] =  $inclusions['service_id'];
+                $inclusions['won_id'] = $service_array['won_id'];
+                $inclusions['book_id'] = $service_array['book_id'];
+                $inclusions['package_id'] = $service_array['package_id'];
+                unset($inclusions['service_id']);
+
+                inclusions_log::insert([
+                    "service_id" =>  $inclusions['id'],
+                    "updated_by" => Auth::user()->id,
+                    "won_id" =>  $inclusions['won_id'],
+                    "book_id" => $inclusions['book_id'],
+                    "package_id" =>  $inclusions['package_id']
+                ]);
+            }
+        }
     }
 }
