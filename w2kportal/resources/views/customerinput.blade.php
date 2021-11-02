@@ -137,11 +137,11 @@
                                 <span class="inclusion_log"></span>
                         </td>
                         <td> 
-                            <input type="text" data-hasValue="{{ $item->turnaround_time }}"  name="items[{{$item->serID}}][turnaround_time]"  value="{{ $item->turnaround_time}}" id="" style="margin-left:25%" class="form-control col-6">  
+                            <input type="text" data-hasValue="{{ $item->turnaround_time }}"  name="items[{{$item->serID}}][turnaround_time]"  value="{{ $item->turnaround_time}}" id="" style="margin-left:25%" class="form-control col-6 turnaround-time" maxlength="2">  
                             <span class="inclusion_log"></span>
                             </td>
                         <td>  
-                            <select data-hasValue="{{ $item->status }}" class="form-control" style="width:136%;margin-left:-28%;" name="items[{{$item->serID}}][status]" id="">
+                            <select data-hasValue="{{ $item->status }}" class="form-control customerinput-status" style="width:136%;margin-left:-28%;" name="items[{{$item->serID}}][status]" id="customerinput_status">
                                 <option selected value="  {{ $item->status}}">  {{ $item->status}} </option>
                                 <option value="Completed">Completed</option>
                                 <option value="On-going">On-going</option>
@@ -150,7 +150,7 @@
                             <span class="inclusion_log"></span>
                         </td>
                         <td>  {{ $item->task}} </td>
-                        <td> <input data-hasValue="{{ $item->commitment_date }}"  type="date" name="items[{{$item->serID}}][commitment_date]" value="{{ $item->commitment_date}}" style="margin-left:5%" id="" class="form-control col-11"> </td>
+                        <td> <input data-hasValue="{{ $item->commitment_date }}"  type="date" name="items[{{$item->serID}}][commitment_date]" value="{{ $item->commitment_date}}" style="margin-left:5%" id="" class="form-control col-11 commitment-date" readonly> </td>
                     </tr>
                     @endforeach
                 
@@ -219,6 +219,10 @@
 
 <script>
   $(document).ready(function () {
+        let turnAroundTime = 0;
+        const d = new Date()
+        const monthNames = ["January", "February", "March", "April", "May","June","July", "August", "September", "October", "November","December"];
+        const currentDate = `${d.getDay()}/${monthNames[d.getMonth()]}/${d.getFullYear()}`
 
         const messagePrompt = async (title="", text="", showCancel=false, icon="info", textConfirm) => {
             return  await Swal.fire({
@@ -231,28 +235,44 @@
                             confirmButtonText: textConfirm
             })
 
-        } 
-
-     
-
-        const checking = () => {
-            let res =  $('#customerinput_form').serializeArray().reduce((acc, input) => {
-                // Determining the indexes based off of your input name attributes
-                let indexes = input.name.match(/R([0-9]+)C([0-9]+)/);
-                // Ensure that the returned array length of the regular expression above is 3
-                if (indexes.length === 3) {
-                if (acc[indexes[1]] === undefined) {
-                    acc[indexes[1]] = {};
-                }
-                acc[indexes[1]][indexes[2]] = input.value;
-                }
-                return acc;
-            }, {});
-            console.log(res);
         }
 
+        function calcWorkingDays(fromDate, days) {
+            let count = 0;
+       
+            while (count < parseInt(days)) {
+                fromDate.setDate(fromDate.getDate() + 1);
+                if (fromDate.getDay() != 0 && fromDate.getDay() != 6) // Skip weekends
+                    count++;
+            }
 
+            return new Date(fromDate).toLocaleDateString('pt-br').split( '/' ).reverse( ).join( '-' );
+        }
 
+        $('.customerinput-status').on('change', function() {
+     
+         
+            if(this.value === 'On-going' && parseInt(turnAroundTime) > 0) {
+                $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(currentDate), turnAroundTime))
+           
+            }
+        })
+        
+        $('.turnaround-time').keyup(function () {
+            if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+            }
+
+            turnAroundTime = this.value
+
+            let inputStatus = $(this).closest('tr').find('.customerinput-status').val()
+
+            if(inputStatus === 'On-going' && parseInt(turnAroundTime) > 0) {
+                $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(currentDate), turnAroundTime))
+           
+            }
+        });
+        
         $('#customerinput_update').on('click', async function(e) {
             e.preventDefault()
             const msgResult = await  messagePrompt("Are you sure?",'This Service Inclusion will be Updated', true, 'warning', "Yes Update it!!")
