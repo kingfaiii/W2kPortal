@@ -473,12 +473,7 @@ class OrderController extends Controller
     public function ConvertCustomer(request $request)
     {
 
-        $status = customer::find(request()->input('customer_id'));
-        $status->customer_status = 'Won';
-        $status->reason_hold = null;
-        $status->reason_lost = null;
-        $status->reason_hold_date = null;
-        $status->update();
+      
 
         $activity = new Order;
         $activity->created_at = Carbon::now()->toDateTimeString();
@@ -491,6 +486,13 @@ class OrderController extends Controller
         $activity->Package_id = request()->input('Packages');
         $activity->save();
 
+        $status = customer::find(request()->input('customer_id'));
+        $status->customer_status = 'Won';
+        $status->reason_hold = null;
+        $status->last_activity = $activity['id'];
+        $status->reason_lost = null;
+        $status->reason_hold_date = null;
+        $status->update();
 
 
         $is_won_exist = won_customer::where('customer_id', '=', $request->input('customer_id'))->first();
