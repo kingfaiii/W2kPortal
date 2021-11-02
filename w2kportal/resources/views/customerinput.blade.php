@@ -113,7 +113,7 @@
                         <td>  {{ $item->service_name}} </td>
                         <td> ${{ $item->project_cost}} </td>
                         <td>
-                            <select  data-hasValue="{{ $item->layout ? $item->layout : 'none' }}" class="form-control" style="width:115%" name="items[{{$item->serID}}][layout]" id="">
+                            <select  data-hasValue="{{ $item->layout ? $item->layout : 'none' }}" class="form-control customerinput-text" style="width:115%" name="items[{{$item->serID}}][layout]" id="">
                                 <option selected value="{{ $item->layout}} ">{{ $item->layout}} </option>
                                     <option value="Reflowable">Reflowable</option>
                                     <option value="Fixed Virtual">Fixed Virtual</option>
@@ -123,11 +123,11 @@
                                 <span class="inclusion_log"></span>
                         </td>
                         <td>  
-                            <input data-hasValue="{{ $item->page_count ? $item->page_count :'none' }}"  type="text" value="{{ $item->page_count}}" style="margin-left:25%" class="form-control justify-content-center col-6" name="items[{{$item->serID}}][page_count]" id="">
+                            <input data-hasValue="{{ $item->page_count ? $item->page_count :'none' }}"  type="text" value="{{ $item->page_count}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item->serID}}][page_count]" id="">
                             <span class="inclusion_log"></span>
                         </td>
                         <td> 
-                                <select data-hasValue="{{ $item->project_classification }}"   class="form-control" name="items[{{$item->serID}}][project_classification]" id="">
+                                <select data-hasValue="{{ $item->project_classification }}"   class="form-control customerinput-text" name="items[{{$item->serID}}][project_classification]" id="">
                                     <option selected value=" {{ $item->project_classification}}"> {{ $item->project_classification}} </option>
                                     <option value="Simple">Simple</option>
                                     <option value="Moderate">Moderate</option>
@@ -137,11 +137,11 @@
                                 <span class="inclusion_log"></span>
                         </td>
                         <td> 
-                            <input type="text" data-hasValue="{{ $item->turnaround_time }}"  name="items[{{$item->serID}}][turnaround_time]"  value="{{ $item->turnaround_time}}" id="" style="margin-left:25%" class="form-control col-6 turnaround-time" maxlength="2">  
+                            <input type="text" data-hasValue="{{ $item->turnaround_time }}"  name="items[{{$item->serID}}][turnaround_time]"  value="{{ $item->turnaround_time}}" id="" style="margin-left:25%" class="form-control col-6 turnaround-time customerinput-text" maxlength="2">  
                             <span class="inclusion_log"></span>
                             </td>
                         <td>  
-                            <select data-hasValue="{{ $item->status }}" class="form-control customerinput-status" style="width:136%;margin-left:-28%;" name="items[{{$item->serID}}][status]" id="customerinput_status">
+                            <select data-hasValue="{{ $item->status }}" class="form-control customerinput-status customerinput-text" style="width:136%;margin-left:-28%;" name="items[{{$item->serID}}][status]" id="customerinput_status">
                                 <option selected value="  {{ $item->status}}">  {{ $item->status}} </option>
                                 <option value="Completed">Completed</option>
                                 <option value="On-going">On-going</option>
@@ -174,7 +174,7 @@
                         <input type="hidden" name="items[{{$item->serID}}][service_id]" value="{{$item->serID}}">
                         <td>  {{ $item->service_name}} </td>    
                             <td> 
-                                <select data-hasValue="{{ $item->owner }}"  name="items[{{$item->serID}}][owner]" id="" style="width:190%;margin-left:-20%" class="form-control">
+                                <select data-hasValue="{{ $item->owner }}"  name="items[{{$item->serID}}][owner]" id="" style="width:190%;margin-left:-20%" class="form-control customerinput-text">
                                     <option value="{{ $item->owner}}">{{ $item->owner}}</option>
                                     @foreach ($owner as $owner_row)
                                     <option value="{{$owner_row->owner_fname}} {{ $owner_row->owner_lname }}">{{ $owner_row->owner_fname}} {{ $owner_row->owner_lname}}</option>
@@ -182,20 +182,20 @@
                                 </select> 
 
                             </td>
-                        <td> <input data-hasValue="{{ $item->job_cost }}"   type="text" name="items[{{$item->serID}}][job_cost]" style="margin-left:40%" value="{{ $item->job_cost}} " id="" class="form-control col-8"> </td>
-                        <td> <input data-hasValue="{{ $item->date_assigned }}"   type="date" name="items[{{$item->serID}}][date_assigned]" value="{{ $item->date_assigned}}" style="margin-left:-5%" id="" class="form-control col-11">   </td>
-                        <td> <input data-hasValue="{{ $item->date_completed }}"   type="date" name="items[{{$item->serID}}][date_completed]" value="{{ $item->date_completed}}" style="margin-left:-5%" id="" class="form-control col-11">   </td>
+                        <td> <input data-hasValue="{{ $item->job_cost }}"   type="text" name="items[{{$item->serID}}][job_cost]" style="margin-left:40%" value="{{ $item->job_cost}} " id="" class="form-control col-8 customerinput-text"> </td>
+                        <td> <input data-hasValue="{{ $item->date_assigned }}"   type="date" name="items[{{$item->serID}}][date_assigned]" value="{{ $item->date_assigned}}" style="margin-left:-5%" id="" class="form-control col-11 customerinput-text">   </td>
+                        <td> <input data-hasValue="{{ $item->date_completed }}"   type="date" name="items[{{$item->serID}}][date_completed]" value="{{ $item->date_completed}}" style="margin-left:-5%" id="" class="form-control col-11 customerinput-text">   </td>
                         <td>
-                            <select  data-hasValue="{{ $item->quality_assurance }}" name="items[{{$item->serID}}][quality_assurance]" id="" style="margin-left:-30%;width:180%" class="form-control">
+                            <select  data-hasValue="{{ $item->quality_assurance }}" name="items[{{$item->serID}}][quality_assurance]" id="" style="margin-left:-30%;width:180%" class="form-control customerinput-text">
                                 <option selected value=" {{ $item->quality_assurance}} "> {{ $item->quality_assurance}} </option>
                                 @foreach ($qa as $qa_row)
                                 <option value="{{ $qa_row->qa_fname }} {{ $qa_row->qa_lname }}">{{ $qa_row->qa_fname }} {{ $qa_row->qa_lname }}</option>
                                 @endforeach
                             </select> 
                             </td>
-                        <td> <input data-hasValue="{{ $item->quality_score }}" style="margin-left:25px;width:50%"id="" class="form-control"></td>
-                        <td> <input data-hasValue="{{ $item->uid }}"  type="text" name="items[{{$item->serID}}][uid]" value="{{ $item->uid}}" id="" class="form-control"></td>
-                        <td> <input data-hasValue="{{ $item->project_link }}"  type="text" name="items[{{$item->serID}}][project_link]" value="{{ $item->project_link}} " id="" class="form-control"> </td>
+                        <td> <input data-hasValue="{{ $item->quality_score }}" style="margin-left:25px;width:50%"id="" class="form-control customerinput-text"></td>
+                        <td> <input data-hasValue="{{ $item->uid }}"  type="text" name="items[{{$item->serID}}][uid]" value="{{ $item->uid}}" id="" class="form-control customerinput-text"></td>
+                        <td> <input data-hasValue="{{ $item->project_link }}"  type="text" name="items[{{$item->serID}}][project_link]" value="{{ $item->project_link}} " id="" class="form-control customerinput-text"> </td>
                     </tr>
                     @endforeach
                 
@@ -276,8 +276,22 @@
         $('#customerinput_update').on('click', async function(e) {
             e.preventDefault()
             const msgResult = await  messagePrompt("Are you sure?",'This Service Inclusion will be Updated', true, 'warning', "Yes Update it!!")
-
+            
             let arr =  $('#customerinput_form').serialize()
+
+            const arrFormValidation = []
+            console.log($('.customerinput-text').length)
+            $('.customerinput-text').each(function() {
+                const inputValue = $.trim($(this).val())
+
+                if(!inputValue) arrFormValidation.push(inputValue)
+            })
+
+            if(arrFormValidation.length === $('.customerinput-text').length) {
+                messagePrompt('The Form is Empty', "", false, "error", "Ok")
+
+                return
+            }
 
             if(msgResult.isConfirmed) {
 
