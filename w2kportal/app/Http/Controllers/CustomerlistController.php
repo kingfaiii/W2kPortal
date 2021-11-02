@@ -17,7 +17,7 @@ class CustomerlistController extends Controller
     {
         $this->middleware('auth');
         $this->home = DB::table('customers')
-            ->select('customers.*', 'orders.remarks')
+            ->select('customers.*', 'orders.remarks', 'orders.updated_at AS orderUpdated')
             ->leftJoin('orders', 'customers.last_activity', '=', 'orders.id');
     }
 
