@@ -9,16 +9,28 @@ use App\Models\inclusions_log;
 use App\Models\owner;
 use App\Models\QualityAssurance;
 use App\Models\service_package;
+use App\Models\inclusions_logs;
+use Illuminate\Support\Facades\DB;
 use App\Models\service_inclusion;
 use Illuminate\Http\Request;
+use Psy\Command\HistoryCommand;
 
 class CustomerController extends Controller
-{
+{  
     //
-    public function __construct()
+    public function __construct($id)
     {
         $this->middleware('auth');
+        $this->history = DB::table('inclusions_logs')
+        ->join('books', 'inclusions_logs.book_id', '=', 'books.id')
+        ->join('service_inclusions','inclusions_logs.service_id','=','service_inclusions.id')
+        ->where('inclusions_logs.book_id','=',$id);
+        
     }
+    function get_id(){
+        return $this->history;
+    }
+   
     public function index($id)
     {
 
@@ -102,5 +114,12 @@ class CustomerController extends Controller
                 ]);
             }
         }
+    }
+    public function historyIndex($id){
+
+        
+        $log = new CustomerController($id);
+
+        return view('InclusionHistory',['logs' => $log->get_id()]);
     }
 }

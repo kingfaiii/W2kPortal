@@ -87,11 +87,11 @@
                                         <td>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <a href="{{route('order',[$row->id])}}" class="btn btn-success col-12">Edit</a>
+                                                    <a href="{{route('order',[$row->id])}}" class="btn btn-success">Edit</a>
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <button data-id="{{$row->id}}" class="btn btn-danger col-12 delete-confirm">Delete</button>
+                                                    <button data-id="{{$row->id}}" class="btn btn-danger delete-confirm">Delete</button>
                                                 </div>
                                             </div>
                                         </td>
@@ -134,14 +134,15 @@
                                     <td>${k.customer_email} </td>
                                     <td>${k.customer_status}</td>
                                     <td>${k.remarks ? k.remarks : 'No Remarks'}</td>
+                                    <td>${k.orderUpdated ? k.orderUpdated : 'No Remarks'}</td>
                                     <td>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <a href="/order/${k.id}" class="btn btn-success col-12">Edit</a>
+                                                <a href="/order/${k.id}" class="btn btn-success">Edit</a>
                                             </div>
 
                                             <div class="col-md-6">
-                                                <a data-id="${k.id}" class="btn btn-danger col-12 delete-confirm">Delete</a>
+                                                <a data-id="${k.id}" class="btn btn-danger delete-confirm">Delete</a>
                                             </div>
                                         </div>
                                     </td>

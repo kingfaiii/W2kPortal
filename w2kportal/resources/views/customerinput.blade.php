@@ -8,8 +8,13 @@
     <form id="customerinput_form" name="customerinput_form" method="POST">
         @csrf
         <div class="col-md-12">
+           
+        
+            <a href="{{ route('HistoryLog',[request()->segment(count(request()->segments()))]) }}" class="btn btn-info mb-3 text-white mt-2">History</a>
+
             <h2 class="text-white font-weight-bold">Convert Customer Details</h2>
         </div>
+       
     @endsection
 
  @section('otherforms')
