@@ -311,6 +311,7 @@ class OrderController extends Controller
             "service_name" => "Copyediting",
             "project_cost" => 0,
             "task" => "Copyediting",
+            "status" => "On-Hold",
             "parent" => 12,
             "calculate" => 0
         ],
@@ -319,6 +320,7 @@ class OrderController extends Controller
             "service_name" => "Proofreading",
             "project_cost" => 0,
             "task" => "Proofreading",
+            "status" => "On-Hold",
             "parent" => 12,
             "calculate" => 0
         ],
@@ -327,6 +329,7 @@ class OrderController extends Controller
             "service_name" => "Development Editing",
             "project_cost" => 0,
             "task" => "Development Editing",
+            "status" => "On-Hold",
             "parent" => 12,
             "calculate" => 0
         ],

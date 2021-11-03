@@ -118,32 +118,71 @@
                         <td>  {{ $item->service_name}} </td>
                         <td> ${{ $item->project_cost}} </td>
                         <td>
-                            <select  data-hasValue="{{ $item->layout ? $item->layout : 'none' }}" class="form-control customerinput-text" style="width:115%" name="items[{{$item->serID}}][layout]" id="">
-                                <option selected value="{{ $item->layout}} ">{{ $item->layout}} </option>
+                            <?php
+                                $allowed_layout = [
+                                'Ebook Conversion'
+                        ];
+                                ?>
+                                @if (in_array($item->service_name,$allowed_layout))
+                                <select  data-hasValue="{{ $item->layout ? $item->layout : 'none' }}" class="form-control customerinput-text" style="width:115%" name="items[{{$item->serID}}][layout]" id="">
+                                    <option selected value="{{ $item->layout}} ">{{ $item->layout}} </option>
                                     <option value="Reflowable">Reflowable</option>
                                     <option value="Fixed Virtual">Fixed Virtual</option>
                                     <option value="ixed Hidden">Fixed Hidden</option>
                                     <option value="Combination">Combination</option>
                                 </select>
-                                <span class="inclusion_log"></span>
+                                @else
+                                <select disabled data-hasValue="{{ $item->layout ? $item->layout : 'none' }}" class="form-control customerinput-text" style="width:115%" name="items[{{$item->serID}}][layout]" id="">
+                                    <option selected value="{{ $item->layout}} ">{{ $item->layout}} </option>
+                                    <option value="Reflowable">Reflowable</option>
+                                    <option value="Fixed Virtual">Fixed Virtual</option>
+                                    <option value="ixed Hidden">Fixed Hidden</option>
+                                    <option value="Combination">Combination</option>
+                                </select>
+                                @endif
+                               
                         </td>
                         <td>  
-                            <input data-hasValue="{{ $item->page_count ? $item->page_count :'none' }}"  type="text" value="{{ $item->page_count}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item->serID}}][page_count]" id="">
-                            <span class="inclusion_log"></span>
+                            <?php 
+                                    $allowed_word = [
+
+                                    'Interior Formatting',
+                                    'Ebook Conversion',
+                                    'Copyediting',
+                                    'Development Editing'
+
+                        ];                           
+                                    ?>
+                                    @if (in_array($item->service_name,$allowed_word))
+                                        <input data-hasValue="{{ $item->page_count ? $item->page_count :'none' }}"  type="text" value="{{ $item->page_count}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item->serID}}][page_count]" id="">
+                                    @else
+                                    <input disabled data-hasValue="{{ $item->page_count ? $item->page_count :'none' }}"  type="text" value="{{ $item->page_count}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item->serID}}][page_count]" id="">
+
+                                    @endif
+                           
                         </td>
                         <td> 
-                                <select data-hasValue="{{ $item->project_classification }}"   class="form-control customerinput-text" name="items[{{$item->serID}}][project_classification]" id="">
-                                    <option selected value=" {{ $item->project_classification}}"> {{ $item->project_classification}} </option>
-                                    <option value="Simple">Simple</option>
-                                    <option value="Moderate">Moderate</option>
-                                    <option value="Complex">Complex</option>
-                                    <option value="Difficult">Difficult</option>
-                                </select>
-                                <span class="inclusion_log"></span>
+                            @if (in_array($item->service_name,$allowed_word))
+                            <select data-hasValue="{{ $item->project_classification }}"   class="form-control customerinput-text" name="items[{{$item->serID}}][project_classification]" id="">
+                                <option selected value=" {{ $item->project_classification}}"> {{ $item->project_classification}} </option>
+                                <option value="Simple">Simple</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="Complex">Complex</option>
+                                <option value="Difficult">Difficult</option>
+                            </select>
+                            @else
+                            <select disabled data-hasValue="{{ $item->project_classification }}"   class="form-control customerinput-text" name="items[{{$item->serID}}][project_classification]" id="">
+                                <option selected value=" {{ $item->project_classification}}"> {{ $item->project_classification}} </option>
+                                <option value="Simple">Simple</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="Complex">Complex</option>
+                                <option value="Difficult">Difficult</option>
+                            </select>
+                            @endif
+                           
                         </td>
                         <td> 
                             <input type="text" data-hasValue="{{ $item->turnaround_time }}"  name="items[{{$item->serID}}][turnaround_time]"  value="{{ $item->turnaround_time}}" id="" style="margin-left:25%" class="form-control col-6 turnaround-time customerinput-text" maxlength="2">  
-                            <span class="inclusion_log"></span>
                             </td>
                         <td>  
                             <select data-hasValue="{{ $item->status }}" class="form-control customerinput-status customerinput-text" style="width:136%;margin-left:-28%;" name="items[{{$item->serID}}][status]" id="customerinput_status">
@@ -152,7 +191,6 @@
                                 <option value="On-going">On-going</option>
                                 <option value="On Hold">On Hold</option>
                             </select>
-                            <span class="inclusion_log"></span>
                         </td>
                         <td>  {{ $item->task}} </td>
                         <td> <input data-hasValue="{{ $item->commitment_date }}"  type="date" name="items[{{$item->serID}}][commitment_date]" value="{{ $item->commitment_date}}" style="margin-left:5%" id="" class="form-control col-11 commitment-date" readonly> </td>

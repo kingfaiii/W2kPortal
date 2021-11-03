@@ -70,7 +70,7 @@
                                         <th>Email</th>
                                         <th>Status</th>
                                         <th>Remarks</th>
-                                        <th>Date & Time</th>
+                                        <th>Date</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -83,7 +83,7 @@
                                         <td>{{ $row->customer_email }}</td>
                                         <td>{{ $row->customer_status }}</td>
                                         <td>{{$row->remarks ? $row->remarks : 'No Remarks' }}</td>
-                                        <td>{{$row->orderUpdated ? $row->orderUpdated : 'No Activity' }}</td>
+                                        <td>{{date('m-d-Y', strtotime($row->orderUpdated)) ? date('m-d-Y', strtotime($row->orderUpdated)) : 'No Activity' }}</td>
                                         <td>
                                             <div class="row">
                                                 <div class="col-md-6">
