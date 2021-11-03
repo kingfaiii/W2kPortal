@@ -3,29 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\won_customer;
 use App\Models\book;
 use App\Models\inclusions_log;
 use App\Models\owner;
 use App\Models\QualityAssurance;
-use App\Models\service_package;
-use App\Models\inclusions_logs;
-use Illuminate\Support\Facades\DB;
 use App\Models\service_inclusion;
 use Illuminate\Http\Request;
-use Psy\Command\HistoryCommand;
 
 class CustomerController extends Controller
-{  
+{
     //
     public function __construct()
     {
         $this->middleware('auth');
-       
-        
     }
-    
-   
+
+
     public function index($id)
     {
 
@@ -76,6 +69,11 @@ class CustomerController extends Controller
             foreach ($request_items as $key => $inclusions) {
                 $service = service_inclusion::where('id', $inclusions['service_id']);
                 unset($inclusions['service_id']);
+
+                foreach ($inclusions as $key => $inclusion) {
+                    $inclusions[$key] = '*' . Auth::user()->id;
+                }
+
                 $service->update($inclusions);
             }
         }
@@ -110,13 +108,14 @@ class CustomerController extends Controller
             }
         }
     }
-    public function historyIndex($id){
+    public function historyIndex($id)
+    {
 
-        
+
         $history = inclusions_log::join('books', 'inclusions_logs.book_id', '=', 'books.id')
-        ->join('service_inclusions','inclusions_logs.service_id','=','service_inclusions.id')
-        ->where('inclusions_logs.book_id','=',$id);
+            ->join('service_inclusions', 'inclusions_logs.service_id', '=', 'service_inclusions.id')
+            ->where('inclusions_logs.book_id', '=', $id);
 
-        return view('InclusionHistory',['history' => $history]);
+        return view('InclusionHistory', ['history' => $history]);
     }
 }
