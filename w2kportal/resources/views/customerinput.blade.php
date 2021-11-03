@@ -3,7 +3,21 @@
 
 
 @section('content')
-
+            <?php 
+                        $classification = [
+                        'Ebook Conversion',
+                        'Interior Formatting'
+                        ];
+                        $layout = [
+                        'Ebook Conversion'
+                        ];
+                        $count = [
+                            'Ebook Conversion',
+                        'Interior Formatting',
+                        'Development Editing',
+                        'Copyediting'
+                        ];
+            ?>
     @section('header')
     <form id="customerinput_form" name="customerinput_form" method="POST">
         @csrf
@@ -113,94 +127,79 @@
                 <tbody>
                 
                     @foreach ($book_information as $item)
-                    <tr data-id="{{$item->id}}" class="text-center align-center justify-content-center">
-                        <input type="hidden" name="items[{{$item->serID}}][service_id]" value="{{$item->serID}}">
-                        <td>  {{ $item->service_name}} </td>
-                        <td> ${{ $item->project_cost}} </td>
+                    <tr data-id="{{$item['id']}}" class="text-center align-center justify-content-center">
+                        <input type="hidden" name="items[{{$item['serID']}}][service_id]" value="{{$item['serID']}}">
+                        <td>  {{ $item['service_name']}} </td>
+                        <td> ${{ $item['project_cost']}} </td>
                         <td>
-                            <?php
-                            $allowed_layout = [
-                            'Ebook Conversion'
-                    ];
-                            ?>
-                            @if (in_array($item->service_name,$allowed_layout))
-                            <select  data-hasValue="{{ $item->layout ? $item->layout : 'none' }}" class="form-control customerinput-text" style="width:115%" name="items[{{$item->serID}}][layout]" id="">
-                                <option selected value="{{ $item->layout}} ">{{ $item->layout}} </option>
-                                <option value="Reflowable">Reflowable</option>
-                                <option value="Fixed Virtual">Fixed Virtual</option>
-                                <option value="ixed Hidden">Fixed Hidden</option>
-                                <option value="Combination">Combination</option>
-                            </select>
+                            @if (in_array($item['service_name'],$layout))
+                            <select   class="form-control customerinput-text" style="width:115%" name="items[{{$item['serID']}}][layout]" id="">
+                                <option selected value="{{ $item['layout']}} ">{{ $item['layout']}} </option>
+                                    <option value="Reflowable">Reflowable</option>
+                                    <option value="Fixed Virtual">Fixed Virtual</option>
+                                    <option value="ixed Hidden">Fixed Hidden</option>
+                                    <option value="Combination">Combination</option>
+                                </select>
                             @else
-                            <select disabled data-hasValue="{{ $item->layout ? $item->layout : 'none' }}" class="form-control customerinput-text" style="width:115%" name="items[{{$item->serID}}][layout]" id="">
-                                <option selected value="{{ $item->layout}} ">{{ $item->layout}} </option>
-                                <option value="Reflowable">Reflowable</option>
-                                <option value="Fixed Virtual">Fixed Virtual</option>
-                                <option value="ixed Hidden">Fixed Hidden</option>
-                                <option value="Combination">Combination</option>
-                            </select>
-                            @endif    
-                               
+                            <select  disabled class="form-control customerinput-text" style="width:115%" name="items[{{$item['serID']}}][layout]" id="">
+                                <option selected value="{{ $item['layout']}} ">{{ $item['layout']}} </option>
+                                    <option value="Reflowable">Reflowable</option>
+                                    <option value="Fixed Virtual">Fixed Virtual</option>
+                                    <option value="ixed Hidden">Fixed Hidden</option>
+                                    <option value="Combination">Combination</option>
+                                </select>
+                            @endif
+                          
+                                <span class="inclusion_log"></span>
                         </td>
-                        <td>  
+                        <td>
+                     
+                            @if (in_array($item['service_name'],$count))
 
-                           <?php 
-                                    $allowed_word = [
+                            <input   type="text" value="{{ $item['page_count']}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item['serID']}}][page_count]" id="">
+                               
+                            @else
+                            <input  disabled  type="text" value="{{ $item['page_count']}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item['serID']}}][page_count]" id="">
+                                
+                            @endif
 
-                                    'Interior Formatting',
-                                    'Ebook Conversion',
-                                    'Copyediting',
-                                    'Development Editing'
-
-                        ];                           
-                                    ?>
-                                    @if (in_array($item->service_name,$allowed_word))
-                                        <input data-hasValue="{{ $item->page_count ? $item->page_count :'none' }}"  type="text" value="{{ $item->page_count}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item->serID}}][page_count]" id="">
-                                    @else
-                                    <input disabled data-hasValue="{{ $item->page_count ? $item->page_count :'none' }}"  type="text" value="{{ $item->page_count}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item->serID}}][page_count]" id="">
-                                    @endif
                             <span class="inclusion_log"></span>
                         </td>
-                        <td> 
-                            <?php
-                                $allowed_class = [
-                                    'Interior Formatting',
-                                    'Ebook Conversion'
-                                ]
-                                ?>
-                            @if (in_array($item->service_name,$allowed_class))
-                            <select data-hasValue="{{ $item->project_classification }}"   class="form-control customerinput-text" name="items[{{$item->serID}}][project_classification]" id="">
-                                <option selected value=" {{ $item->project_classification}}"> {{ $item->project_classification}} </option>
-                                <option value="Simple">Simple</option>
-                                <option value="Moderate">Moderate</option>
-                                <option value="Complex">Complex</option>
-                                <option value="Difficult">Difficult</option>
-                            </select>
-                            @else
-                            <select disabled data-hasValue="{{ $item->project_classification }}"   class="form-control customerinput-text" name="items[{{$item->serID}}][project_classification]" id="">
-                                <option selected value=" {{ $item->project_classification}}"> {{ $item->project_classification}} </option>
-                                <option value="Simple">Simple</option>
-                                <option value="Moderate">Moderate</option>
-                                <option value="Complex">Complex</option>
-                                <option value="Difficult">Difficult</option>
-                            </select>
-                            @endif
+                        <td>    
+                                @if (in_array($item['service_name'],$classification))
+                                <select   class="form-control customerinput-text" name="items[{{$item['serID']}}][project_classification]" id="">
+                                    <option selected value=" {{ $item['project_classification']}}"> {{ $item['project_classification']}} </option>
+                                    <option value="Simple">Simple</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="Complex">Complex</option>
+                                    <option value="Difficult">Difficult</option>
+                                </select>
+                                @else
+                                <select  disabled class="form-control customerinput-text" name="items[{{$item['serID']}}][project_classification]" id="">
+                                    <option selected value=" {{ $item['project_classification']}}"> {{ $item['project_classification']}} </option>
+                                    <option value="Simple">Simple</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="Complex">Complex</option>
+                                    <option value="Difficult">Difficult</option>
+                                </select>
+                                @endif
+                                
                                 <span class="inclusion_log"></span>
                         </td>
                         <td> 
-                            <input type="text"  name="items[{{$item->serID}}][turnaround_time]"  value="{{ $item->turnaround_time}}" id="" style="margin-left:25%" class="form-control col-6 turnaround-time customerinput-text" maxlength="2">  
+                            <input type="text"   name="items[{{$item['serID']}}][turnaround_time]"  value="{{ $item['turnaround_time']}}" id="" style="margin-left:25%" class="form-control col-6 turnaround-time customerinput-text" maxlength="2">  
                             <span class="inclusion_log"></span>
                             </td>
                         <td>  
-                            <select class="form-control customerinput-status customerinput-text" style="width:136%;margin-left:-28%;" name="items[{{$item->serID}}][status]" id="customerinput_status">
-                                <option selected value="  {{ $item->status}}">  {{ $item->status}} </option>
+                            <select  class="form-control customerinput-status customerinput-text" style="width:136%;margin-left:-28%;" name="items[{{$item['serID']}}][status]" id="customerinput_status">
+                                <option selected value="  {{ $item['status']}}">  {{ $item['status']}} </option>
                                 <option value="Completed">Completed</option>
                                 <option value="On-going">On-going</option>
                                 <option value="On Hold">On Hold</option>
                             </select>
                         </td>
-                        <td>  {{ $item->task}} </td>
-                        <td> <input type="date" name="items[{{$item->serID}}][commitment_date]" value="{{ $item->commitment_date}}" style="margin-left:5%" id="" class="form-control col-11 commitment-date" readonly> </td>
+                        <td>  {{ $item['task']}} </td>
+                        <td> <input  type="date" name="items[{{$item['serID']}}][commitment_date]" value="{{ $item['commitment_date']}}" style="margin-left:5%" id="" class="form-control col-11 commitment-date" readonly> </td>
                     </tr>
                     @endforeach
                 
@@ -220,32 +219,32 @@
                 </thead>
                 <tbody>
                     @foreach ($book_information as $item)
-                    <tr data-id="{{$item->id}}" class="text-center">
-                        <input type="hidden" name="items[{{$item->serID}}][service_id]" value="{{$item->serID}}">
-                        <td>  {{ $item->service_name}} </td>    
+                    <tr data-id="{{$item['id']}}" class="text-center">
+                        <input type="hidden" name="items[{{$item['serID']}}][service_id]" value="{{$item['serID']}}">
+                        <td>  {{ $item['service_name']}} </td>    
                             <td> 
-                                <select   name="items[{{$item->serID}}][owner]" id="" style="width:190%;margin-left:-20%" class="form-control customerinput-text">
-                                    <option value="{{ $item->owner}}">{{ $item->owner}}</option>
+                                <select   name="items[{{$item['serID']}}][owner]" id="" style="width:190%;margin-left:-20%" class="form-control customerinput-text">
+                                    <option value="{{ $item['owner']}}">{{ $item['owner']}}</option>
                                     @foreach ($owner as $owner_row)
-                                    <option value="{{$owner_row->owner_fname}} {{ $owner_row->owner_lname }}">{{ $owner_row->owner_fname}} {{ $owner_row->owner_lname}}</option>
+                                    <option value="{{$owner_row['owner_fname']}} {{ $owner_row['owner_lname'] }}">{{ $owner_row['owner_fname']}} {{ $owner_row['owner_lname']}}</option>
                                     @endforeach
                                 </select> 
 
                             </td>
-                        <td> <input  type="text" name="items[{{$item->serID}}][job_cost]" style="margin-left:40%" value="{{ $item->job_cost}} " id="" class="form-control col-8 customerinput-text"> </td>
-                        <td> <input  type="date" name="items[{{$item->serID}}][date_assigned]" value="{{ $item->date_assigned}}" style="margin-left:-5%" id="" class="form-control col-11 customerinput-text">   </td>
-                        <td> <input  type="date" name="items[{{$item->serID}}][date_completed]" value="{{ $item->date_completed}}" style="margin-left:-5%" id="" class="form-control col-11 customerinput-text">   </td>
+                        <td> <input   type="text" name="items[{{$item['serID']}}][job_cost]" style="margin-left:40%" value="{{ $item['job_cost']}} " id="" class="form-control col-8 customerinput-text"> </td>
+                        <td> <input   type="date" name="items[{{$item['serID']}}][date_assigned]" value="{{ $item['date_assigned']}}" style="margin-left:-5%" id="" class="form-control col-11 customerinput-text">   </td>
+                        <td> <input    type="date" name="items[{{$item['serID']}}][date_completed]" value="{{ $item['date_completed']}}" style="margin-left:-5%" id="" class="form-control col-11 customerinput-text">   </td>
                         <td>
-                            <select name="items[{{$item->serID}}][quality_assurance]" id="" style="margin-left:-30%;width:180%" class="form-control customerinput-text">
-                                <option selected value=" {{ $item->quality_assurance}} "> {{ $item->quality_assurance}} </option>
+                            <select   name="items[{{$item['serID']}}][quality_assurance]" id="" style="margin-left:-30%;width:180%" class="form-control customerinput-text">
+                                <option selected value=" {{ $item['quality_assurance']}} "> {{ $item['quality_assurance']}} </option>
                                 @foreach ($qa as $qa_row)
-                                <option value="{{ $qa_row->qa_fname }} {{ $qa_row->qa_lname }}">{{ $qa_row->qa_fname }} {{ $qa_row->qa_lname }}</option>
+                                <option value="{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}">{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}</option>
                                 @endforeach
                             </select> 
                             </td>
                         <td> <input style="margin-left:25px;width:50%"id="" class="form-control customerinput-text"></td>
-                        <td> <input  type="text" name="items[{{$item->serID}}][uid]" value="{{ $item->uid}}" id="" class="form-control customerinput-text"></td>
-                        <td> <input   type="text" name="items[{{$item->serID}}][project_link]" value="{{ $item->project_link}} " id="" class="form-control customerinput-text"> </td>
+                        <td> <input  type="text" name="items[{{$item['serID']}}][uid]" value="{{ $item['uid']}}" id="" class="form-control customerinput-text"></td>
+                        <td> <input   type="text" name="items[{{$item['serID']}}][project_link]" value="{{ $item['project_link']}} " id="" class="form-control customerinput-text"> </td>
                     </tr>
                     @endforeach
                 

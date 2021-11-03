@@ -50,9 +50,18 @@ class CustomerController extends Controller
 
         $owner = owner::all();
         $qa = QualityAssurance::all();
+
+        $book_info = [];
+        foreach ($book_information->get()->toArray() as $key => $books) {
+            foreach ($books as $book_key => $book) {
+
+                $book_info[$key][$book_key] = explode('*', $book)[0] ? explode('*', $book)[0] : '';
+            }
+        }
+
         return View('customerinput', [
             'customer_information' =>  $customer_information->get(),
-            'book_information' => $book_information->get(),
+            'book_information' => $book_info,
             'owner' => $owner, 'qa' => $qa,
             "history" => $inclusions_backlog
         ]);
@@ -71,7 +80,7 @@ class CustomerController extends Controller
                 unset($inclusions['service_id']);
 
                 foreach ($inclusions as $key => $inclusion) {
-                    $inclusions[$key] = '*' . Auth::user()->id;
+                    $inclusions[$key] .= '*' . Auth::user()->id;
                 }
 
                 $service->update($inclusions);
