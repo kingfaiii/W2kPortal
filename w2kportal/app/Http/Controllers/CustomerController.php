@@ -18,18 +18,13 @@ use Psy\Command\HistoryCommand;
 class CustomerController extends Controller
 {  
     //
-    public function __construct($id)
+    public function __construct()
     {
         $this->middleware('auth');
-        $this->history = DB::table('inclusions_logs')
-        ->join('books', 'inclusions_logs.book_id', '=', 'books.id')
-        ->join('service_inclusions','inclusions_logs.service_id','=','service_inclusions.id')
-        ->where('inclusions_logs.book_id','=',$id);
+       
         
     }
-    function get_id(){
-        return $this->history;
-    }
+    
    
     public function index($id)
     {
@@ -118,8 +113,10 @@ class CustomerController extends Controller
     public function historyIndex($id){
 
         
-        $log = new CustomerController($id);
+        $history = inclusions_log::join('books', 'inclusions_logs.book_id', '=', 'books.id')
+        ->join('service_inclusions','inclusions_logs.service_id','=','service_inclusions.id')
+        ->where('inclusions_logs.book_id','=',$id);
 
-        return view('InclusionHistory',['logs' => $log->get_id()]);
+        return view('InclusionHistory',['history' => $history]);
     }
 }
