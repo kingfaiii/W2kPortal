@@ -4,8 +4,14 @@
 @section('content')
     @section('header')
         <div class="col-md-12">
-            <a href="{{route('customer',[request()->segment(count(request()->segments()))])}}" class="btn btn-info mb-3 text-white mt-2">Book</a>
-            <h1 class="text-white font-weight bolder">History</h1>
+            <div class="row">
+                <div class="col-md-11">
+                    <h1 class="text-white font-weight bolder">History</h1>
+                </div>
+                <div class="col-md-1">
+                    <a href="{{route('customer',[request()->segment(count(request()->segments()))])}}" class="btn btn-info mb-3 text-white mt-2">Book</a>
+                </div>
+            </div>
         </div>
     @endsection
 @endsection

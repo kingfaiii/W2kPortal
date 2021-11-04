@@ -23,8 +23,8 @@
         @csrf
         <div class="col-12">
            
-        
             <a href="{{ route('HistoryLog',[request()->segment(count(request()->segments()))]) }}" class="btn btn-info mb-3 text-white mt-2">History</a>
+           
 
             <p class="h2 text-white font-weight-bold">Convert Customer Details</p>
         </div>
@@ -196,7 +196,15 @@
                             </select>
                         </td>
                         <td>  {{ $item['task']}} </td>
-                        <td> <input  type="date" name="items[{{$item['serID']}}][commitment_date]" value="{{ $item['commitment_date']}}" style="margin-left:5%" id="" class="form-control col-11 commitment-date" readonly> </td>
+                        @php
+                            $newdate = $item['commitment_date'];
+                            $explode = explode('*',$newdate)[0];
+                        @endphp
+                        @if ($newdate)
+                        <td> <input placeholder="mm/dd/yyyy"  type="text" name="items[{{$item['serID']}}][commitment_date]" value="{{ date('m/d/Y',strtotime($explode)) }}" style="margin-left:5%" id="date_timepicker_end" class="form-control col-11 commitment-date" readonly> </td>
+                        @else
+                        <td> <input placeholder="mm/dd/yyyy"  type="text" name="items[{{$item['serID']}}][commitment_date]" value="" style="margin-left:5%" id="date_timepicker_end" class="form-control col-11 commitment-date" readonly> </td>
+                        @endif
                     </tr>
                     @endforeach
                 
@@ -358,5 +366,6 @@
            
         })  
   })
+
 </script>
 @endsection
