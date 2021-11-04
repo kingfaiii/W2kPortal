@@ -21,12 +21,12 @@
     @section('header')
     <form id="customerinput_form" name="customerinput_form" method="POST">
         @csrf
-        <div class="col-md-12">
+        <div class="col-12">
            
         
             <a href="{{ route('HistoryLog',[request()->segment(count(request()->segments()))]) }}" class="btn btn-info mb-3 text-white mt-2">History</a>
 
-            <h2 class="text-white font-weight-bold">Convert Customer Details</h2>
+            <p class="h2 text-white font-weight-bold">Convert Customer Details</p>
         </div>
        
     @endsection
@@ -135,7 +135,7 @@
                         <td>
                             @if (in_array($item['service_name'],$layout))
                             <select   class="form-control customerinput-text" style="width:115%" name="items[{{$item['serID']}}][layout]" id="">
-                                <option selected value="{{ $item['layout']}} ">{{ $item['layout']}} </option>
+                                <option selected value="{{ $item['layout']}} ">{{ explode('*',$item['layout'])[0] }} </option>
                                     <option value="Reflowable">Reflowable</option>
                                     <option value="Fixed Virtual">Fixed Virtual</option>
                                     <option value="ixed Hidden">Fixed Hidden</option>
@@ -156,7 +156,7 @@
                      
                             @if (in_array($item['service_name'],$count))
 
-                            <input  type="text" value="{{ $item['page_count']}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item['serID']}}][page_count]" id="">
+                            <input  type="text" value="{{ explode('*',$item['page_count'])[0]}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item['serID']}}][page_count]" id="">
                                
                             @else
                             <input  disabled  type="text" value="{{ $item['page_count']}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item['serID']}}][page_count]" id="">
@@ -167,7 +167,7 @@
                         <td>    
                                 @if (in_array($item['service_name'],$classification))
                                 <select   class="form-control customerinput-text" name="items[{{$item['serID']}}][project_classification]" id="">
-                                    <option selected value=" {{ $item['project_classification']}}"> @php echo explode('*', $item['project_classification'])[0] @endphp</option>
+                                    <option selected value=" {{ $item['project_classification']}}"> {{ explode('*', $item['project_classification'])[0] }}</option>
                                     <option value="Simple">Simple</option>
                                     <option value="Moderate">Moderate</option>
                                     <option value="Complex">Complex</option>
@@ -185,11 +185,11 @@
                                 
                         </td>
                         <td> 
-                            <input type="text"   name="items[{{$item['serID']}}][turnaround_time]"  value="{{ $item['turnaround_time']}}" id="" style="margin-left:25%" class="form-control col-6 turnaround-time customerinput-text" maxlength="2">  
+                            <input type="text"   name="items[{{$item['serID']}}][turnaround_time]"  value="{{ explode('*',$item['turnaround_time'])[0]}}" id="" style="margin-left:25%" class="form-control col-6 turnaround-time customerinput-text" maxlength="2">  
                             </td>
                         <td>  
                             <select  class="form-control customerinput-status customerinput-text" style="width:136%;margin-left:-28%;" name="items[{{$item['serID']}}][status]" id="customerinput_status">
-                                <option selected value="  {{ $item['status']}}">  {{ $item['status']}} </option>
+                                <option selected value="  {{ $item['status']}}">  {{ explode('*',$item['status'])[0] }} </option>
                                 <option value="Completed">Completed</option>
                                 <option value="On-going">On-going</option>
                                 <option value="On Hold">On Hold</option>
@@ -221,27 +221,27 @@
                         <td>  {{ $item['service_name']}} </td>    
                             <td> 
                                 <select   name="items[{{$item['serID']}}][owner]" id="" style="width:190%;margin-left:-20%" class="form-control customerinput-text">
-                                    <option value="{{ $item['owner']}}">{{ $item['owner']}}</option>
+                                    <option value="{{ $item['owner']}}">{{ explode('*',$item['owner'])[0]}}</option>
                                     @foreach ($owner as $owner_row)
                                     <option value="{{$owner_row['owner_fname']}} {{ $owner_row['owner_lname'] }}">{{ $owner_row['owner_fname']}} {{ $owner_row['owner_lname']}}</option>
                                     @endforeach
                                 </select> 
 
                             </td>
-                        <td> <input   type="text" name="items[{{$item['serID']}}][job_cost]" style="margin-left:40%" value="{{ $item['job_cost']}} " id="" class="form-control col-8 customerinput-text"> </td>
-                        <td> <input   type="date" name="items[{{$item['serID']}}][date_assigned]" value="{{ $item['date_assigned']}}" style="margin-left:-5%" id="" class="form-control col-11 customerinput-text">   </td>
-                        <td> <input    type="date" name="items[{{$item['serID']}}][date_completed]" value="{{ $item['date_completed']}}" style="margin-left:-5%" id="" class="form-control col-11 customerinput-text">   </td>
+                        <td> <input   type="text" name="items[{{$item['serID']}}][job_cost]" style="margin-left:40%" value="{{ explode('*',$item['job_cost'])[0]}} " id="" class="form-control col-8 customerinput-text"> </td>
+                        <td> <input   type="date" name="items[{{$item['serID']}}][date_assigned]" value="{{ explode('*',$item['date_assigned'])[0] }}" style="margin-left:-5%" id="" class="form-control col-11 customerinput-text">   </td>
+                        <td> <input    type="date" name="items[{{$item['serID']}}][date_completed]" value="{{ explode('*',$item['date_completed'])[0] }}" style="margin-left:-5%" id="" class="form-control col-11 customerinput-text">   </td>
                         <td>
                             <select   name="items[{{$item['serID']}}][quality_assurance]" id="" style="margin-left:-30%;width:180%" class="form-control customerinput-text">
-                                <option selected value=" {{ $item['quality_assurance']}} "> {{ $item['quality_assurance']}} </option>
+                                <option selected value=" {{ $item['quality_assurance']}} "> {{ explode('*',$item['quality_assurance'])[0]}} </option>
                                 @foreach ($qa as $qa_row)
                                 <option value="{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}">{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}</option>
                                 @endforeach
                             </select> 
                             </td>
                         <td> <input style="margin-left:25px;width:50%"id="" class="form-control customerinput-text"></td>
-                        <td> <input  type="text" name="items[{{$item['serID']}}][uid]" value="{{ $item['uid']}}" id="" class="form-control customerinput-text"></td>
-                        <td> <input   type="text" name="items[{{$item['serID']}}][project_link]" value="{{ $item['project_link']}} " id="" class="form-control customerinput-text"> </td>
+                        <td> <input  type="text" name="items[{{$item['serID']}}][uid]" value="{{ explode('*',$item['uid'])[0] }}" id="" class="form-control customerinput-text"></td>
+                        <td> <input   type="text" name="items[{{$item['serID']}}][project_link]" value="{{ explode('*',$item['project_link'])[0] }} " id="" class="form-control customerinput-text"> </td>
                     </tr>
                     @endforeach
                 

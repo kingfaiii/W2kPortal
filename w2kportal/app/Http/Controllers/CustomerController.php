@@ -114,7 +114,7 @@ class CustomerController extends Controller
 
                         if (count($current_user) > 1) {
 
-                            if ($current_user[1] === strval(Auth::user()->id) && str_contains('*', $inclusions[$service_key])) {
+                            if ($current_user[1] === strval(Auth::user()->id) && isset(explode('*', $inclusions[$service_key])[1])) {
                                 $inclusions[$service_key] =  $service_array[$service_key];
                             } else {
                                 if (isset(explode('*', $inclusions[$service_key])[1])) {
@@ -155,12 +155,15 @@ class CustomerController extends Controller
 
                     if (array_key_exists($ser_key, $inclusions)) {
                         if (count($current_user) > 1) {
-                            if ($inclusions[$ser_key] ===  $inclusions[$ser_key]) {
-                                $inclusions[$ser_key] = $service_array[$ser_key];
-                            } elseif ($current_user[1] !== strval(Auth::user()->id)) {
-                                $inclusions[$ser_key] = '*' . Auth::user()->id;
+
+                            if ($current_user[1] === strval(Auth::user()->id) && str_contains('*', $inclusions[$ser_key])) {
+                                $inclusions[$ser_key] =  $service_array[$ser_key];
                             } else {
-                                unset($inclusions[$ser_key]);
+                                if (isset(explode('*', $inclusions[$ser_key])[1])) {
+                                    unset($inclusions[$ser_key]);
+                                } else {
+                                    $inclusions[$ser_key] = explode('*',  $inclusions[$ser_key])[0] . '*' .  Auth::user()->id;
+                                }
                             }
                         } else {
                             $inclusions[$ser_key] .= '*' . Auth::user()->id;
