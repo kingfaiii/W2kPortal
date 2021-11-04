@@ -129,6 +129,7 @@
                     @foreach ($book_information as $item)
                     <tr data-id="{{$item['id']}}" class="text-center align-center justify-content-center">
                         <input type="hidden" name="items[{{$item['serID']}}][service_id]" value="{{$item['serID']}}">
+                        
                         <td>  {{ $item['service_name']}} </td>
                         <td> ${{ $item['project_cost']}} </td>
                         <td>
@@ -147,28 +148,26 @@
                                     <option value="Fixed Virtual">Fixed Virtual</option>
                                     <option value="ixed Hidden">Fixed Hidden</option>
                                     <option value="Combination">Combination</option>
-                                </select>
+                            </select>
                             @endif
                           
-                                <span class="inclusion_log"></span>
                         </td>
                         <td>
                      
                             @if (in_array($item['service_name'],$count))
 
-                            <input   type="text" value="{{ $item['page_count']}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item['serID']}}][page_count]" id="">
+                            <input  type="text" value="{{ $item['page_count']}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item['serID']}}][page_count]" id="">
                                
                             @else
                             <input  disabled  type="text" value="{{ $item['page_count']}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item['serID']}}][page_count]" id="">
                                 
                             @endif
 
-                            <span class="inclusion_log"></span>
                         </td>
                         <td>    
                                 @if (in_array($item['service_name'],$classification))
                                 <select   class="form-control customerinput-text" name="items[{{$item['serID']}}][project_classification]" id="">
-                                    <option selected value=" {{ $item['project_classification']}}"> {{ $item['project_classification']}} </option>
+                                    <option selected value=" {{ $item['project_classification']}}"> @php echo explode('*', $item['project_classification'])[0] @endphp</option>
                                     <option value="Simple">Simple</option>
                                     <option value="Moderate">Moderate</option>
                                     <option value="Complex">Complex</option>
@@ -184,11 +183,9 @@
                                 </select>
                                 @endif
                                 
-                                <span class="inclusion_log"></span>
                         </td>
                         <td> 
                             <input type="text"   name="items[{{$item['serID']}}][turnaround_time]"  value="{{ $item['turnaround_time']}}" id="" style="margin-left:25%" class="form-control col-6 turnaround-time customerinput-text" maxlength="2">  
-                            <span class="inclusion_log"></span>
                             </td>
                         <td>  
                             <select  class="form-control customerinput-status customerinput-text" style="width:136%;margin-left:-28%;" name="items[{{$item['serID']}}][status]" id="customerinput_status">
