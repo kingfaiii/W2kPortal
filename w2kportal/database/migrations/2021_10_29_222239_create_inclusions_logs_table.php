@@ -16,7 +16,7 @@ class CreateInclusionsLogsTable extends Migration
         Schema::create('inclusions_logs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('log_id')->nullable();
-            $table->string('project_cost')->nullable();
+            $table->string('user_id')->nullable();
             $table->string('won_id')->nullable();
             $table->string('package_id')->nullable();
             $table->string('book_id')->nullable();

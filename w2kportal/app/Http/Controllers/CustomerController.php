@@ -73,7 +73,7 @@ class CustomerController extends Controller
 
         $request_items = array_map('array_filter', request()->input('items'));
         $request_items = array_filter($request_items);
-        print_r($request_items);
+        
         if (!empty($request_items)) {
             foreach ($request_items as $key => $inclusions) {
                 $service = service_inclusion::where('id', $inclusions['service_id']);
@@ -89,7 +89,7 @@ class CustomerController extends Controller
 
                     if (count($current_user) > 1) {
                         if ($current_user[1] === strval(Auth::user()->id)) {
-                            print_r('xxx');
+                        
                             $inclusions[$service_key] = $inclusions[$service_key] . '*' . $current_user[1];
                         } else {
                             if (array_key_exists($service_key, $inclusions)) {
@@ -123,14 +123,17 @@ class CustomerController extends Controller
                 $service = service_inclusion::where('id', $inclusions['service_id'])->get();
                 $service_array = $service->toArray()[0];
                 unset($inclusions['service_id']);
-
                 foreach ($service_array as $ser_key => $inclusion) {
+                 
                     $current_user = explode('*', $service_array[$ser_key]);
-
                     if (count($current_user) > 1) {
-                        if ($current_user[1] !== strval(Auth::user()->id)) {
+                        if ( $inclusions[$ser_key] ===  $inclusions[$ser_key] ) {
                             if (array_key_exists($ser_key, $inclusions)) {
                                 $inclusions[$ser_key] .= '*' . $current_user[1];
+                            }
+                        }elseif (  $current_user[1] !== strval(Auth::user()->id) ){
+                            if (array_key_exists($ser_key, $inclusions)) {
+                                $inclusions[$ser_key] = '*' . Auth::user()->id;
                             }
                         } else {
                             if (array_key_exists($ser_key, $inclusions)) {
@@ -149,6 +152,7 @@ class CustomerController extends Controller
                     $inclusions['won_id'] = $service_array['won_id'];
                     $inclusions['book_id'] = $service_array['book_id'];
                     $inclusions['package_id'] = $service_array['package_id'];
+                    $inclusions['user_id'] = Auth::user()->id;
                     inclusions_log::insert($inclusions);
                 }
             }
