@@ -36,7 +36,7 @@ Route::group(['middleware' => 'prevent-back'], function () {
     Route::get('/won/books/{won_id}', [App\Http\Controllers\WonCustomerController::class, 'woncustomerview'])->name('WonCustomersbooklist');
     Route::get('/report/list/{id}', [App\Http\Controllers\ReportController::class, 'indexReportList'])->name('ReportList');
     Route::get('/won/books/edit/{id}', [App\Http\Controllers\CustomerController::class, 'index'])->name('customer');
-    Route::get('/won/books/history/{slug}', [App\Http\Controllers\CustomerController::class, 'historyIndex'])->name('HistoryLog');
+    Route::get('/won/books/history/{book_id}', [App\Http\Controllers\InclusionsLogController::class, 'index'])->name('HistoryLog');
     Route::get('/order/{id}', [App\Http\Controllers\OrderController::class, 'index'])->name('order');
     Route::post('/order/store', [App\Http\Controllers\OrderController::class, 'Store'])->name('StoreOrder');
     Route::post('/order/update/{id}', [App\Http\Controllers\OrderController::class, 'update'])->name('UpdateOrder');

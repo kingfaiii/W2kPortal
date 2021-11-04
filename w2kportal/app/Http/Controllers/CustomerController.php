@@ -9,6 +9,7 @@ use App\Models\owner;
 use App\Models\QualityAssurance;
 use App\Models\service_inclusion;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
@@ -73,7 +74,7 @@ class CustomerController extends Controller
 
         $request_items = array_map('array_filter', request()->input('items'));
         $request_items = array_filter($request_items);
-        
+
         if (!empty($request_items)) {
             foreach ($request_items as $key => $inclusions) {
                 $service = service_inclusion::where('id', $inclusions['service_id']);
@@ -82,30 +83,55 @@ class CustomerController extends Controller
                 $service_array = $service_new->toArray()[0];
                 unset($inclusions['service_id']);
 
+                // foreach ($service_array as $service_key => $inclusion) {
+                //     $current_user = explode('*', $service_array[$service_key]);
+
+                //     if (count($current_user) > 1) {
+                //         if ($current_user[1] === strval(Auth::user()->id)) {
+                //             if (str_contains('*', $inclusions[$service_key])) {
+                //                 $inclusions[$service_key] = $inclusions[$service_key];
+                //             } else {
+
+                //                 $inclusions[$service_key] = '*' . Auth::user()->id;
+                //             }
+                //         }
+                //     } else {
+                //         if (array_key_exists($service_key, $inclusions)) {
+                //             if (str_contains('*', $inclusions[$service_key])) {
+                //                 $inclusions[$service_key] = $inclusions[$service_key];
+                //             } else {
+                //                 $inclusions[$service_key] = '*' . Auth::user()->id;
+                //             }
+                //         }
+                //     }
+                // }
 
 
                 foreach ($service_array as $service_key => $inclusion) {
                     $current_user = explode('*', $service_array[$service_key]);
 
-                    if (count($current_user) > 1) {
-                        if ($current_user[1] === strval(Auth::user()->id)) {
-                        
-                            $inclusions[$service_key] = $inclusions[$service_key] . '*' . $current_user[1];
-                        } else {
-                            if (array_key_exists($service_key, $inclusions)) {
-                                $inclusions[$service_key] .= '*' . Auth::user()->id;
+                    if (array_key_exists($service_key, $inclusions)) {
+
+                        if (count($current_user) > 1) {
+
+                            if ($current_user[1] === strval(Auth::user()->id) && str_contains('*', $inclusions[$service_key])) {
+                                $inclusions[$service_key] =  $service_array[$service_key];
+                            } else {
+                                if (isset(explode('*', $inclusions[$service_key])[1])) {
+                                    $inclusions[$service_key] = explode('*',  $inclusions[$service_key])[0] . '*' . $current_user[1];
+                                } else {
+                                    $inclusions[$service_key] = explode('*',  $inclusions[$service_key])[0] . '*' .  Auth::user()->id;
+                                }
                             }
-                        }
-                    } else {
-                        if (array_key_exists($service_key, $inclusions)) {
+                        } else {
                             $inclusions[$service_key] .= '*' . Auth::user()->id;
                         }
                     }
                 }
 
-
                 $service->update($inclusions);
             }
+
             $this->create_logs($request_items);
         }
 
@@ -124,24 +150,19 @@ class CustomerController extends Controller
                 $service_array = $service->toArray()[0];
                 unset($inclusions['service_id']);
                 foreach ($service_array as $ser_key => $inclusion) {
-                 
+
                     $current_user = explode('*', $service_array[$ser_key]);
-                    if (count($current_user) > 1) {
-                        if ( $inclusions[$ser_key] ===  $inclusions[$ser_key] ) {
-                            if (array_key_exists($ser_key, $inclusions)) {
-                                $inclusions[$ser_key] .= '*' . $current_user[1];
-                            }
-                        }elseif (  $current_user[1] !== strval(Auth::user()->id) ){
-                            if (array_key_exists($ser_key, $inclusions)) {
+
+                    if (array_key_exists($ser_key, $inclusions)) {
+                        if (count($current_user) > 1) {
+                            if ($inclusions[$ser_key] ===  $inclusions[$ser_key]) {
+                                $inclusions[$ser_key] = $service_array[$ser_key];
+                            } elseif ($current_user[1] !== strval(Auth::user()->id)) {
                                 $inclusions[$ser_key] = '*' . Auth::user()->id;
+                            } else {
+                                unset($inclusions[$ser_key]);
                             }
                         } else {
-                            if (array_key_exists($ser_key, $inclusions)) {
-                                $inclusions[$ser_key] .= '*' . Auth::user()->id;
-                            }
-                        }
-                    } else {
-                        if (array_key_exists($ser_key, $inclusions)) {
                             $inclusions[$ser_key] .= '*' . Auth::user()->id;
                         }
                     }
@@ -153,21 +174,11 @@ class CustomerController extends Controller
                     $inclusions['book_id'] = $service_array['book_id'];
                     $inclusions['package_id'] = $service_array['package_id'];
                     $inclusions['user_id'] = Auth::user()->id;
+                    $inclusions['created_at'] = Carbon::now()->toDateTimeString();
+                    $inclusions['updated_at'] = Carbon::now()->toDateTimeString();
                     inclusions_log::insert($inclusions);
                 }
             }
         }
-    }
-
-
-    public function historyIndex($id)
-    {
-
-
-        $history = inclusions_log::join('books', 'inclusions_logs.book_id', '=', 'books.id')
-            ->join('service_inclusions', 'inclusions_logs.service_id', '=', 'service_inclusions.id')
-            ->where('inclusions_logs.book_id', '=', $id);
-
-        return view('InclusionHistory', ['history' => $history]);
     }
 }
