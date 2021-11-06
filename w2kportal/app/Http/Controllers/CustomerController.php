@@ -22,8 +22,16 @@ class CustomerController extends Controller
 
     public function index($id)
     {
+        // Retrieving The History Information
+        $inclusions_backlog = inclusions_log::orderBy('created_at', 'DESC')->where('book_id', $id)->limit(1)->get();
 
+        // Retrieving All the Owners Data
+        $owner = owner::all();
 
+        // Retrieving All the QA Data
+        $qa = QualityAssurance::all();
+
+        // Retrieving the Service Inclusions
         $book_information = service_inclusion::join('service_packages', 'service_inclusions.package_id', '=', 'service_packages.id')
             ->select('service_inclusions.*', 'service_inclusions.id AS serID')
             ->where('service_inclusions.book_id', '=', $id);
@@ -44,13 +52,9 @@ class CustomerController extends Controller
                 'books.total_project_cost AS cost',
                 'service_packages.package_name'
             )
-            // ->where('won_customers.status', '=', 'won')
             ->where('books.id', '=', $id);
 
-        $inclusions_backlog = inclusions_log::orderBy('created_at', 'DESC')->where('book_id', $id)->limit(1)->get();
-
-        $owner = owner::all();
-        $qa = QualityAssurance::all();
+        
 
         $book_info = [];
         foreach ($book_information->get()->toArray() as $key => $books) {
@@ -82,30 +86,6 @@ class CustomerController extends Controller
 
                 $service_array = $service_new->toArray()[0];
                 unset($inclusions['service_id']);
-
-                // foreach ($service_array as $service_key => $inclusion) {
-                //     $current_user = explode('*', $service_array[$service_key]);
-
-                //     if (count($current_user) > 1) {
-                //         if ($current_user[1] === strval(Auth::user()->id)) {
-                //             if (str_contains('*', $inclusions[$service_key])) {
-                //                 $inclusions[$service_key] = $inclusions[$service_key];
-                //             } else {
-
-                //                 $inclusions[$service_key] = '*' . Auth::user()->id;
-                //             }
-                //         }
-                //     } else {
-                //         if (array_key_exists($service_key, $inclusions)) {
-                //             if (str_contains('*', $inclusions[$service_key])) {
-                //                 $inclusions[$service_key] = $inclusions[$service_key];
-                //             } else {
-                //                 $inclusions[$service_key] = '*' . Auth::user()->id;
-                //             }
-                //         }
-                //     }
-                // }
-
 
                 foreach ($service_array as $service_key => $inclusion) {
                     $current_user = explode('*', $service_array[$service_key]);
