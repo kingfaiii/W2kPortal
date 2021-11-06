@@ -73,7 +73,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "eBook Conversion (EB)",
+            "service_name" => "eBook Conversion",
             "project_cost" => 0,
             "task" => "Conversion",
             "status" => "On-going",
@@ -82,7 +82,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Basic eBook Cover Art (EB)",
+            "service_name" => "Basic eBook Cover Art",
             "project_cost" => 0,
             "task" => "Art Work - Cover",
             "status" => "On-Hold",
@@ -92,7 +92,7 @@ class OrderController extends Controller
 
 
         [
-            "service_name" => "eBook Conversion (EV)",
+            "service_name" => "eBook Conversion",
             "project_cost" => 0,
             "task" => "Conversion",
             "status" => "On-going",
@@ -101,7 +101,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Basic eBook Cover Art (EV)",
+            "service_name" => "Basic eBook Cover Art",
             "project_cost" => 0,
             "task" => "Art Work - Cover",
             "status" => "On-Hold",
@@ -110,7 +110,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Facebook Banner (EV)",
+            "service_name" => "Facebook Banner",
             "project_cost" => 0,
             "task" => "Art Work - FB Cover",
             "status" => "On-Hold",
@@ -128,7 +128,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "eBook Conversion (ED)",
+            "service_name" => "eBook Conversion",
             "project_cost" => 0,
             "task" => "Conversion",
             "status" => "On-going",
@@ -137,7 +137,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Premium eBook Cover Art (ED)",
+            "service_name" => "Premium eBook Cover Art",
             "project_cost" => 100,
             "task" => "Art Work - Cover",
             "status" => "On-Hold",
@@ -146,7 +146,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Amazon eBook Upload (ED)",
+            "service_name" => "Amazon eBook Upload",
             "project_cost" => 50,
             "task" => "eBook Upload",
             "status" => "On-Hold",
@@ -155,7 +155,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Facebook Banner (ED)",
+            "service_name" => "Facebook Banner",
             "project_cost" => 0,
             "task" => "Art Work - FB Cover",
             "status" => "On-Hold",
@@ -165,7 +165,7 @@ class OrderController extends Controller
 
 
         [
-            "service_name" => "Facebook Page Creation (ED)",
+            "service_name" => "Facebook Page Creation",
             "project_cost" => 50,
             "task" => "FB Page Creation",
             "status" => "On-Hold",
@@ -174,7 +174,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Interior Formatting (PB)",
+            "service_name" => "Interior Formatting",
             "project_cost" => 0,
             "task" => "Interior Formatting",
             "status" => "On-Hold",
@@ -183,7 +183,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Interior Formatting (PV)",
+            "service_name" => "Interior Formatting",
             "project_cost" => 0,
             "task" => "Interior Formatting",
             "status" => "On-Hold",
@@ -193,7 +193,7 @@ class OrderController extends Controller
 
 
         [
-            "service_name" => "Premium Book Covert Art (PV)",
+            "service_name" => "Premium Book Covert Art",
             "project_cost" => 100,
             "task" => "Interior Formatting",
             "status" => "On-Hold",
@@ -202,7 +202,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Interior Formatting (PD)",
+            "service_name" => "Interior Formatting",
             "project_cost" => 0,
             "task" => "Interior Formatting",
             "status" => "On-Hold",
@@ -212,7 +212,7 @@ class OrderController extends Controller
 
 
         [
-            "service_name" => "Premium Book Cover Art (PD)",
+            "service_name" => "Premium Book Cover Art",
             "project_cost" => 100,
             "task" => "Art Work - Cover",
             "status" => "On-Hold",
@@ -222,7 +222,7 @@ class OrderController extends Controller
 
 
         [
-            "service_name" => "Amazon Print Upload (PD)",
+            "service_name" => "Amazon Print Upload",
             "project_cost" => 50,
             "task" => "Print Upload",
             "status" => "On-Hold",
@@ -231,7 +231,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Facebook Banner (PD)",
+            "service_name" => "Facebook Banner",
             "project_cost" => 0,
             "task" => "Art Work - FB Cover",
             "status" => "On-Hold",
@@ -240,7 +240,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Facebook Page Creation (PD)",
+            "service_name" => "Facebook Page Creation",
             "project_cost" => 50,
             "task" => "FB Page Creation",
             "status" => "On-Hold",
@@ -249,7 +249,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Interior Formatting (EPB)",
+            "service_name" => "Interior Formatting",
             "project_cost" => 0,
             "task" => "Interior Formatting",
             "status" => "On-Hold",
@@ -259,7 +259,7 @@ class OrderController extends Controller
 
 
         [
-            "service_name" => "eBook Conversion (EPB)",
+            "service_name" => "eBook Conversion",
             "project_cost" => 80,
             "task" => "Conversion",
             "status" => "On-Hold",
@@ -268,7 +268,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Basic eBook Cover Art (EPB)",
+            "service_name" => "Basic eBook Cover Art",
             "project_cost" => 0,
             "task" => "Art Work - Cover",
             "status" => "On-Hold",
@@ -278,7 +278,7 @@ class OrderController extends Controller
 
 
         [
-            "service_name" => "Interior Formatting (EPV)",
+            "service_name" => "Interior Formatting",
             "project_cost" => 0,
             "task" => "Interior Formatting",
             "status" => "On-Hold",
@@ -288,7 +288,7 @@ class OrderController extends Controller
 
 
         [
-            "service_name" => "eBook Conversion (EPV)",
+            "service_name" => "eBook Conversion",
             "project_cost" => 100,
             "task" => "Art Work - Cover",
             "status" => "On-Hold",
@@ -297,7 +297,7 @@ class OrderController extends Controller
         ],
 
         [
-            "service_name" => "Basic eBook Cover Art (EPV)",
+            "service_name" => "Basic eBook Cover Art",
             "project_cost" => 49,
             "task" => "Conversion",
             "status" => "On-Hold",
@@ -504,7 +504,7 @@ class OrderController extends Controller
     public function ConvertCustomer(request $request)
     {
 
-      
+
 
         $activity = new Order;
         $activity->created_at = Carbon::now()->toDateTimeString();
