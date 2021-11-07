@@ -157,7 +157,7 @@
                                     <option value="Combination">Combination</option>
                                 </select>
                             @else
-                            <select   class="form-control customerinput-text" style="width:115%" name="items[{{$item['serID']}}][layout]" id="">
+                            <select  class="form-control customerinput-text disabled-field" style="width:115%" name="items[{{$item['serID']}}][layout]" id="" disabled>
                                 <option selected value="{{ $item['layout']}} ">{{ $item['layout']}} </option>
                                     <option value="Reflowable">Reflowable</option>
                                     <option value="Fixed Virtual">Fixed Virtual</option>
@@ -171,17 +171,17 @@
                      
                             @if (in_array($item['service_name'],$count))
 
-                            <input  type="text" value="{{ explode('*',$item['page_count'])[0]}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item['serID']}}][page_count]" id="">
+                            <input type="text" value="{{ explode('*',$item['page_count'])[0]}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item['serID']}}][page_count]" id="">
                                
                             @else
-                            <input    type="text" value="{{ $item['page_count']}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text" name="items[{{$item['serID']}}][page_count]" id="">
+                            <input  type="text" value="{{ $item['page_count']}}" style="margin-left:25%" class="form-control justify-content-center col-6 customerinput-text disabled-field" name="items[{{$item['serID']}}][page_count]" id="" disabled>
                                 
                             @endif
 
                         </td>
                         <td>    
                                 @if (in_array($item['service_name'],$classification))
-                                <select   class="form-control customerinput-text" name="items[{{$item['serID']}}][project_classification]" id="">
+                                <select class="form-control customerinput-text" name="items[{{$item['serID']}}][project_classification]" id="">
                                     <option selected value=" {{ $item['project_classification']}}"> {{ explode('*', $item['project_classification'])[0] }}</option>
                                     <option value="Simple">Simple</option>
                                     <option value="Moderate">Moderate</option>
@@ -189,7 +189,7 @@
                                     <option value="Difficult">Difficult</option>
                                 </select>
                                 @else
-                                <select   class="form-control customerinput-text" name="items[{{$item['serID']}}][project_classification]" id="">
+                                <select  class="form-control customerinput-text disabled-field" name="items[{{$item['serID']}}][project_classification]" id="" disabled>
                                     <option selected value=" {{ $item['project_classification']}}"> {{ $item['project_classification']}} </option>
                                     <option value="Simple">Simple</option>
                                     <option value="Moderate">Moderate</option>
@@ -218,7 +218,7 @@
                         @if ($newdate)
                         <td> <input placeholder="mm/dd/yyyy"  type="text" name="items[{{$item['serID']}}][commitment_date]" value="{{ date('m/d/Y',strtotime($explode)) }}" style="margin-left:5%" id="date_timepicker_end" class="form-control col-11 commitment-date" readonly> </td>
                         @else
-                        <td> <input placeholder="mm/dd/yyyy"  type="text" name="items[{{$item['serID']}}][commitment_date]" value="" style="margin-left:5%" id="date_timepicker_end" class="form-control col-11 commitment-date" readonly> </td>
+                        <td> <input readonly placeholder="mm/dd/yyyy"  type="text" name="items[{{$item['serID']}}][commitment_date]" value="" style="margin-left:5%" id="date_timepicker_end" class="form-control col-11 commitment-date" readonly> </td>
                         @endif
                     </tr>
                     @endforeach
@@ -341,15 +341,24 @@
            
             }
         });
+
+        const toggleDisabled = (isDisabled = false) => {
+          $('.disabled-field').each(function() {
+               if(!isDisabled) {
+                     $(this).removeAttr('disabled')
+               } else {
+                    $(this).prop('disabled', true)
+               }
+          })
+
+        }
         
         $('#customerinput_update').on('click', async function(e) {
             e.preventDefault()
             const msgResult = await  messagePrompt("Are you sure?",'This Service Inclusion will be Updated', true, 'warning', "Yes Update it!!")
             
-            let arr =  $('#customerinput_form').serialize()
-
             const arrFormValidation = []
-            console.log($('.customerinput-text').length)
+        
             $('.customerinput-text').each(function() {
                 const inputValue = $.trim($(this).val())
 
@@ -362,8 +371,10 @@
                 return
             }
 
+            toggleDisabled(false)
+            let arr = $('#customerinput_form').serialize();
+           
             if(msgResult.isConfirmed) {
-
                 $.ajax({
                         type: "POST",
                         url: "{{route('UpdateInclusions')}}",
@@ -371,6 +382,9 @@
                         success: function(data, xhr, status) {
                             console.log(xhr)
                         if(xhr=== 'success') messagePrompt('Successfully Updated', "", false, "success", "Got it")
+                        },
+                        complete: function() {
+                            toggleDisabled(true)
                         },
                         error: function(xhr) { // if error occured
                             messagePrompt('Error occured.please try again', "", false, "error", "Ok")

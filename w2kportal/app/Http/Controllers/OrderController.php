@@ -14,8 +14,9 @@ use Carbon\Carbon;
 
 class OrderController extends Controller
 {
-   
-    private  function saveOrderStatus($name,$id,$reason_hold,$reason_lost,$reason_hold_date){
+
+    private  function saveOrderStatus($name, $id, $reason_hold, $reason_lost, $reason_hold_date)
+    {
         $status = customer::find($id);
         $status->reason_hold = $reason_hold;
         $status->reason_lost = $reason_lost;
@@ -32,11 +33,10 @@ class OrderController extends Controller
         $activity->remarks = "Update Status($name)";
         $activity->save();
 
-        return redirect()->route('order',[$activity->customer_id])->with('success', 'Customer status Successfully Updated');
-
+        return redirect()->route('order', [$activity->customer_id])->with('success', 'Customer status Successfully Updated');
     }
 
-    
+
     private $inclusions_array = [
         [
             "service_name" => "Interior Formatting",
@@ -399,7 +399,7 @@ class OrderController extends Controller
 
     public function index($id)
     {
-       
+
 
         $order = Order::leftJoin('service_packages', 'orders.Package_id', '=', 'service_packages.id')
             ->select('orders.*', 'service_packages.*', 'orders.updated_at AS orderupdated', 'orders.Package_id AS PackID', 'orders.id AS ActivityID')
@@ -432,7 +432,7 @@ class OrderController extends Controller
         $status->reason_lost = null;
         $status->reason_hold_date = null;
         $status->update();
-        return redirect()->route('order',[request('customer_id')])->with('success',config('messages.AddActivity'));
+        return redirect()->route('order', [request('customer_id')])->with('success', config('messages.AddActivity'));
     }
     public function show()
     {
@@ -441,21 +441,20 @@ class OrderController extends Controller
     public function update(request $request, $id)
     {
 
-           switch(request('customer_status')){
+        switch (request('customer_status')) {
 
-               case 'Answered':
-               return $this->saveOrderStatus('Answered',$id,null,null,null);
-               break;
+            case 'Answered':
+                return $this->saveOrderStatus('Answered', $id, null, null, null);
+                break;
 
-               case 'Lost':
-               return $this->saveOrderStatus('Lost',$id,null,request('Reasonlost'),null);
-               break;
+            case 'Lost':
+                return $this->saveOrderStatus('Lost', $id, null, request('Reasonlost'), null);
+                break;
 
-               case 'Hold':
-               return $this->saveOrderStatus('Hold',$id,request('reason_hold'),null,request('reason_hold_date'));
-               break;
-           }
-
+            case 'Hold':
+                return $this->saveOrderStatus('Hold', $id, request('reason_hold'), null, request('reason_hold_date'));
+                break;
+        }
     }
 
     public function updateactivity($id)
@@ -464,24 +463,18 @@ class OrderController extends Controller
         $activity->customer_book = request('customer_book');
         $activity->remarks = request('remarks');
         $activity->update();
-        return redirect()->route('order',[$activity->customer_id])->with('success', config('messages.updatedactivity'));
+        return redirect()->route('order', [$activity->customer_id])->with('success', config('messages.updatedactivity'));
     }
     public function DestroyActivity($id)
     {
         $order = Order::find($id);
         $order->delete();
-        return redirect()->route('order',$order->customer_id)->with('success', config('messages.deleted'));
+        return redirect()->route('order', $order->customer_id)->with('success', config('messages.deleted'));
     }
 
     public function ConvertCustomer(request $request)
     {
-<<<<<<< HEAD
-      
-=======
 
-
-
->>>>>>> 614f8f1b8cb91ced24b51de7fa1f11d1a2befaf2
         $activity = new Order;
         $activity->created_at = Carbon::now()->toDateTimeString();
         $activity->updated_at = Carbon::now()->toDateTimeString();
@@ -575,8 +568,7 @@ class OrderController extends Controller
         }
 
         $this->createInclusions($this->inclusions_array, $book, $chosen_num, $request);
-        return redirect()->route('order',[request('customer_id')])->with('success',config('messages.NewConvert'));
-
+        return redirect()->route('order', [request('customer_id')])->with('success', config('messages.NewConvert'));
     }
 
 
@@ -596,7 +588,7 @@ class OrderController extends Controller
                 "won_id" =>  request()->input('customer_id'),
                 "service_name" => request()->input('fixed_inclusion'),
                 "task" =>  $found
-                
+
             ]);
         } elseif ($parent_id === 12) {
             $found = "";

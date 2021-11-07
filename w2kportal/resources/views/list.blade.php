@@ -126,6 +126,9 @@
             $('#customerlist_body').empty()
             if (arr.length > 0) {
                 arr.map((k, i) => {
+
+                   let date_object = new Date(k.orderUpdated);
+                   
                     $('#customerlist_body').append(
                         `   
                                 <tr class="text-center">
@@ -134,7 +137,7 @@
                                     <td>${k.customer_email} </td>
                                     <td>${k.customer_status}</td>
                                     <td>${k.remarks ? k.remarks : 'No Remarks'}</td>
-                                    <td>${k.orderUpdated ? k.orderUpdated : 'No Remarks'}</td>
+                                    <td>${ date_object.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric'}) ? date_object.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric'}) : 'No Activity'}</td>
                                     <td>
                                         <div class="row">
                                             <div class="col-md-6">

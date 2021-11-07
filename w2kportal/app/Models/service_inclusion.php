@@ -9,6 +9,4 @@ class service_inclusion extends Model
 {
 
     use HasFactory;
-
-    protected $columns = ['id', 'pseudo', 'email'];
 }

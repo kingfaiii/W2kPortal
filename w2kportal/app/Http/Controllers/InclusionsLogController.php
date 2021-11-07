@@ -14,11 +14,6 @@ class InclusionsLogController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
 
     public function index($id)
     {
@@ -35,10 +30,11 @@ class InclusionsLogController extends Controller
         foreach ($history->get()->toArray() as $key => $histories) {
 
             foreach ($histories as $history_key => $histor) {
-                $hasAsterisk = explode('*',  $histor);
-
-                $history_info[$key][$history_key . '_by'] = isset($hasAsterisk[1]) ? $this->get_user_details($hasAsterisk[1]) : null;
-                $history_info[$key][$history_key] = $histor;
+                if (str_contains($history_key, '_by') && isset($histories[$history_key])) {
+                    $history_info[$key][$history_key] =  $this->get_user_details($histories[$history_key]);
+                } else {
+                    $history_info[$key][$history_key] = $histories[$history_key];
+                }
             }
         }
 

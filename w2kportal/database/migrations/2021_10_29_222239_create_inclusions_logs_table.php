@@ -40,6 +40,7 @@ class CreateInclusionsLogsTable extends Migration
             $table->string('job_cost_by')->nullable();
             $table->string('date_assigned')->nullable();
             $table->string('date_assigned_by')->nullable();
+            $table->string('date_completed')->nullable();
             $table->string('date_completed_by')->nullable();
             $table->string('quality_assurance')->nullable();
             $table->string('quality_assurance_by')->nullable();

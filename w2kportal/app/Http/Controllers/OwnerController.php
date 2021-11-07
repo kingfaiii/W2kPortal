@@ -11,8 +11,7 @@ class OwnerController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware(function($request,$next){
+        $this->middleware(function ($request, $next) {
             if (session('success')) {
                 Alert::success(session('success'));
             }
@@ -33,7 +32,7 @@ class OwnerController extends Controller
     {
         //
         $owner = Owner::all();
-        return view('owner',['owner'=> $owner]);
+        return view('owner', ['owner' => $owner]);
     }
 
     /**
@@ -44,51 +43,16 @@ class OwnerController extends Controller
     public function create(request $request)
     {
         //
-        $users = owner::where('owner_email', '=', $request->input('owner_email'))->first();
+        $users = owner::where('owner_email', '=', request('owner_email'))->first();
         if ($users === null) {
-          // User does not exist
-          owner::create($request->all());
-         
-          return back()->with('success','Owner added successfully.');
-  
-        }else{
-          // alert()->error('Sweet Alert with error.');
-          return back()->with('error','This Owner is already on the list.');
+            // User does not exist
+            owner::create($request->all());
 
+            return back()->with('success', 'Owner added successfully.');
+        } else {
+            // alert()->error('Sweet Alert with error.');
+            return back()->with('error', 'This Owner is already on the list.');
         }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\owner  $owner
-     * @return \Illuminate\Http\Response
-     */
-    public function show(owner $owner)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\owner  $owner
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(owner $owner)
-    {
-        //
     }
 
     /**
@@ -98,17 +62,16 @@ class OwnerController extends Controller
      * @param  \App\Models\owner  $owner
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, owner $owner,$id)
+    public function update(Request $request, owner $owner, $id)
     {
         //
         $ownerData = Owner::find($id);
-        $ownerData->owner_fname = request()->input('owner_fname');
-        $ownerData->owner_lname = request()->input('owner_lname');
-        $ownerData->owner_email = request()->input('owner_email');
+        $ownerData->owner_fname = request('owner_fname');
+        $ownerData->owner_lname = request('owner_lname');
+        $ownerData->owner_email = request('owner_email');
         $ownerData->update();
 
         return back();
-
     }
 
     /**

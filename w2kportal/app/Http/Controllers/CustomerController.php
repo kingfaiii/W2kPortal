@@ -20,7 +20,6 @@ class CustomerController extends Controller
     //
     public function __construct()
     {
-        $this->middleware('auth');
 
         $this->inclusions_field = [
             'layout',
@@ -61,7 +60,7 @@ class CustomerController extends Controller
     public function index($id)
     {
         // Retrieving The History Information
-        $inclusions_backlog = inclusions_log::orderBy('created_at', 'DESC')->where('book_id', $id)->limit(1)->get();
+        $inclusions_backlog = inclusions_log::where('book_id', $id)->latest()->limit(1)->get();
 
         // Retrieving All the Owners Data
         $owner = owner::all();
@@ -103,7 +102,9 @@ class CustomerController extends Controller
     public function update(request $request)
     {
         $request_items = request()->input('items');
-        asort($request_items);
+
+        print_r($request_items);
+        exit;
         if (!empty($request_items)) {
             foreach ($request_items as $key => $inclusions) {
                 $service = service_inclusion::where('id', $inclusions['service_id']);
