@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\OrderController;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -16,9 +16,8 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('login');
 });
-
 
 
 // Group Routes
@@ -32,16 +31,22 @@ Route::group(['middleware' => 'prevent-back'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     
     // List Function Routes
-    Route::get('/list', [App\Http\Controllers\CustomerlistController::class, 'index'])->name('list');
-    Route::get('/list/delete/{id}', [App\Http\Controllers\HomeController::class, 'Destroy'])->name('DestroyCustomer');
+    Route::group(['prefix'=>'list'], function(){
+        Route::get('/', [App\Http\Controllers\CustomerlistController::class, 'index'])->name('list');
+        Route::get('/delete/{id}', [App\Http\Controllers\HomeController::class, 'Destroy'])->name('DestroyCustomer');
+    });
+
     Route::get('/customer/query', [App\Http\Controllers\CustomerlistController::class, 'queryCustomerList']);
 
     // Won Function Routes
-    Route::get('/won', [App\Http\Controllers\WonCustomerController::class, 'index'])->name('WonCustomers');
-    Route::get('/won/books/{won_id}', [App\Http\Controllers\WonCustomerController::class, 'woncustomerview'])->name('WonCustomersbooklist');
-    Route::get('/won/books/edit/{id}', [App\Http\Controllers\CustomerController::class, 'index'])->name('customer');
-    Route::get('/won/books/history/{book_id}', [App\Http\Controllers\InclusionsLogController::class, 'index'])->name('HistoryLog');
-    Route::post('/won/books/edit/update', [App\Http\Controllers\CustomerController::class, 'update'])->name('UpdateInclusions');
+    Route::group(['prefix'=>'won'], function() {
+        Route::get('/', [App\Http\Controllers\WonCustomerController::class, 'index'])->name('WonCustomers');
+        Route::get('/books/{won_id}', [App\Http\Controllers\WonCustomerController::class, 'woncustomerview'])->name('WonCustomersbooklist');
+        Route::get('/books/edit/{id}', [App\Http\Controllers\CustomerController::class, 'index'])->name('customer');
+        Route::get('/books/history/{book_id}', [App\Http\Controllers\InclusionsLogController::class, 'index'])->name('HistoryLog');
+        Route::post('/books/edit/update', [App\Http\Controllers\CustomerController::class, 'update'])->name('UpdateInclusions');
+    });
+  
 
     // Reports Function Routes
     Route::get('/report', [App\Http\Controllers\ReportController::class, 'index'])->name('Report');
@@ -49,22 +54,32 @@ Route::group(['middleware' => 'prevent-back'], function () {
     
 
     // Order Functions Routes
-    Route::get('/order/{id}', [App\Http\Controllers\OrderController::class, 'index'])->name('order');
-    Route::post('/order/store', [App\Http\Controllers\OrderController::class, 'Store'])->name('StoreOrder');
-    Route::post('/order/update/{id}', [App\Http\Controllers\OrderController::class, 'update'])->name('UpdateOrder');
-    Route::post('/order/ActivityUpdate/{id}', [App\Http\Controllers\OrderController::class, 'updateactivity'])->name('UpdateActivity');
-    Route::get('/order/delete/{id}', [App\Http\Controllers\OrderController::class, 'DestroyActivity'])->name('DestroyActivity');
-    Route::post('/order/convert', [App\Http\Controllers\OrderController::class, 'ConvertCustomer'])->name('convert');
+    Route::group(['prefix'=>'order'], function(){
+        Route::get('/{id}', [App\Http\Controllers\OrderController::class, 'index'])->name('order');
+        Route::post('/store', [App\Http\Controllers\OrderController::class, 'Store'])->name('StoreOrder');
+        Route::post('/update/{id}', [App\Http\Controllers\OrderController::class, 'update'])->name('UpdateOrder');
+        Route::post('/ActivityUpdate/{id}', [App\Http\Controllers\OrderController::class, 'updateactivity'])->name('UpdateActivity');
+        Route::get('/delete/{id}', [App\Http\Controllers\OrderController::class, 'DestroyActivity'])->name('DestroyActivity');
+        Route::post('/convert', [App\Http\Controllers\OrderController::class, 'ConvertCustomer'])->name('convert');
+    });
+
 
     // Owners Functions Routes
-    Route::get('/owners', [App\Http\Controllers\OwnerController::class, 'index'])->name('owner');
+    Route::group(['prefix'=>'owners'], function(){
+        Route::get('/', [App\Http\Controllers\OwnerController::class, 'index'])->name('owner');
+        Route::post('/add', [App\Http\Controllers\OwnerController::class, 'create'])->name('OwnerAdd');
+        Route::post('/Update/{id}', [App\Http\Controllers\OwnerController::class, 'update'])->name('OwnerUpdate');
+        Route::get('/Delete/{id}', [App\Http\Controllers\OwnerController::class, 'destroy'])->name('OwnerDelete');
+    });
+
     Route::post('/update/service/inclusions', [App\Http\Controllers\CustomerController::class, 'update'])->name('updateInclusions');
-    Route::post('/owner/add', [App\Http\Controllers\OwnerController::class, 'create'])->name('OwnerAdd');
-    Route::post('/owner/Update/{id}', [App\Http\Controllers\OwnerController::class, 'update'])->name('OwnerUpdate');
-    Route::get('/owner/Delete/{id}', [App\Http\Controllers\OwnerController::class, 'destroy'])->name('OwnerDelete');
+    
 
     // Quality Assurance Functions Routes
-    Route::get('/qualityassurance', [App\Http\Controllers\QualityAssuranceController::class, 'index'])->name('qualityassurance');
-    Route::post('/qualityassurance/add', [App\Http\Controllers\QualityAssuranceController::class, 'create'])->name('qaCreate');
-    Route::post('/qualityassurance/update/{id}', [App\Http\Controllers\QualityAssuranceController::class, 'update'])->name('qaUpdate');
+    Route::group(['prefix'=>'qualityassurance'], function(){
+        Route::get('/', [App\Http\Controllers\QualityAssuranceController::class, 'index'])->name('qualityassurance');
+        Route::post('/add', [App\Http\Controllers\QualityAssuranceController::class, 'create'])->name('qaCreate');
+        Route::post('/update/{id}', [App\Http\Controllers\QualityAssuranceController::class, 'update'])->name('qaUpdate');
+    });
+  
 });

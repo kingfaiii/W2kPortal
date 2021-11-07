@@ -14,12 +14,35 @@ use Carbon\Carbon;
 
 class OrderController extends Controller
 {
-    //
+   
+    private  function saveOrderStatus($name,$id,$reason_hold,$reason_lost,$reason_hold_date){
+        $status = customer::find($id);
+        $status->reason_hold = $reason_hold;
+        $status->reason_lost = $reason_lost;
+        $status->reason_hold_date = $reason_hold_date;
+        $status->customer_status = request('customer_status');
+        $status->update();
+
+        $activity = new Order;
+        $activity->created_at = now()->toDateTimeString();
+        $activity->updated_at = now()->toDateTimeString();
+        $activity->customer_id = request('updatestatuscustomerid');
+        $activity->user_id = request('updatestatususerid');
+        $activity->sales_rep = request('updatestatususername');
+        $activity->remarks = "Update Status($name)";
+        $activity->save();
+
+        return redirect()->route('order',[$activity->customer_id])->with('success', 'Customer status Successfully Updated');
+
+    }
+
+    
     private $inclusions_array = [
         [
             "service_name" => "Interior Formatting",
             "project_cost" => 150,
             "task" => "Interior Formatting",
+
             "parent" => 1,
             "calculate" => 0
         ],
@@ -370,25 +393,18 @@ class OrderController extends Controller
             if (session('success')) {
                 Alert::success(session('success'));
             }
-            if (session('deleted')) {
-                Alert::success(session('deleted'));
-            }
-            if (session('updateactivity')) {
-                Alert::success(session('updateactivity'));
-            }
             return $next($request);
         });
     }
 
     public function index($id)
     {
-        // $order = Order::join("customers", function ($join) {
-        //     $join->on("customers.id", "=", "orders.id");
-        // })->where('orders.id',$id)->get();
+       
 
         $order = Order::leftJoin('service_packages', 'orders.Package_id', '=', 'service_packages.id')
             ->select('orders.*', 'service_packages.*', 'orders.updated_at AS orderupdated', 'orders.Package_id AS PackID', 'orders.id AS ActivityID')
             ->where('customer_id', $id)
+            ->latest('orders.created_at')
             ->get();
 
         $customer = Customer::all()
@@ -396,12 +412,7 @@ class OrderController extends Controller
 
         $packages = service_package::all();
 
-
-
-
-        //$save = $order->sales_rep;
         return view('order', ['order' => $order, 'customer' => $customer, 'packages' => $packages])->with("id", $id);
-        //dd($order);
     }
 
     public function Store(request $request)
@@ -414,14 +425,14 @@ class OrderController extends Controller
 
         ]);
         $last_activity = Order::create($request->all());
-        $status = customer::find(request()->input('customer_id'));
+        $status = customer::find(request('customer_id'));
         $status->last_activity = $last_activity['id'];
         $status->customer_status = "Answered";
         $status->reason_hold = null;
         $status->reason_lost = null;
         $status->reason_hold_date = null;
         $status->update();
-        return back();
+        return redirect()->route('order',[request('customer_id')])->with('success',config('messages.AddActivity'));
     }
     public function show()
     {
@@ -430,82 +441,41 @@ class OrderController extends Controller
     public function update(request $request, $id)
     {
 
-        // $status = Customer::all()
+           switch(request('customer_status')){
 
-        // ->where('id',$id);
-        $status = customer::find($id);
-        if (request()->input('customer_status') == "Answered") {
-            $status->reason_hold = null;
-            $status->reason_lost = null;
-            $status->reason_hold_date = null;
-            $status->customer_status = request()->input('customer_status');
-            $status->update();
+               case 'Answered':
+               return $this->saveOrderStatus('Answered',$id,null,null,null);
+               break;
 
-            $activity = new Order;
-            $activity->created_at = Carbon::now()->toDateTimeString();
-            $activity->updated_at = Carbon::now()->toDateTimeString();
-            $activity->customer_id = request()->input('updatestatuscustomerid');
-            $activity->user_id = request()->input('updatestatususerid');
-            $activity->sales_rep = request()->input('updatestatususername');
-            $activity->remarks = "Update Status(Answered)";
-            $activity->save();
-        } elseif (request()->input('customer_status') == "Lost") {
-            $status->reason_hold = null;
-            $status->reason_hold_date = null;
-            $status->reason_lost = request()->input('Reasonlost');
-            $status->customer_status = request()->input('customer_status');
-            $status->update();
-            // For Remarks
-            $activity = new Order;
-            $activity->created_at = Carbon::now()->toDateTimeString();
-            $activity->updated_at = Carbon::now()->toDateTimeString();
-            $activity->customer_id = request()->input('updatestatuscustomerid');
-            $activity->user_id = request()->input('updatestatususerid');
-            $activity->sales_rep = request()->input('updatestatususername');
-            $activity->remarks = "Update Status (Lost)";
-            $activity->save();
-        } elseif (request()->input('customer_status') == "Hold") {
-            $status->reason_lost = null;
-            $status->reason_hold = request()->input('reason_hold');
-            $status->reason_hold_date = request()->input('reason_hold_date');
-            $status->customer_status = request()->input('customer_status');
-            $status->update();
+               case 'Lost':
+               return $this->saveOrderStatus('Lost',$id,null,request('Reasonlost'),null);
+               break;
 
-            $activity = new Order;
-            $activity->created_at = Carbon::now()->toDateTimeString();
-            $activity->updated_at = Carbon::now()->toDateTimeString();
-            $activity->customer_id = request()->input('updatestatuscustomerid');
-            $activity->user_id = request()->input('updatestatususerid');
-            $activity->sales_rep = request()->input('updatestatususername');
-            $activity->remarks = "Update Status (Hold)";
-            $activity->save();
-        }
+               case 'Hold':
+               return $this->saveOrderStatus('Hold',$id,request('reason_hold'),null,request('reason_hold_date'));
+               break;
+           }
 
-
-        //$customer->update($request->all());
-        return back()->with('success', 'Customer status Successfully Updated');
     }
 
     public function updateactivity($id)
     {
         $activity = Order::find($id);
-        $activity->customer_book = request()->input('customer_book');
-        $activity->remarks = request()->input('remarks');
+        $activity->customer_book = request('customer_book');
+        $activity->remarks = request('remarks');
         $activity->update();
-        return back()->with('updateactivity', 'Activity Successfully Updated');
+        return redirect()->route('order',[$activity->customer_id])->with('success', config('messages.updatedactivity'));
     }
     public function DestroyActivity($id)
     {
         $order = Order::find($id);
         $order->delete();
-        return back()->with('deleted', 'Customer Activity Successfully Deleted!');
+        return redirect()->route('order',$order->customer_id)->with('success', config('messages.deleted'));
     }
 
     public function ConvertCustomer(request $request)
     {
-
       
-
         $activity = new Order;
         $activity->created_at = Carbon::now()->toDateTimeString();
         $activity->updated_at = Carbon::now()->toDateTimeString();
@@ -545,7 +515,7 @@ class OrderController extends Controller
         $book->save();
 
         $chosen_num = 0;
-        switch (request()->input('Packages')) {
+        switch (request('Packages')) {
             case 1:
                 $chosen_num = 1;
                 break;
@@ -599,7 +569,8 @@ class OrderController extends Controller
         }
 
         $this->createInclusions($this->inclusions_array, $book, $chosen_num, $request);
-        return back();
+        return redirect()->route('order',[request('customer_id')])->with('success',config('messages.NewConvert'));
+
     }
 
 
