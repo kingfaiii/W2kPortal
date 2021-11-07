@@ -315,7 +315,7 @@
                     count++;
             }
 
-            return new Date(fromDate).toLocaleDateString('pt-br').split( '/' ).reverse( ).join( '-' );
+            return new Date(fromDate).toLocaleDateString().split( '/' ).reverse( ).join( '-' );
         }
 
         $('.customerinput-status').on('change', function() {

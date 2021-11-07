@@ -81,6 +81,6 @@ Route::group(['middleware' => 'prevent-back', 'middleware' => 'auth'], function 
         Route::get('/', [App\Http\Controllers\QualityAssuranceController::class, 'index'])->name('qualityassurance');
         Route::post('/add', [App\Http\Controllers\QualityAssuranceController::class, 'create'])->name('qaCreate');
         Route::post('/update/{id}', [App\Http\Controllers\QualityAssuranceController::class, 'update'])->name('qaUpdate');
-        Route::post('/Delete/{id}', [App\Http\Controllers\QualityAssuranceController::class, 'destroy'])->name('qaDelete');
+        Route::get('/Delete/{id}', [App\Http\Controllers\QualityAssuranceController::class, 'destroy'])->name('qaDelete');
     });
 });
