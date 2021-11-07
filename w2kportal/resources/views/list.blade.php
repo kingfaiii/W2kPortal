@@ -159,9 +159,7 @@
             }
         }
 
-        $('.delete-confirm').each(function() {
-            let self = this
-            $(self).on('click', function(e) {
+        $(document).on('click', '.delete-confirm',function(e) {
                 e.preventDefault()
                 let customer_id = $(this).data('id')
                 const url = "{{route('DestroyCustomer', ['id'])}}".replace('id', customer_id)
@@ -203,8 +201,6 @@
                 })
             })
 
-
-        });
 
         $('#customers_refresh').on('click', function() {
             $("#customerForm_values :input").each(function() {

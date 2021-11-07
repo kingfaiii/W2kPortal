@@ -102,9 +102,6 @@ class CustomerController extends Controller
     public function update(request $request)
     {
         $request_items = request()->input('items');
-
-        print_r($request_items);
-        exit;
         if (!empty($request_items)) {
             foreach ($request_items as $key => $inclusions) {
                 $service = service_inclusion::where('id', $inclusions['service_id']);
