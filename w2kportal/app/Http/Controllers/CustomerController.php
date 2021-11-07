@@ -13,10 +13,48 @@ use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
+
+    private $inclusions_columns_ref;
+    private $inclusions_field;
+    private $user_updated;
     //
     public function __construct()
     {
         $this->middleware('auth');
+
+        $this->inclusions_field = [
+            'layout',
+            'page_count',
+            'project_classification',
+            'turnaround_time',
+            'status',
+            'commitment_date',
+            'owner',
+            'job_cost',
+            'date_assigned',
+            'date_completed',
+            'quality_assurance',
+            'quality_score',
+            'uid',
+            'project_link'
+        ];
+
+        $this->user_updated = [
+            'layout_by',
+            'page_count_by',
+            'project_classification_by',
+            'turnaround_time_by',
+            'status_by',
+            'commitment_date_by',
+            'owner_by',
+            'job_cost_by',
+            'date_assigned_by',
+            'date_completed_by',
+            'quality_assurance_by',
+            'quality_score_by',
+            'uid_by',
+            'project_link_by'
+        ];
     }
 
 
@@ -54,19 +92,9 @@ class CustomerController extends Controller
             )
             ->where('books.id', '=', $id);
 
-        
-
-        $book_info = [];
-        foreach ($book_information->get()->toArray() as $key => $books) {
-            foreach ($books as $book_key => $book) {
-
-                $book_info[$key][$book_key] = $book;
-            }
-        }
-
         return View('customerinput', [
             'customer_information' =>  $customer_information->get(),
-            'book_information' =>  $book_info,
+            'book_information' =>  $book_information->get()->toArray(),
             'owner' => $owner, 'qa' => $qa,
             "history" => $inclusions_backlog
         ]);
@@ -74,37 +102,41 @@ class CustomerController extends Controller
 
     public function update(request $request)
     {
-        $request_items = [];
-
-        $request_items = array_map('array_filter', request()->input('items'));
-        $request_items = array_filter($request_items);
-
+        $request_items = request()->input('items');
+        asort($request_items);
         if (!empty($request_items)) {
             foreach ($request_items as $key => $inclusions) {
                 $service = service_inclusion::where('id', $inclusions['service_id']);
-                $service_new = service_inclusion::where('id', $inclusions['service_id'])->get();
+                $service_new = service_inclusion::where('id', $inclusions['service_id'])
+                    ->select($this->inclusions_field)
+                    ->get();
+
+                $updated_by_columns = service_inclusion::where('id', $inclusions['service_id'])->select($this->user_updated)->get()->toArray()[0];
 
                 $service_array = $service_new->toArray()[0];
                 unset($inclusions['service_id']);
 
                 foreach ($service_array as $service_key => $inclusion) {
-                    $current_user = explode('*', $service_array[$service_key]);
-
-                    if (array_key_exists($service_key, $inclusions)) {
-
-                        if (count($current_user) > 1) {
-
-                            if ($current_user[1] === strval(Auth::user()->id) && isset(explode('*', $inclusions[$service_key])[1])) {
-                                $inclusions[$service_key] =  $service_array[$service_key];
-                            } else {
-                                if (isset(explode('*', $inclusions[$service_key])[1])) {
-                                    $inclusions[$service_key] = explode('*',  $inclusions[$service_key])[0] . '*' . $current_user[1];
-                                } else {
-                                    $inclusions[$service_key] = explode('*',  $inclusions[$service_key])[0] . '*' .  Auth::user()->id;
+                    foreach ($updated_by_columns as $owner_key => $owner) {
+                        if (array_key_exists($service_key, $inclusions) || array_key_exists($owner_key, $inclusions)) {
+                            if (empty($service_array[$service_key]) && !empty($inclusions[$service_key]) && empty($updated_by_columns[$owner_key])) {
+                                if (str_contains($owner_key, $service_key)) {
+                                    $inclusions[$owner_key] =  Auth::user()->id;
+                                }
+                            } else if ($service_array[$service_key] !== $inclusions[$service_key] && $updated_by_columns[$owner_key] !== strval(Auth::user()->id)) {
+                                if (str_contains($owner_key, $service_key)) {
+                                    $inclusions[$owner_key] =  Auth::user()->id;
+                                }
+                            } else if ($service_array[$service_key] === $inclusions[$service_key] && $updated_by_columns[$owner_key] === strval(Auth::user()->id)) {
+                                if (str_contains($owner_key, $service_key)) {
+                                    $inclusions[$owner_key] = $updated_by_columns[$owner_key];
+                                    $inclusions[$owner_key] = $updated_by_columns[$owner_key];
+                                }
+                            } else if ($service_array[$service_key] !== $inclusions[$service_key] && $updated_by_columns[$owner_key] === strval(Auth::user()->id)) {
+                                if (str_contains($owner_key, $service_key)) {
+                                    $inclusions[$owner_key] =  Auth::user()->id;
                                 }
                             }
-                        } else {
-                            $inclusions[$service_key] .= '*' . Auth::user()->id;
                         }
                     }
                 }
@@ -120,42 +152,56 @@ class CustomerController extends Controller
         return response()->json(["msg" => true], 200);
     }
 
-
     public function create_logs($user_logs)
     {
+        // ALGORITHM SHOULD BE IF PAST DATA !== CURRENT DATA AND PAST ID === CURRENT_ID.
+
         if (!empty($user_logs)) {
             foreach ($user_logs as $key => $inclusions) {
+                asort($inclusions);
+                $service_new = service_inclusion::where('id', $inclusions['service_id'])
+                    ->select($this->inclusions_field)
+                    ->get();
 
-                $service = service_inclusion::where('id', $inclusions['service_id'])->get();
-                $service_array = $service->toArray()[0];
+                $get_foreign_ids = service_inclusion::where('id', $inclusions['service_id'])
+                    ->select('id', 'won_id', 'book_id', 'package_id')
+                    ->get()->toArray()[0];
+
+                $updated_by_columns = service_inclusion::where('id', $inclusions['service_id'])->select($this->user_updated)->get()->toArray()[0];
+
+                $service_array = $service_new->toArray()[0];
                 unset($inclusions['service_id']);
-                foreach ($service_array as $ser_key => $inclusion) {
 
-                    $current_user = explode('*', $service_array[$ser_key]);
-
-                    if (array_key_exists($ser_key, $inclusions)) {
-                        if (count($current_user) > 1) {
-
-                            if ($current_user[1] === strval(Auth::user()->id) && str_contains('*', $inclusions[$ser_key])) {
-                                $inclusions[$ser_key] =  $service_array[$ser_key];
-                            } else {
-                                if (isset(explode('*', $inclusions[$ser_key])[1])) {
-                                    unset($inclusions[$ser_key]);
-                                } else {
-                                    $inclusions[$ser_key] = explode('*',  $inclusions[$ser_key])[0] . '*' .  Auth::user()->id;
+                foreach ($service_array as $service_key => $inclusion) {
+                    foreach ($updated_by_columns as $owner_key => $owner) {
+                        if (array_key_exists($service_key, $inclusions) || array_key_exists($owner_key, $inclusions)) {
+                            if (!empty($inclusions[$service_key]) && $updated_by_columns[$owner_key] === strval(Auth::user()->id)) {
+                                if (str_contains($owner_key, $service_key)) {
+                                    $inclusions[$owner_key] = Auth::user()->id;
                                 }
                             }
-                        } else {
-                            $inclusions[$ser_key] .= '*' . Auth::user()->id;
+                        }
+
+                        if (!empty($inclusions[$service_key]) && $updated_by_columns[$owner_key] !== strval(Auth::user()->id)) {
+                            if (str_contains($owner_key, $service_key)) {
+                                unset($inclusions[$owner_key]);
+                                unset($inclusions[$service_key]);
+                            }
                         }
                     }
                 }
 
+                foreach ($inclusions as $inc_key => $inc) {
+                    if (empty($inc)) {
+                        unset($inclusions[$inc_key]);
+                    }
+                }
+
                 if (!empty($inclusions)) {
-                    $inclusions['log_id'] = $service_array['id'];
-                    $inclusions['won_id'] = $service_array['won_id'];
-                    $inclusions['book_id'] = $service_array['book_id'];
-                    $inclusions['package_id'] = $service_array['package_id'];
+                    $inclusions['log_id'] = $get_foreign_ids['id'];
+                    $inclusions['won_id'] = $get_foreign_ids['won_id'];
+                    $inclusions['book_id'] = $get_foreign_ids['book_id'];
+                    $inclusions['package_id'] = $get_foreign_ids['package_id'];
                     $inclusions['user_id'] = Auth::user()->id;
                     $inclusions['created_at'] = Carbon::now()->toDateTimeString();
                     $inclusions['updated_at'] = Carbon::now()->toDateTimeString();
