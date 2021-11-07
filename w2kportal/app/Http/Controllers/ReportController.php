@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Order;
-use App\Models\Report;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -15,10 +13,6 @@ class ReportController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     public function index()
     {
         //
@@ -42,7 +36,8 @@ class ReportController extends Controller
             ->join('customers', 'orders.customer_id', '=', 'customers.id')
             ->select('customers.customer_fname', 'customers.customer_lname', 'customers.customer_email', 'orders.remarks', 'orders.created_at')
             ->where('orders.user_id','=',$id)
-            ->when(!empty($query['date_from']) && !empty($query['date_to']), function ($q) use ($query) {
+            ->when(!empty($query['date_from']) && !empty($query['date_to']), 
+            function ($q) use ($query) {
                 return $q->whereBetween('orders.created_at', [$query['date_from'] . '%', $query['date_to'] . '%']);
             });
 
@@ -57,70 +52,4 @@ class ReportController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Report $report)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Report $report)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Report $report)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Report $report)
-    {
-        //
-    }
 }

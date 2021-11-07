@@ -14,6 +14,7 @@ use App\Http\Controllers\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
 Route::get('/', function () {
     return redirect('login');
@@ -22,9 +23,7 @@ Route::get('/', function () {
 
 // Group Routes
 
-Route::group(['middleware' => 'prevent-back'], function () {
-    Auth::routes();
-    Route::get('/home', 'HomeController@index');
+Route::group(['middleware' => 'prevent-back','middleware'=>'auth'], function () {
     Route::resource('home', HomeController::class);
     Route::resource('list', CustomerlistController::class);
 
@@ -33,7 +32,7 @@ Route::group(['middleware' => 'prevent-back'], function () {
     // List Function Routes
     Route::group(['prefix'=>'list'], function(){
         Route::get('/', [App\Http\Controllers\CustomerlistController::class, 'index'])->name('list');
-        Route::get('/delete/{id}', [App\Http\Controllers\HomeController::class, 'Destroy'])->name('DestroyCustomer');
+        Route::get('/delete/{id}', [App\Http\Controllers\CustomerlistController::class, 'Destroy'])->name('DestroyCustomer');
     });
 
     Route::get('/customer/query', [App\Http\Controllers\CustomerlistController::class, 'queryCustomerList']);

@@ -11,33 +11,22 @@ use Illuminate\Http\Request;
 
 class WonCustomerController extends Controller
 {
-    public $id;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    Public function __construct()
-    {
-        
-        
-            $this->middleware('auth');
 
-            function getIndex(){
-                
-            $information = DB::table('won_customers')
-            ->join('customers', 'won_customers.customer_id', '=', 'customers.id')
-            ->join('service_packages', 'service_packages.id', '=', 'won_customers.package_id')
-            ->where('won_customers.status', '=', 'won')
-            ->get();
-
-              return view('won', ['information' => $information]);
-            }
-    }
 
     public function index()
     {
-       return getIndex();
+        $information = won_customer::join('customers', 'won_customers.customer_id', '=', 'customers.id')
+        ->join('service_packages', 'service_packages.id', '=', 'won_customers.package_id')
+        ->where('won_customers.status', '=', 'won')
+        ->get();
+
+         return view('won', ['information' => $information]);
     }
 
     public function woncustomerview($id)

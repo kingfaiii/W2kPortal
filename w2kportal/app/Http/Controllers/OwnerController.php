@@ -11,7 +11,6 @@ class OwnerController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
         $this->middleware(function($request,$next){
             if (session('success')) {
                 Alert::success(session('success'));

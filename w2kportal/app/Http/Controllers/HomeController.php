@@ -15,7 +15,6 @@ class HomeController extends Controller
     
     public function __construct()
     {
-        $this->middleware('auth');
         $this->middleware(function($request,$next){
             if (session('success')) {
                 Alert::success(session('success'));
@@ -37,9 +36,7 @@ class HomeController extends Controller
     public function index()
     {
 
-        $home = Customer::all();
-        
-        return view('home',['home'=>$home]);
+        return view('home');
         
     }
 
@@ -62,10 +59,5 @@ class HomeController extends Controller
           return redirect()->route('home')->with('error','This Customer is already on the list.');
 
         }
-    }
-    public function Destroy($id){
-        $customer = Customer::Find($id);
-        $customer->delete();
-        return back();
     }
 }

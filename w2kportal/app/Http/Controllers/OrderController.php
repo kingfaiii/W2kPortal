@@ -10,7 +10,6 @@ use App\Models\service_inclusion;
 use App\Models\service_package;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
-use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -399,8 +398,6 @@ class OrderController extends Controller
 
     public function index($id)
     {
-       
-
         $order = Order::leftJoin('service_packages', 'orders.Package_id', '=', 'service_packages.id')
             ->select('orders.*', 'service_packages.*', 'orders.updated_at AS orderupdated', 'orders.Package_id AS PackID', 'orders.id AS ActivityID')
             ->where('customer_id', $id)
@@ -475,25 +472,19 @@ class OrderController extends Controller
 
     public function ConvertCustomer(request $request)
     {
-<<<<<<< HEAD
-      
-=======
 
-
-
->>>>>>> 614f8f1b8cb91ced24b51de7fa1f11d1a2befaf2
         $activity = new Order;
-        $activity->created_at = Carbon::now()->toDateTimeString();
-        $activity->updated_at = Carbon::now()->toDateTimeString();
-        $activity->customer_id = request()->input('customer_id');
-        $activity->user_id = request()->input('user_id');
-        $activity->sales_rep = request()->input('sales_rep');
-        $activity->customer_book = request()->input('customer_book');
+        $activity->created_at = now()->toDateTimeString();
+        $activity->updated_at = now()->toDateTimeString();
+        $activity->customer_id = request('customer_id');
+        $activity->user_id = request('user_id');
+        $activity->sales_rep = request('sales_rep');
+        $activity->customer_book = request('customer_book');
         $activity->remarks = "Won";
-        $activity->Package_id = request()->input('Packages');
+        $activity->Package_id = request('Packages');
         $activity->save();
 
-        $status = customer::find(request()->input('customer_id'));
+        $status = customer::find(request('customer_id'));
         $status->customer_status = 'Won';
         $status->reason_hold = null;
         $status->last_activity = $activity['id'];
@@ -506,18 +497,18 @@ class OrderController extends Controller
         $convert = [];
         if ($is_won_exist === null) {
             $convert = new won_customer;
-            $convert->package_id = request()->input('Packages');
-            $convert->customer_id = request()->input('customer_id');
+            $convert->package_id = request('Packages');
+            $convert->customer_id = request('customer_id');
             $convert->status = 'Won';
             $convert->save();
         }
 
         $book = [];
         $book = new Book;
-        $book->book_title = request()->input('customer_book');
-        $book->transaction_ID = request()->input('transaction_id');
-        $book->won_id = request()->input('customer_id');
-        $book->total_project_cost = request()->input('project_cost');
+        $book->book_title = request('customer_book');
+        $book->transaction_ID = request('transaction_id');
+        $book->won_id = request('customer_id');
+        $book->total_project_cost = request('project_cost');
         $book->save();
 
         $chosen_num = 0;
