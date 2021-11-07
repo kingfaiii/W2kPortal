@@ -291,8 +291,7 @@
         let turnAroundTime = 0;
         const d = new Date()
         const monthNames = ["January", "February", "March", "April", "May","June","July", "August", "September", "October", "November","December"];
-        const currentDate = `${d.getDay()}/${monthNames[d.getMonth()]}/${d.getFullYear()}`
-
+        const currentDate = `${d.getDate()}/${monthNames[d.getMonth()]}/${d.getFullYear()}`
         const messagePrompt = async (title="", text="", showCancel=false, icon="info", textConfirm) => {
             return  await Swal.fire({
                             title: title,
