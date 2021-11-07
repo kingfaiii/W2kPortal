@@ -19,18 +19,20 @@ Auth::routes();
 Route::get('/', function () {
     return redirect('login');
 });
-
+Auth::routes();
 
 // Group Routes
 
-Route::group(['middleware' => 'prevent-back','middleware'=>'auth'], function () {
+Route::group(['middleware' => 'prevent-back', 'middleware' => 'auth'], function () {
+
+    Route::get('/home', 'HomeController@index');
     Route::resource('home', HomeController::class);
     Route::resource('list', CustomerlistController::class);
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    
+
     // List Function Routes
-    Route::group(['prefix'=>'list'], function(){
+    Route::group(['prefix' => 'list'], function () {
         Route::get('/', [App\Http\Controllers\CustomerlistController::class, 'index'])->name('list');
         Route::get('/delete/{id}', [App\Http\Controllers\CustomerlistController::class, 'Destroy'])->name('DestroyCustomer');
     });
@@ -38,22 +40,22 @@ Route::group(['middleware' => 'prevent-back','middleware'=>'auth'], function () 
     Route::get('/customer/query', [App\Http\Controllers\CustomerlistController::class, 'queryCustomerList']);
 
     // Won Function Routes
-    Route::group(['prefix'=>'won'], function() {
+    Route::group(['prefix' => 'won'], function () {
         Route::get('/', [App\Http\Controllers\WonCustomerController::class, 'index'])->name('WonCustomers');
         Route::get('/books/{won_id}', [App\Http\Controllers\WonCustomerController::class, 'woncustomerview'])->name('WonCustomersbooklist');
         Route::get('/books/edit/{id}', [App\Http\Controllers\CustomerController::class, 'index'])->name('customer');
         Route::get('/books/history/{book_id}', [App\Http\Controllers\InclusionsLogController::class, 'index'])->name('HistoryLog');
         Route::post('/books/edit/update', [App\Http\Controllers\CustomerController::class, 'update'])->name('UpdateInclusions');
     });
-  
+
 
     // Reports Function Routes
     Route::get('/report', [App\Http\Controllers\ReportController::class, 'index'])->name('Report');
     Route::get('/report/list/{id}', [App\Http\Controllers\ReportController::class, 'indexReportList'])->name('ReportList');
-    
+
 
     // Order Functions Routes
-    Route::group(['prefix'=>'order'], function(){
+    Route::group(['prefix' => 'order'], function () {
         Route::get('/{id}', [App\Http\Controllers\OrderController::class, 'index'])->name('order');
         Route::post('/store', [App\Http\Controllers\OrderController::class, 'Store'])->name('StoreOrder');
         Route::post('/update/{id}', [App\Http\Controllers\OrderController::class, 'update'])->name('UpdateOrder');
@@ -64,7 +66,7 @@ Route::group(['middleware' => 'prevent-back','middleware'=>'auth'], function () 
 
 
     // Owners Functions Routes
-    Route::group(['prefix'=>'owners'], function(){
+    Route::group(['prefix' => 'owners'], function () {
         Route::get('/', [App\Http\Controllers\OwnerController::class, 'index'])->name('owner');
         Route::post('/add', [App\Http\Controllers\OwnerController::class, 'create'])->name('OwnerAdd');
         Route::post('/Update/{id}', [App\Http\Controllers\OwnerController::class, 'update'])->name('OwnerUpdate');
@@ -72,13 +74,13 @@ Route::group(['middleware' => 'prevent-back','middleware'=>'auth'], function () 
     });
 
     Route::post('/update/service/inclusions', [App\Http\Controllers\CustomerController::class, 'update'])->name('updateInclusions');
-    
+
 
     // Quality Assurance Functions Routes
-    Route::group(['prefix'=>'qualityassurance'], function(){
+    Route::group(['prefix' => 'qualityassurance'], function () {
         Route::get('/', [App\Http\Controllers\QualityAssuranceController::class, 'index'])->name('qualityassurance');
         Route::post('/add', [App\Http\Controllers\QualityAssuranceController::class, 'create'])->name('qaCreate');
         Route::post('/update/{id}', [App\Http\Controllers\QualityAssuranceController::class, 'update'])->name('qaUpdate');
+        Route::post('/Delete/{id}', [App\Http\Controllers\QualityAssuranceController::class, 'destroy'])->name('qaDelete');
     });
-  
 });

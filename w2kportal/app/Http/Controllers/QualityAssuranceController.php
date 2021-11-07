@@ -54,47 +54,7 @@ class QualityAssuranceController extends Controller
             return back()->with('error', 'This Quality Assurance is already on the list.');
         }
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\owner  $owner
-     * @return \Illuminate\Http\Response
-     */
-    public function show(QualityAssurance $qa)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\owner  $owner
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(QualityAssurance $qa)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\owner  $owner
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, QualityAssurance $qa, $id)
     {
         //
@@ -113,8 +73,10 @@ class QualityAssuranceController extends Controller
      * @param  \App\Models\owner  $owner
      * @return \Illuminate\Http\Response
      */
-    public function destroy(QualityAssurance $qa)
+    public function destroy(QualityAssurance $qa,$id)
     {
-        //
+        $order = QualityAssurance::find($id);
+        $order->delete();
+        return back();
     }
 }
