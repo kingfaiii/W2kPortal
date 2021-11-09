@@ -238,12 +238,12 @@
                             @endphp
                             @if ($item['commitment_date'])
 
-                                <td> <input placeholder="mm/dd/yyyy" type="text"
+                                <td> <input placeholder="dd/mm/yyyy" type="text"
                                         name="items[{{ $item['serID'] }}][commitment_date]"
                                         value="{{ str_replace('-', '/', $date) }}" style="margin-left:5%"
                                         id="date_timepicker_end" class="form-control col-11 commitment-date" readonly> </td>
                             @else
-                                <td> <input readonly placeholder="mm/dd/yyyy" type="text"
+                                <td> <input readonly placeholder="dd/mm/yyyy" type="text"
                                         name="items[{{ $item['serID'] }}][commitment_date]" value="" style="margin-left:5%"
                                         id="date_timepicker_end" class="form-control col-11 commitment-date" readonly> </td>
                             @endif
@@ -256,7 +256,7 @@
                 <thead class="text-center">
                     <th>Service Inclusions</th>
                     <th>Owner</th>
-                    <th>Job Cost</th>
+                    <th>Job Cost ($)</th>
                     <th>Date Assigned</th>
                     <th>Date Completed</th>
                     <th>QA</th>
@@ -281,7 +281,7 @@
                                 </select>
 
                             </td>
-                            <td> <input type="text" name="items[{{ $item['serID'] }}][job_cost]" style="margin-left:40%"
+                            <td><input type="text" name="items[{{ $item['serID'] }}][job_cost]" style="margin-left:40%"
                                     value="{{ explode('*', $item['job_cost'])[0] }} " id=""
                                     class="form-control col-8 customerinput-text"> </td>
                             <td> <input type="date" name="items[{{ $item['serID'] }}][date_assigned]"
@@ -360,8 +360,8 @@
                 if (fromDate.getDay() != 0 && fromDate.getDay() != 6) // Skip weekends
                     count++;
             }
-
-            return new Date(fromDate).toLocaleDateString();
+            let d = new Date(fromDate)
+            return`${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
         }
 
         $('.customerinput-status').on('change', function() {
