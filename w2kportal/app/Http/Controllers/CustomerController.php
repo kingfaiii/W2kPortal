@@ -128,7 +128,6 @@ class CustomerController extends Controller
                             } else if ($service_array[$service_key] === $inclusions[$service_key] && $updated_by_columns[$owner_key] === strval(Auth::user()->id)) {
                                 if (str_contains($owner_key, $service_key)) {
                                     $inclusions[$owner_key] = $updated_by_columns[$owner_key];
-                                    $inclusions[$owner_key] = $updated_by_columns[$owner_key];
                                 }
                             } else if ($service_array[$service_key] !== $inclusions[$service_key] && $updated_by_columns[$owner_key] === strval(Auth::user()->id)) {
                                 if (str_contains($owner_key, $service_key)) {
@@ -156,7 +155,7 @@ class CustomerController extends Controller
 
         if (!empty($user_logs)) {
             foreach ($user_logs as $key => $inclusions) {
-                asort($inclusions);
+                //asort($inclusions);
                 $service_new = service_inclusion::where('id', $inclusions['service_id'])
                     ->select($this->inclusions_field)
                     ->get();
@@ -167,30 +166,37 @@ class CustomerController extends Controller
 
                 $updated_by_columns = service_inclusion::where('id', $inclusions['service_id'])->select($this->user_updated)->get()->toArray()[0];
 
-                $service_array = $service_new->toArray()[0];
+                $service_array_latest = $service_new->toArray()[0];
                 unset($inclusions['service_id']);
 
-                foreach ($service_array as $service_key => $inclusion) {
+                foreach ($service_array_latest as $service_key => $inclusion) {
                     foreach ($updated_by_columns as $owner_key => $owner) {
+
                         if (array_key_exists($service_key, $inclusions) || array_key_exists($owner_key, $inclusions)) {
-                            if (!empty($inclusions[$service_key]) && $updated_by_columns[$owner_key] === strval(Auth::user()->id)) {
+
+                            if (!empty($inclusions[$service_key]) && $updated_by_columns[$owner_key] !== strval(Auth::user()->id)) {
+
                                 if (str_contains($owner_key, $service_key)) {
-                                    $inclusions[$owner_key] = Auth::user()->id;
+                                    unset($inclusions[$owner_key]);
+                                    unset($inclusions[$service_key]);
                                 }
                             }
-                        }
+                            if (!empty($inclusions[$service_key]) && $updated_by_columns[$owner_key] === strval(Auth::user()->id)) {
 
-                        if (!empty($inclusions[$service_key]) && $updated_by_columns[$owner_key] !== strval(Auth::user()->id)) {
-                            if (str_contains($owner_key, $service_key)) {
-                                unset($inclusions[$owner_key]);
-                                unset($inclusions[$service_key]);
+                                if (str_contains($owner_key, $service_key)) {
+
+
+                                    $inclusions[$owner_key] = Auth::user()->id;
+                                }
                             }
                         }
                     }
                 }
 
                 foreach ($inclusions as $inc_key => $inc) {
+
                     if (empty($inc)) {
+
                         unset($inclusions[$inc_key]);
                     }
                 }

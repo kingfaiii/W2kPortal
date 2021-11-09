@@ -38,7 +38,7 @@
                                 <a type="button" href="#" class="btn btn-success col-12" data-toggle="modal" data-target="#exampleModalCenter{{ $item->id }}">Edit</a>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ $route('qaDelete',[$item->id]) }}" class="btn btn-danger col-12">Delete</a>
+                                <a href="{{ route('qaDelete',[$item->id]) }}" class="btn btn-danger col-12">Delete</a>
                             </div>
                         </div>
                     </td>
