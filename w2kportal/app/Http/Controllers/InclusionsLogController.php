@@ -24,7 +24,8 @@ class InclusionsLogController extends Controller
             ->join('users', 'inclusions_logs.user_id', '=', 'users.id')
             ->where('inclusions_logs.book_id', '=', $id)
             ->select('inclusions_logs.*', 'service_inclusions.service_name AS serName')
-            ->orderBy('inclusions_logs.id', 'DESC');
+            ->orderBy('inclusions_logs.id', 'DESC')
+            ->latest();
 
         $history_info = [];
         foreach ($history->get()->toArray() as $key => $histories) {
