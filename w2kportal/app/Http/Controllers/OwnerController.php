@@ -8,7 +8,6 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class OwnerController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
@@ -43,16 +42,11 @@ class OwnerController extends Controller
     public function create(request $request)
     {
         //
-        $users = owner::where('owner_email', '=', request('owner_email'))->first();
-        if ($users === null) {
-            // User does not exist
-            owner::create($request->all());
 
-            return back()->with('success', 'Owner added successfully.');
-        } else {
-            // alert()->error('Sweet Alert with error.');
-            return back()->with('error', 'This Owner is already on the list.');
-        }
+        // User does not exist
+        owner::create($request->all());
+
+        return back()->with('success', 'Owner added successfully.');
     }
 
     /**
@@ -68,7 +62,7 @@ class OwnerController extends Controller
         $ownerData = Owner::find($id);
         $ownerData->owner_fname = request('owner_fname');
         $ownerData->owner_lname = request('owner_lname');
-        $ownerData->owner_email = request('owner_email');
+        $ownerData->owner_email = request('owner_role');
         $ownerData->update();
 
         return back();

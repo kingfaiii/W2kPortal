@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class owner extends Model
 {
-    protected $fillable = [
-        'owner_fname','owner_lname', 'owner_email'
-      ];
+    protected $fillable = ['owner_fname', 'owner_lname', 'role'];
     use HasFactory;
 }

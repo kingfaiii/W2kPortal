@@ -17,7 +17,7 @@ class CreateOwnersTable extends Migration
             $table->increments('id');
             $table->string('owner_fname');
             $table->string('owner_lname');
-            $table->string('owner_email');
+            $table->string('role');
             $table->timestamps();
         });
     }
