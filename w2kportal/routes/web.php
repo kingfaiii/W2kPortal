@@ -19,7 +19,6 @@ Auth::routes();
 Route::get('/', function () {
     return redirect('login');
 });
-Auth::routes();
 
 // Group Routes
 

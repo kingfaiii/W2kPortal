@@ -13,9 +13,9 @@ use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
-    private $inclusions_columns_ref;
     private $inclusions_field;
     private $user_updated;
+    private $log_columns;
     //
     public function __construct()
     {
@@ -34,6 +34,37 @@ class CustomerController extends Controller
             'quality_score',
             'uid',
             'project_link',
+        ];
+
+        $this->log_columns = [
+            'layout',
+            'page_count',
+            'project_classification',
+            'turnaround_time',
+            'status',
+            'commitment_date',
+            'owner',
+            'job_cost',
+            'date_assigned',
+            'date_completed',
+            'quality_assurance',
+            'quality_score',
+            'uid',
+            'project_link',
+            'layout_by',
+            'page_count_by',
+            'project_classification_by',
+            'turnaround_time_by',
+            'status_by',
+            'commitment_date_by',
+            'owner_by',
+            'job_cost_by',
+            'date_assigned_by',
+            'date_completed_by',
+            'quality_assurance_by',
+            'quality_score_by',
+            'uid_by',
+            'project_link_by',
         ];
 
         $this->user_updated = [
@@ -205,22 +236,31 @@ class CustomerController extends Controller
     public function create_logs($user_logs)
     {
         // ALGORITHM SHOULD BE IF PAST DATA !== CURRENT DATA AND PAST ID === CURRENT_ID.
-
         if (!empty($user_logs)) {
+            $new_log = [];
             foreach ($user_logs as $key => $inclusions) {
-                //asort($inclusions);
-                $service_new = service_inclusion::where(
-                    'id',
+                $service_new = inclusions_log::where(
+                    'log_id',
                     $inclusions['service_id']
                 )
-                    ->select($this->inclusions_field)
-                    ->get();
+                    ->where('user_id', Auth::user()->id)
+                    ->select($this->log_columns)
+                    ->orderBy('id', 'DESC')
+                    ->first();
 
                 $get_foreign_ids = service_inclusion::where(
                     'id',
                     $inclusions['service_id']
                 )
                     ->select('id', 'won_id', 'book_id', 'package_id')
+                    ->get()
+                    ->toArray()[0];
+
+                $get_updated_inclusions = service_inclusion::where(
+                    'id',
+                    $inclusions['service_id']
+                )
+                    ->select($this->inclusions_field)
                     ->get()
                     ->toArray()[0];
 
@@ -232,18 +272,18 @@ class CustomerController extends Controller
                     ->get()
                     ->toArray()[0];
 
-                $service_array_latest = $service_new->toArray()[0];
+                $service_array_latest =
+                    !empty($service_new) > 0 ? $service_new->toArray() : [];
 
                 unset($inclusions['service_id']);
-                //latest_value = "$inclusions[$service_key]
-                // Previos_value from database = ???
-                foreach ($service_array_latest as $service_key => $inclusion) {
-                    foreach ($updated_by_columns as $owner_key => $owner) {
-                        // NEW CODE
 
-                        // OLD CODE
+                foreach (
+                    $get_updated_inclusions
+                    as $service_key => $inclusion
+                ) {
+                    foreach ($updated_by_columns as $owner_key => $owner) {
                         if (
-                            array_key_exists($service_key, $inclusions) ||
+                            array_key_exists($service_key, $inclusions) &&
                             array_key_exists($owner_key, $inclusions)
                         ) {
                             if (
@@ -256,36 +296,49 @@ class CustomerController extends Controller
                                     unset($inclusions[$service_key]);
                                 }
                             }
+
                             if (
                                 !empty($inclusions[$service_key]) &&
                                 $updated_by_columns[$owner_key] ===
                                     strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
+                                    // $inclusions[$service_key] = $inclusions[$service_key];
                                     $inclusions[$owner_key] = Auth::user()->id;
                                 }
                             }
+
+                            // if (!empty($inclusions[$service_key]) && $updated_by_columns[$owner_key] !== strval(Auth::user()->id)) {
+
+                            //     if (str_contains($owner_key, $service_key)) {
+                            //         // $inclusions[$service_key] = $inclusions[$service_key];
+                            //         $inclusions[$owner_key] = Auth::user()->id;
+                            //     }
+                            // }
                         }
                     }
                 }
-                foreach ($inclusions as $inc_key => $inc) {
-                    if (empty($inc)) {
-                        unset($inclusions[$inc_key]);
+
+                $diff_log = array_diff_assoc(
+                    array_filter($inclusions),
+                    array_filter($service_array_latest)
+                );
+                if (!empty($diff_log)) {
+                    if (!empty(array_filter($inclusions))) {
+                        $inclusions['log_id'] = $get_foreign_ids['id'];
+                        $inclusions['won_id'] = $get_foreign_ids['won_id'];
+                        $inclusions['book_id'] = $get_foreign_ids['book_id'];
+                        $inclusions['package_id'] =
+                            $get_foreign_ids['package_id'];
+                        $inclusions['user_id'] = Auth::user()->id;
+                        $inclusions[
+                            'created_at'
+                        ] = Carbon::now()->toDateTimeString();
+                        $inclusions[
+                            'updated_at'
+                        ] = Carbon::now()->toDateTimeString();
                     }
-                }
-                if (!empty($inclusions)) {
-                    $inclusions['log_id'] = $get_foreign_ids['id'];
-                    $inclusions['won_id'] = $get_foreign_ids['won_id'];
-                    $inclusions['book_id'] = $get_foreign_ids['book_id'];
-                    $inclusions['package_id'] = $get_foreign_ids['package_id'];
-                    $inclusions['user_id'] = Auth::user()->id;
-                    $inclusions[
-                        'created_at'
-                    ] = Carbon::now()->toDateTimeString();
-                    $inclusions[
-                        'updated_at'
-                    ] = Carbon::now()->toDateTimeString();
-                    inclusions_log::insert($inclusions);
+                    inclusions_log::insert(array_filter($inclusions));
                 }
             }
         }

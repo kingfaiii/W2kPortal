@@ -17,9 +17,6 @@ class InclusionsLogController extends Controller
 
     public function index($id)
     {
-        //
-
-
         $history = inclusions_log::join('service_inclusions', 'service_inclusions.id', '=', 'inclusions_logs.log_id')
             ->join('users', 'inclusions_logs.user_id', '=', 'users.id')
             ->where('inclusions_logs.book_id', '=', $id)
