@@ -124,13 +124,6 @@ class CustomerController extends Controller
         $request_items = request()->input('items');
         if (!empty($request_items)) {
             foreach ($request_items as $key => $inclusions) {
-                $get_foreign_ids = service_inclusion::where(
-                    'id',
-                    $inclusions['service_id']
-                )
-                    ->select('id', 'won_id', 'book_id', 'package_id')
-                    ->get()
-                    ->toArray()[0];
                 $service = service_inclusion::where(
                     'id',
                     $inclusions['service_id']
@@ -279,21 +272,20 @@ class CustomerController extends Controller
                     if (empty($inc)) {
                         unset($inclusions[$inc_key]);
                     }
-                    if (!empty($inclusions)) {
-                        $inclusions['log_id'] = $get_foreign_ids['id'];
-                        $inclusions['won_id'] = $get_foreign_ids['won_id'];
-                        $inclusions['book_id'] = $get_foreign_ids['book_id'];
-                        $inclusions['package_id'] =
-                            $get_foreign_ids['package_id'];
-                        $inclusions['user_id'] = Auth::user()->id;
-                        $inclusions[
-                            'created_at'
-                        ] = Carbon::now()->toDateTimeString();
-                        $inclusions[
-                            'updated_at'
-                        ] = Carbon::now()->toDateTimeString();
-                        inclusions_log::insert($inclusions);
-                    }
+                }
+                if (!empty($inclusions)) {
+                    $inclusions['log_id'] = $get_foreign_ids['id'];
+                    $inclusions['won_id'] = $get_foreign_ids['won_id'];
+                    $inclusions['book_id'] = $get_foreign_ids['book_id'];
+                    $inclusions['package_id'] = $get_foreign_ids['package_id'];
+                    $inclusions['user_id'] = Auth::user()->id;
+                    $inclusions[
+                        'created_at'
+                    ] = Carbon::now()->toDateTimeString();
+                    $inclusions[
+                        'updated_at'
+                    ] = Carbon::now()->toDateTimeString();
+                    inclusions_log::insert($inclusions);
                 }
             }
         }
