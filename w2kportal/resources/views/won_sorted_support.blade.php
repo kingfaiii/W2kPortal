@@ -4,7 +4,7 @@
 @section('content')
 @section('header')
     <div class="col-md-12">
-        <h3 class="text-light font-weight-bold">{{ __('Sorted Won Customers for Admin') }}</h3>
+        <h3 class="text-light font-weight-bold">{{ __('Sorted Won Customers for Support') }}</h3>
     </div>
 @endsection
 @section('table')
@@ -19,7 +19,7 @@
                 <th>Page/Word Count</th>
                 <th>Classification</th>
                 <th>Commitment Date</th>
-                <th>Action</th>
+                <th>Assigned Date</th>
             </tr>
         </thead>
         <tbody>
@@ -34,11 +34,12 @@
                     <td>{{ $InclusionsData->classification ? $InclusionsData->classificatoin : 'No Classification' }}</td>
                     <td>{{ $InclusionsData->commitment_date ? $InclusionsData->commitment_date : 'No Commitment Date' }}
                     </td>
+                    <td><input type="date" name="assigned" class="form-control" id=""></td>
                     <td>
                         <div class="row">
                             <div class="col-md-12">
                                 <a href="{{ route('customer', [$InclusionsData->bookID]) }}"
-                                    class="btn btn-secondary">View</a>
+                                    class="btn btn-success">Update</a>
                             </div>
                         </div>
                     </td>

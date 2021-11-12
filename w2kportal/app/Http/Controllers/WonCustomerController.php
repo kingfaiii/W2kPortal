@@ -117,6 +117,7 @@ class WonCustomerController extends Controller
             )
             ->where('service_inclusions.status', 'on-Going')
             ->whereNull('service_inclusions.date_assigned')
+            ->whereNotNull('service_inclusions.owner')
             ->get();
 
         return view('won_sorted_support', [

@@ -19,7 +19,8 @@
                 <th>Page/Word Count</th>
                 <th>Classification</th>
                 <th>Commitment Date</th>
-                <th>Action</th>
+                <th>Owner</th>
+                <th>Job Cost</th>
             </tr>
         </thead>
         <tbody>
@@ -34,11 +35,15 @@
                     <td>{{ $InclusionsData->classification ? $InclusionsData->classificatoin : 'No Classification' }}</td>
                     <td>{{ $InclusionsData->commitment_date ? $InclusionsData->commitment_date : 'No Commitment Date' }}
                     </td>
+                    <td><select class="form-control" name="" id="">
+                            <Option>King</Option>
+                        </select></td>
+                    <td><input class="form-control" type="text" name="" id=""></td>
                     <td>
                         <div class="row">
                             <div class="col-md-12">
                                 <a href="{{ route('customer', [$InclusionsData->bookID]) }}"
-                                    class="btn btn-secondary">View</a>
+                                    class="btn btn-success">Update</a>
                             </div>
                         </div>
                     </td>
