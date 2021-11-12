@@ -146,7 +146,8 @@
                                 value="{{ $item['quality_assurance_by'] }}">
                             <input type="hidden" name="items[{{ $item['serID'] }}][quality_score_by]"
                                 value="{{ $item['quality_score_by'] }}">
-                            <input type="hidden" name="items[{{ $item['serID'] }}][uid_by]" value="{{ $item['uid_by'] }}">
+                            <input type="hidden" name="items[{{ $item['serID'] }}][uid_by]"
+                                value="{{ $item['uid_by'] }}">
                             <input type="hidden" name="items[{{ $item['serID'] }}][project_link_by]"
                                 value="{{ $item['project_link_by'] }}">
 
@@ -156,7 +157,8 @@
                                 @if (in_array($item['service_name'], $layout))
                                     <select class="form-control customerinput-text" style="width:115%"
                                         name="items[{{ $item['serID'] }}][layout]" id="">
-                                        <option selected value="{{ $item['layout'] }} ">{{ $item['layout'] }} </option>
+                                        <option selected value="{{ $item['layout'] }} ">{{ $item['layout'] }}
+                                        </option>
                                         <option value="Reflowable">Reflowable</option>
                                         <option value="Fixed Virtual">Fixed Virtual</option>
                                         <option value="ixed Hidden">Fixed Hidden</option>
@@ -165,7 +167,8 @@
                                 @else
                                     <select class="form-control customerinput-text disabled-field" style="width:115%"
                                         name="items[{{ $item['serID'] }}][layout]" id="" disabled>
-                                        <option selected value="{{ $item['layout'] }} ">{{ $item['layout'] }} </option>
+                                        <option selected value="{{ $item['layout'] }} ">{{ $item['layout'] }}
+                                        </option>
                                         <option value="Reflowable">Reflowable</option>
                                         <option value="Fixed Virtual">Fixed Virtual</option>
                                         <option value="ixed Hidden">Fixed Hidden</option>
@@ -244,8 +247,9 @@
                                         id="date_timepicker_end" class="form-control col-11 commitment-date" readonly> </td>
                             @else
                                 <td> <input readonly placeholder="dd/mm/yyyy" type="text"
-                                        name="items[{{ $item['serID'] }}][commitment_date]" value="" style="margin-left:5%"
-                                        id="date_timepicker_end" class="form-control col-11 commitment-date" readonly> </td>
+                                        name="items[{{ $item['serID'] }}][commitment_date]" value=""
+                                        style="margin-left:5%" id="date_timepicker_end"
+                                        class="form-control col-11 commitment-date" readonly> </td>
                             @endif
                         </tr>
                     @endforeach
@@ -271,11 +275,13 @@
                                 value="{{ $item['serID'] }}">
                             <td> {{ $item['service_name'] }} </td>
                             <td>
-                                <select name="items[{{ $item['serID'] }}][owner]" id="" style="width:190%;margin-left:-20%"
-                                    class="form-control customerinput-text">
-                                    <option value="{{ $item['owner'] }}">{{ explode('*', $item['owner'])[0] }}</option>
+                                <select name="items[{{ $item['serID'] }}][owner]" id=""
+                                    style="width:180%;margin-left:-20%" class="form-control  customerinput-text">
+                                    <option value="{{ $item['owner'] }}">{{ explode('*', $item['owner'])[0] }}
+                                    </option>
                                     @foreach ($owner as $owner_row)
-                                        <option value="{{ $owner_row['owner_fname'] }} {{ $owner_row['owner_lname'] }}">
+                                        <option
+                                            value="{{ $owner_row['owner_fname'] }} {{ $owner_row['owner_lname'] }}">
                                             {{ $owner_row['owner_fname'] }} {{ $owner_row['owner_lname'] }}</option>
                                     @endforeach
                                 </select>
@@ -361,7 +367,7 @@
                     count++;
             }
             let d = new Date(fromDate)
-            return`${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+            return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
         }
 
         $('.customerinput-status').on('change', function() {

@@ -23,8 +23,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="text-center">
-                @foreach ($getServiceInclusion as $InclusionsData)
+            @foreach ($getServiceInclusion as $InclusionsData)
+                <tr class="text-center">
                     <td>{{ $InclusionsData->custFname }} {{ $InclusionsData->custLname }}</td>
                     <td>{{ $InclusionsData->service_name }}</td>
                     <td>{{ $InclusionsData->cost }}</td>
@@ -42,9 +42,8 @@
                             </div>
                         </div>
                     </td>
-
-                @endforeach
-            </tr>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 @endsection

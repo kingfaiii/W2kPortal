@@ -40,6 +40,7 @@ Route::group(
                 App\Http\Controllers\CustomerlistController::class,
                 'index',
             ])->name('list');
+
             Route::get('/delete/{id}', [
                 App\Http\Controllers\CustomerlistController::class,
                 'Destroy',
