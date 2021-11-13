@@ -180,7 +180,7 @@ class CustomerController extends Controller
                 foreach ($service_array as $service_key => $inclusion) {
                     foreach ($updated_by_columns as $owner_key => $owner) {
                         if (
-                            array_key_exists($service_key, $inclusions) ||
+                            array_key_exists($service_key, $inclusions) &&
                             array_key_exists($owner_key, $inclusions)
                         ) {
                             if (
@@ -193,18 +193,18 @@ class CustomerController extends Controller
                                 }
                             } elseif (
                                 $service_array[$service_key] !==
-                                    $inclusions[$service_key] &&
+                                $inclusions[$service_key] &&
                                 $updated_by_columns[$owner_key] !==
-                                    strval(Auth::user()->id)
+                                strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     $inclusions[$owner_key] = Auth::user()->id;
                                 }
                             } elseif (
                                 $service_array[$service_key] ===
-                                    $inclusions[$service_key] &&
+                                $inclusions[$service_key] &&
                                 $updated_by_columns[$owner_key] ===
-                                    strval(Auth::user()->id)
+                                strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     $inclusions[$owner_key] =
@@ -212,9 +212,9 @@ class CustomerController extends Controller
                                 }
                             } elseif (
                                 $service_array[$service_key] !==
-                                    $inclusions[$service_key] &&
+                                $inclusions[$service_key] &&
                                 $updated_by_columns[$owner_key] ===
-                                    strval(Auth::user()->id)
+                                strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     $inclusions[$owner_key] = Auth::user()->id;
@@ -277,10 +277,8 @@ class CustomerController extends Controller
 
                 unset($inclusions['service_id']);
 
-                foreach (
-                    $get_updated_inclusions
-                    as $service_key => $inclusion
-                ) {
+                foreach ($get_updated_inclusions
+                    as $service_key => $inclusion) {
                     foreach ($updated_by_columns as $owner_key => $owner) {
                         if (
                             array_key_exists($service_key, $inclusions) &&
@@ -289,7 +287,7 @@ class CustomerController extends Controller
                             if (
                                 !empty($inclusions[$service_key]) &&
                                 $updated_by_columns[$owner_key] !==
-                                    strval(Auth::user()->id)
+                                strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     unset($inclusions[$owner_key]);
@@ -300,7 +298,7 @@ class CustomerController extends Controller
                             if (
                                 !empty($inclusions[$service_key]) &&
                                 $updated_by_columns[$owner_key] ===
-                                    strval(Auth::user()->id)
+                                strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     // $inclusions[$service_key] = $inclusions[$service_key];
@@ -331,12 +329,8 @@ class CustomerController extends Controller
                         $inclusions['package_id'] =
                             $get_foreign_ids['package_id'];
                         $inclusions['user_id'] = Auth::user()->id;
-                        $inclusions[
-                            'created_at'
-                        ] = Carbon::now()->toDateTimeString();
-                        $inclusions[
-                            'updated_at'
-                        ] = Carbon::now()->toDateTimeString();
+                        $inclusions['created_at'] = Carbon::now()->toDateTimeString();
+                        $inclusions['updated_at'] = Carbon::now()->toDateTimeString();
                     }
                     inclusions_log::insert(array_filter($inclusions));
                 }

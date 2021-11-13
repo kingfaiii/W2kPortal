@@ -118,10 +118,10 @@
                 <tbody>
 
                     @foreach ($book_information as $item)
-                        <tr data-id="{{ $item['id'] }}" class="text-center align-center justify-content-center">
+                   
+                        <tr data-id="{{ $item['id'] }}" class="text-center align-center justify-content-center upper-row">
                             <input type="hidden" name="items[{{ $item['serID'] }}][service_id]"
-                                value="{{ $item['serID'] }}">
-
+                            value="{{ $item['serID'] }}">
                             <input type="hidden" name="items[{{ $item['serID'] }}][layout_by]"
                                 value="{{ $item['layout_by'] }}">
                             <input type="hidden" name="items[{{ $item['serID'] }}][page_count_by]"
@@ -150,7 +150,6 @@
                                 value="{{ $item['uid_by'] }}">
                             <input type="hidden" name="items[{{ $item['serID'] }}][project_link_by]"
                                 value="{{ $item['project_link_by'] }}">
-
                             <td> {{ $item['service_name'] }} </td>
                             <td> ${{ $item['project_cost'] }} </td>
                             <td>
@@ -183,7 +182,7 @@
 
                                     <input type="text" value="{{ explode('*', $item['page_count'])[0] }}"
                                         style="margin-left:25%"
-                                        class="form-control justify-content-center col-6 customerinput-text"
+                                        class="form-control justify-content-center col-6 customerinput-text customer-pagecount"
                                         name="items[{{ $item['serID'] }}][page_count]" id="">
 
                                 @else
@@ -413,23 +412,59 @@
                 'This Service Inclusion will be Updated', true, 'warning', "Yes Update it!!")
 
             const arrFormValidation = []
-
+        
             $('.customerinput-text').each(function() {
                 const inputValue = $.trim($(this).val())
 
                 if (!inputValue) arrFormValidation.push(inputValue)
             })
 
-            if (arrFormValidation.length === $('.customerinput-text').length) {
-                messagePrompt('The Form is Empty', "", false, "error", "Ok")
+            // if (arrFormValidation.length === $('.customerinput-text').length) {
+            //     messagePrompt('The Form is Empty', "", false, "error", "Ok")
 
-                return
+            //     return
+            // }
+
+            let arr = $('#customerinput_form').serialize();
+            
+            const globalDecInputs = $('.upper-row').closest('tr').find(':input:not(:disabled):not([readonly="readonly"]):not([type="hidden"])')
+            $('.upper-row').each(function() {
+                const inputsArray = $(this).closest('tr').find(':input:not(:disabled):not([readonly="readonly"]):not([type="hidden"])')
+                let ctr = 0,
+                currentLength = inputsArray.length
+
+                inputsArray.each(function() {
+                    return $.trim($(this).val()) === ''
+                })
+
+                const nullInputs = inputsArray.filter(function() {
+                    return $.trim($(this).val()) === ''
+                })
+
+                if(nullInputs.length !== currentLength) {
+                    nullInputs.each(function() {
+                        $(this).addClass('border border-danger')
+                    })
+                }  
+
+                if(nullInputs.length === 0) {
+                    inputsArray.each(function() {
+                        $(this).removeClass('border border-danger')
+                    })
+                }
+            }) 
+
+            const errorInputs = globalDecInputs.filter(function() {
+                return $(this).hasClass('border border-danger');
+            })
+            
+            if( errorInputs.length >0) {
+                messagePrompt('Complete All Red Textboxes', "", false, "error", "Ok")
+                return 
             }
 
-            toggleDisabled(false)
-            let arr = $('#customerinput_form').serialize();
-
-            if (msgResult.isConfirmed) {
+            if (msgResult.isConfirmed && errorInputs.length === 0) {
+                toggleDisabled(false)
                 $.ajax({
                     type: "POST",
                     url: "{{ route('UpdateInclusions') }}",
