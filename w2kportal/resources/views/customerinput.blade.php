@@ -119,7 +119,7 @@
 
                     @foreach ($book_information as $item)
                    
-                        <tr data-id="{{ $item['id'] }}" class="text-center align-center justify-content-center upper-row">
+                        <tr data-id="{{ $item['serID'] }}" class="text-center align-center justify-content-center upper-row">
                             <input type="hidden" name="items[{{ $item['serID'] }}][service_id]"
                             value="{{ $item['serID'] }}">
                             <input type="hidden" name="items[{{ $item['serID'] }}][layout_by]"
@@ -156,7 +156,7 @@
                                 @if (in_array($item['service_name'], $layout))
                                     <select class="form-control customerinput-text" style="width:115%"
                                         name="items[{{ $item['serID'] }}][layout]" id="">
-                                        <option selected value="{{ $item['layout'] }} ">{{ $item['layout'] }}
+                                        <option selected value="{{ $item['layout'] }}">{{ $item['layout'] }}
                                         </option>
                                         <option value="Reflowable">Reflowable</option>
                                         <option value="Fixed Virtual">Fixed Virtual</option>
@@ -166,7 +166,7 @@
                                 @else
                                     <select class="form-control customerinput-text disabled-field" style="width:115%"
                                         name="items[{{ $item['serID'] }}][layout]" id="" disabled>
-                                        <option selected value="{{ $item['layout'] }} ">{{ $item['layout'] }}
+                                        <option selected value="{{ $item['layout'] }}">{{ $item['layout'] }}
                                         </option>
                                         <option value="Reflowable">Reflowable</option>
                                         <option value="Fixed Virtual">Fixed Virtual</option>
@@ -184,7 +184,6 @@
                                         style="margin-left:25%"
                                         class="form-control justify-content-center col-6 customerinput-text customer-pagecount"
                                         name="items[{{ $item['serID'] }}][page_count]" id="">
-
                                 @else
                                     <input type="text" value="{{ $item['page_count'] }}" style="margin-left:25%"
                                         class="form-control justify-content-center col-6 customerinput-text disabled-field"
@@ -224,9 +223,11 @@
                             </td>
                             <td>
                                 <select class="form-control customerinput-status customerinput-text"
-                                    style="width:136%;margin-left:-28%;" name="items[{{ $item['serID'] }}][status]"
+                                    style="width:136%;margin-left:-28%;" name="items[{{$item['serID']}}][status]"
+                                    data-id="{{ $item['id'] }}"
+                                    data-service="{{$item['serID']}}"
                                     id="customerinput_status">
-                                    <option selected value="  {{ $item['status'] }}">
+                                    <option selected value="{{ $item['status'] }}" >
                                         {{ explode('*', $item['status'])[0] }} </option>
                                     <option value="Completed">Completed</option>
                                     <option value="On-going">On-going</option>
@@ -269,7 +270,7 @@
                 </thead>
                 <tbody>
                     @foreach ($book_information as $item)
-                        <tr data-id="{{ $item['id'] }}" class="text-center">
+                        <tr  class="text-center bottom-row">
                             <input type="hidden" name="items[{{ $item['serID'] }}][service_id]"
                                 value="{{ $item['serID'] }}">
                             <td> {{ $item['service_name'] }} </td>
@@ -289,9 +290,10 @@
                             <td><input type="text" name="items[{{ $item['serID'] }}][job_cost]" style="margin-left:40%"
                                     value="{{ explode('*', $item['job_cost'])[0] }} " id=""
                                     class="form-control col-8 customerinput-text"> </td>
-                            <td> <input type="date" name="items[{{ $item['serID'] }}][date_assigned]"
+                            <td> <input data-id="{{ $item['id'] }}" type="date" name="items[{{ $item['serID'] }}][date_assigned]"
+                                    data-old="{{$item['date_assigned_old']}}"
                                     value="{{ explode('*', $item['date_assigned'])[0] }}" style="margin-left:-5%" id=""
-                                    class="form-control col-11 customerinput-text"> </td>
+                                    class="form-control col-11 customerinput-text date-assigned" > </td>
                             <td> <input type="date" name="items[{{ $item['serID'] }}][date_completed]"
                                     value="{{ explode('*', $item['date_completed'])[0] }}" style="margin-left:-5%" id=""
                                     class="form-control col-11 customerinput-text"> </td>
@@ -337,13 +339,31 @@
 @endsection
 
 <script>
+   
+
+    const calcWorkingDays = (fromDate, days) => {
+            let count = 0;
+
+            while (count < parseInt(days)) {
+                fromDate.setDate(fromDate.getDate() + 1);
+                if (fromDate.getDay() != 0 && fromDate.getDay() != 6) // Skip weekends
+                    count++;
+            }
+            let d = new Date(fromDate)
+            return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+    }
+
+    const toggleDisabled = (isDisabled = false) => {
+            $('.disabled-field').each(function() {
+                if (!isDisabled) {
+                    $(this).removeAttr('disabled')
+                } else {
+                    $(this).prop('disabled', true)
+                }
+            })
+    }
+
     $(document).ready(function() {
-        let turnAroundTime = 0;
-        const d = new Date()
-        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August",
-            "September", "October", "November", "December"
-        ];
-        const currentDate = `${d.getDate()}/${monthNames[d.getMonth()]}/${d.getFullYear()}`
         const messagePrompt = async (title = "", text = "", showCancel = false, icon = "info", textConfirm) => {
             return await Swal.fire({
                 title: title,
@@ -356,26 +376,22 @@
             })
 
         }
-
-        function calcWorkingDays(fromDate, days) {
-            let count = 0;
-
-            while (count < parseInt(days)) {
-                fromDate.setDate(fromDate.getDate() + 1);
-                if (fromDate.getDay() != 0 && fromDate.getDay() != 6) // Skip weekends
-                    count++;
-            }
-            let d = new Date(fromDate)
-            return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
-        }
-
+        let turnAroundTime = 0;
+        const d = new Date()
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August",
+            "September", "October", "November", "December"
+        ];
+        const currentDate = `${d.getDate()}/${monthNames[d.getMonth()]}/${d.getFullYear()}`
+    
         $('.customerinput-status').on('change', function() {
-
-
+            const service_id = $(this).data('service')
+            const dateAssigned = $(`input[name="items[${service_id}][date_assigned]"]`)
             if (this.value === 'On-going' && parseInt(turnAroundTime) > 0) {
-                $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(
-                    currentDate), turnAroundTime))
+                $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(currentDate), turnAroundTime))
+            }
 
+            if(this.value === "On Hold") {
+                dateAssigned.val('')
             }
         })
 
@@ -393,24 +409,11 @@
                     currentDate), turnAroundTime))
 
             }
+
         });
-
-        const toggleDisabled = (isDisabled = false) => {
-            $('.disabled-field').each(function() {
-                if (!isDisabled) {
-                    $(this).removeAttr('disabled')
-                } else {
-                    $(this).prop('disabled', true)
-                }
-            })
-
-        }
 
         $('#customerinput_update').on('click', async function(e) {
             e.preventDefault()
-            const msgResult = await messagePrompt("Are you sure?",
-                'This Service Inclusion will be Updated', true, 'warning', "Yes Update it!!")
-
             const arrFormValidation = []
         
             $('.customerinput-text').each(function() {
@@ -419,47 +422,57 @@
                 if (!inputValue) arrFormValidation.push(inputValue)
             })
 
-            // if (arrFormValidation.length === $('.customerinput-text').length) {
-            //     messagePrompt('The Form is Empty', "", false, "error", "Ok")
+            if (arrFormValidation.length === $('.customerinput-text').length) {
+                await messagePrompt('The Form is Empty', "", false, "error", "Ok")
 
-            //     return
-            // }
+                return
+            }
 
             let arr = $('#customerinput_form').serialize();
             
-            const globalDecInputs = $('.upper-row').closest('tr').find(':input:not(:disabled):not([readonly="readonly"]):not([type="hidden"])')
-            $('.upper-row').each(function() {
+            const globalDecInputs = $('.customerinput-text:not(:disabled):not([readonly="readonly"]):not([type="hidden"])')
+        
+            $('.upper-row').each( async function() {
+         
+                const service_id = $(this).data('id')
                 const inputsArray = $(this).closest('tr').find(':input:not(:disabled):not([readonly="readonly"]):not([type="hidden"])')
+                const dateAssigned = $(`input[name="items[${service_id}][date_assigned]"]`)
+                const assignedOld = dateAssigned.data('old')
+                const inpStatus = $(`select[name="items[${service_id}][status]"]`)
+          
                 let ctr = 0,
                 currentLength = inputsArray.length
 
-                inputsArray.each(function() {
-                    return $.trim($(this).val()) === ''
-                })
+                if(inpStatus.val() === 'On-going' && !dateAssigned.val() && $.trim(assignedOld)) {
+                    dateAssigned.addClass('border border-danger')
+                }  else {
+                    dateAssigned.removeClass('border border-danger')
+                }
 
                 const nullInputs = inputsArray.filter(function() {
                     return $.trim($(this).val()) === ''
                 })
 
+                inputsArray.each(function() {
+                    $(this).removeClass('border border-danger')
+                })
+             
                 if(nullInputs.length !== currentLength) {
                     nullInputs.each(function() {
                         $(this).addClass('border border-danger')
                     })
                 }  
 
-                if(nullInputs.length === 0) {
-                    inputsArray.each(function() {
-                        $(this).removeClass('border border-danger')
-                    })
-                }
             }) 
+
+            const msgResult = await messagePrompt("Are you sure?",'This Service Inclusion will be Updated', true, 'warning', "Yes Update it!!")
 
             const errorInputs = globalDecInputs.filter(function() {
                 return $(this).hasClass('border border-danger');
             })
             
-            if( errorInputs.length >0) {
-                messagePrompt('Complete All Red Textboxes', "", false, "error", "Ok")
+            if( errorInputs.length > 0) {
+                await messagePrompt('Complete All Red Textboxes', "", false, "error", "Ok")
                 return 
             }
 
@@ -469,17 +482,29 @@
                     type: "POST",
                     url: "{{ route('UpdateInclusions') }}",
                     data: decodeURIComponent(escape(arr)),
-                    success: function(data, xhr, status) {
-                        console.log(xhr)
-                        if (xhr === 'success') messagePrompt('Successfully Updated', "",
-                            false, "success", "Got it")
+                    success: async function(data, xhr, status) {
+                        if (xhr === 'success') {
+                          const res = await messagePrompt('Successfully Updated', "",false, "success", "Got it")
+                            
+                            return res.isConfirmed  ? location.reload() : false
+                        }
                     },
                     complete: function() {
                         toggleDisabled(true)
                     },
-                    error: function(xhr) { // if error occured
-                        messagePrompt('Error occured.please try again', "", false,
+                    error: async function (data, xhr, status) { // if error occured
+                        let message =''
+                        const element_name = data.responseJSON.element_name
+
+                        if(data.responseJSON.msg) {
+                            message = data.responseJSON.msg
+                        } else {
+                            message = 'Error occured.please try again'
+                        }
+                       await messagePrompt(message, "", false,
                             "error", "Ok")
+                        
+                        // $(`input[name="${element_name}"]`).addClass('border border-danger')
                     },
                 })
 

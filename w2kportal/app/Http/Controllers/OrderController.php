@@ -46,7 +46,7 @@ class OrderController extends Controller
             'service_name' => 'Interior Formatting',
             'project_cost' => 150,
             'task' => 'Interior Formatting',
-            'status' => 'On-going',
+            'status' => 'On-Hold',
             'parent' => 1,
             'calculate' => 0,
         ],
@@ -55,7 +55,7 @@ class OrderController extends Controller
             'service_name' => 'Premium Book Cover Art',
             'project_cost' => 100,
             'task' => 'Art Work - Cover',
-            'status' => 'On-going',
+            'status' => 'On-Hold',
             'parent' => 1,
             'calculate' => 0,
         ],
@@ -64,7 +64,7 @@ class OrderController extends Controller
             'service_name' => 'Ebook Conversion',
             'project_cost' => 0,
             'task' => 'Conversion',
-            'status' => 'On-going',
+            'status' => 'On-Hold',
             'parent' => 1,
             'calculate' => 1,
         ],
@@ -73,7 +73,7 @@ class OrderController extends Controller
             'service_name' => 'Amazon Ebook Upload',
             'project_cost' => 50,
             'task' => 'eBook Upload',
-            'status' => 'On-going',
+            'status' => 'On-Hold',
             'parent' => 1,
             'calculate' => 0,
         ],
@@ -82,7 +82,7 @@ class OrderController extends Controller
             'service_name' => 'Amazon Print Upload',
             'project_cost' => '',
             'task' => 'Print Upload',
-            'status' => 'On-going',
+            'status' => 'On-Hold',
             'parent' => 1,
             'calculate' => 0,
         ],
@@ -91,7 +91,7 @@ class OrderController extends Controller
             'service_name' => 'Facebook Banner',
             'project_cost' => '',
             'task' => 'Art Work - FB Cover',
-            'status' => 'On-going',
+            'status' => 'On-Hold',
             'parent' => 1,
             'calculate' => 0,
         ],
@@ -100,7 +100,7 @@ class OrderController extends Controller
             'service_name' => 'Facebook Page Creation',
             'project_cost' => 50,
             'task' => 'FB Page Creation',
-            'status' => 'On-going',
+            'status' => 'On-Hold',
             'parent' => 1,
             'calculate' => 0,
         ],
@@ -624,7 +624,7 @@ class OrderController extends Controller
                 if (
                     $inclusion['parent'] === $parent_id &&
                     $inclusion['service_name'] ===
-                        request()->input('fixed_inclusion')
+                    request()->input('fixed_inclusion')
                 ) {
                     $found = $inclusion['task'];
                 }
@@ -643,7 +643,7 @@ class OrderController extends Controller
                 if (
                     $inclusion['parent'] === $parent_id &&
                     $inclusion['service_name'] ===
-                        request()->input('fixed_editing')
+                    request()->input('fixed_editing')
                 ) {
                     $found = $inclusion['task'];
                 }
@@ -660,9 +660,7 @@ class OrderController extends Controller
             foreach ($arr_inclusions as $key => $inclusion) {
                 if ($inclusion['parent'] === $parent_id) {
                     if ($inclusion['calculate'] === 1) {
-                        $inclusion[
-                            'project_cost'
-                        ] = $this->caculateInclusionCost(
+                        $inclusion['project_cost'] = $this->caculateInclusionCost(
                             $arr_inclusions,
                             $request,
                             $parent_id

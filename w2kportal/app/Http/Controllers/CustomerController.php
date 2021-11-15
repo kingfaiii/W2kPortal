@@ -137,7 +137,7 @@ class CustomerController extends Controller
                 'customers.customer_email',
                 'won_customers.created_at AS won_createdAt',
                 'books.total_project_cost AS cost',
-                'service_packages.package_name'
+                'service_packages.package_name',
             )
             ->where('books.id', '=', $id);
 
@@ -175,8 +175,6 @@ class CustomerController extends Controller
                     ->toArray()[0];
 
                 $service_array = $service_new->toArray()[0];
-                unset($inclusions['service_id']);
-
                 foreach ($service_array as $service_key => $inclusion) {
                     foreach ($updated_by_columns as $owner_key => $owner) {
                         if (
@@ -224,6 +222,16 @@ class CustomerController extends Controller
                     }
                 }
 
+                if (array_key_exists('status', $inclusions) && $inclusions['status'] === 'On Hold') {
+                    $inclusions['date_assigned'] = '';
+                    $inclusions['date_assigned_by'] = '';
+                }
+
+                unset($inclusions['service_id']);
+
+                if (!empty($inclusions['date_assigned'])) {
+                    $inclusions['date_assigned_old'] = 'value';
+                }
                 $service->update($inclusions);
             }
 
@@ -323,12 +331,11 @@ class CustomerController extends Controller
                 );
                 if (!empty($diff_log)) {
                     if (!empty(array_filter($inclusions))) {
-                        $inclusions['log_id'] = $get_foreign_ids['id'];
-                        $inclusions['won_id'] = $get_foreign_ids['won_id'];
-                        $inclusions['book_id'] = $get_foreign_ids['book_id'];
-                        $inclusions['package_id'] =
-                            $get_foreign_ids['package_id'];
-                        $inclusions['user_id'] = Auth::user()->id;
+                        $inclusions['log_id']     = $get_foreign_ids['id'];
+                        $inclusions['won_id']     = $get_foreign_ids['won_id'];
+                        $inclusions['book_id']    = $get_foreign_ids['book_id'];
+                        $inclusions['package_id'] = $get_foreign_ids['package_id'];
+                        $inclusions['user_id']    = Auth::user()->id;
                         $inclusions['created_at'] = Carbon::now()->toDateTimeString();
                         $inclusions['updated_at'] = Carbon::now()->toDateTimeString();
                     }

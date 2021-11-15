@@ -16,7 +16,7 @@ class CreateServiceInclusionsTable extends Migration
     {
         Schema::create('service_inclusions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('project_cost')->nullable();
+            $table->string('project_cost')->default('0.00');
             $table->string('won_id')->nullable();
             $table->string('package_id')->nullable();
             $table->string('book_id')->nullable();
@@ -39,6 +39,7 @@ class CreateServiceInclusionsTable extends Migration
             $table->string('job_cost')->nullable();
             $table->string('job_cost_by')->nullable();
             $table->string('date_assigned')->nullable();
+            $table->string('date_assigned_old')->nullable();
             $table->string('date_assigned_by')->nullable();
             $table->string('date_completed')->nullable();
             $table->string('date_completed_by')->nullable();
