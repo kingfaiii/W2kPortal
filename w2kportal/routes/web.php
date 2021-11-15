@@ -63,10 +63,18 @@ Route::group(
                 App\Http\Controllers\WonCustomerController::class,
                 'wonGetAdmin',
             ])->name('wonAdmin');
+            Route::post('/Admin/{id}', [
+                App\Http\Controllers\WonCustomerController::class,
+                'adminUpdate',
+            ])->name('adminStore');
             Route::get('/Support', [
                 App\Http\Controllers\WonCustomerController::class,
                 'wonGetSupport',
             ])->name('wonSupport');
+            Route::post('/Support/{id}', [
+                App\Http\Controllers\WonCustomerController::class,
+                'supportUpdate',
+            ])->name('supportStore');
 
             Route::get('/books/{won_id}', [
                 App\Http\Controllers\WonCustomerController::class,

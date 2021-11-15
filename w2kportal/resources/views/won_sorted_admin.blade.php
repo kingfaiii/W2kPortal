@@ -25,29 +25,36 @@
         </thead>
         <tbody>
             @foreach ($getServiceInclusion as $InclusionsData)
-                <tr class="text-center">
-                    <td>{{ $InclusionsData->custFname }} {{ $InclusionsData->custLname }}</td>
-                    <td>{{ $InclusionsData->service_name }}</td>
-                    <td>{{ $InclusionsData->cost }}</td>
-                    <td>{{ $InclusionsData->bookTitle }}</td>
-                    <td>{{ $InclusionsData->layout ? $InclusionsData->layout : 'No Layout' }}</td>
-                    <td>{{ $InclusionsData->page_count ? $InclusionsData->page_count : 'No Page/Word Count' }}</td>
-                    <td>{{ $InclusionsData->classification ? $InclusionsData->classificatoin : 'No Classification' }}</td>
-                    <td>{{ $InclusionsData->commitment_date ? $InclusionsData->commitment_date : 'No Commitment Date' }}
-                    </td>
-                    <td><select class="form-control" name="" id="">
-                            <Option>King</Option>
-                        </select></td>
-                    <td><input class="form-control" type="text" name="" id=""></td>
-                    <td>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a href="{{ route('customer', [$InclusionsData->bookID]) }}"
-                                    class="btn btn-success">Update</a>
+                <form action="{{ route('adminStore', [$InclusionsData->id]) }}" method="post">
+                    @csrf
+
+                    <tr class="text-center">
+                        <td>{{ $InclusionsData->custFname }} {{ $InclusionsData->custLname }}</td>
+                        <td>{{ $InclusionsData->service_name }}</td>
+                        <td>${{ $InclusionsData->project_cost }}</td>
+                        <td>{{ $InclusionsData->bookTitle }}</td>
+                        <td>{{ $InclusionsData->layout ? $InclusionsData->layout : 'No Layout' }}</td>
+                        <td>{{ $InclusionsData->page_count ? $InclusionsData->page_count : 'No Page/Word Count' }}</td>
+                        <td>{{ $InclusionsData->classification ? $InclusionsData->classificatoin : 'No Classification' }}
+                        </td>
+                        <td>{{ $InclusionsData->commitment_date ? $InclusionsData->commitment_date : 'No Commitment Date' }}
+                        </td>
+                        <td><select class="form-control w-auto" name="owner" id="">
+                                @foreach ($ownerInformation as $owner)
+                                    <Option value="{{ $owner->owner_fname }} {{ $owner->owner_lname }}">
+                                        {{ $owner->owner_fname }} {{ $owner->owner_lname }}</Option>
+                                @endforeach
+                            </select></td>
+                        <td><input class="form-control mx-auto ml-5 w-50" type="text" name="job_cost" id=""></td>
+                        <td>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="submit" value="Update" class="btn btn-success">
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                </form>
             @endforeach
         </tbody>
     </table>

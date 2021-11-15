@@ -142,7 +142,7 @@
                     <td></td>
                 @endif
 
-                <td>{{ date('m/d/Y', strtotime($item['created_at'])) }}</td>
+                <td>{{ date('d/m/Y h:m:s', strtotime($item['created_at'])) }}</td>
 
             </tr>
         @endforeach

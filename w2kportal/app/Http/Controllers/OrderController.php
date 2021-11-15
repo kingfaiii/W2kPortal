@@ -13,9 +13,13 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class OrderController extends Controller
 {
-
-    private  function saveOrderStatus($name, $id, $reason_hold, $reason_lost, $reason_hold_date)
-    {
+    private function saveOrderStatus(
+        $name,
+        $id,
+        $reason_hold,
+        $reason_lost,
+        $reason_hold_date
+    ) {
         $status = customer::find($id);
         $status->reason_hold = $reason_hold;
         $status->reason_lost = $reason_lost;
@@ -23,7 +27,7 @@ class OrderController extends Controller
         $status->customer_status = request('customer_status');
         $status->update();
 
-        $activity = new Order;
+        $activity = new Order();
         $activity->created_at = now()->toDateTimeString();
         $activity->updated_at = now()->toDateTimeString();
         $activity->customer_id = request('updatestatuscustomerid');
@@ -32,356 +36,352 @@ class OrderController extends Controller
         $activity->remarks = "Update Status($name)";
         $activity->save();
 
-        return redirect()->route('order', [$activity->customer_id])->with('success', 'Customer status Successfully Updated');
+        return redirect()
+            ->route('order', [$activity->customer_id])
+            ->with('success', 'Customer status Successfully Updated');
     }
-
 
     private $inclusions_array = [
         [
-            "service_name" => "Interior Formatting",
-            "project_cost" => 150,
-            "task" => "Interior Formatting",
-
-            "parent" => 1,
-            "calculate" => 0
+            'service_name' => 'Interior Formatting',
+            'project_cost' => 150,
+            'task' => 'Interior Formatting',
+            'status' => 'On-going',
+            'parent' => 1,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Premium Book Cover Art",
-            "project_cost" => 100,
-            "task" => "Art Work - Cover",
-            "parent" => 1,
-            "calculate" => 0
+            'service_name' => 'Premium Book Cover Art',
+            'project_cost' => 100,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-going',
+            'parent' => 1,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Ebook Conversion",
-            "project_cost" => 0,
-            "task" => "Conversion",
-            "parent" => 1,
-            "calculate" => 1
+            'service_name' => 'Ebook Conversion',
+            'project_cost' => 0,
+            'task' => 'Conversion',
+            'status' => 'On-going',
+            'parent' => 1,
+            'calculate' => 1,
         ],
 
         [
-            "service_name" => "Amazon Ebook Upload",
-            "project_cost" => 50,
-            "task" => "eBook Upload",
-            "parent" => 1,
-            "calculate" => 0
+            'service_name' => 'Amazon Ebook Upload',
+            'project_cost' => 50,
+            'task' => 'eBook Upload',
+            'status' => 'On-going',
+            'parent' => 1,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Amazon Print Upload",
-            "project_cost" => "",
-            "task" => "Print Upload",
-            "parent" => 1,
-            "calculate" => 0
+            'service_name' => 'Amazon Print Upload',
+            'project_cost' => '',
+            'task' => 'Print Upload',
+            'status' => 'On-going',
+            'parent' => 1,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Facebook Banner",
-            "project_cost" => "",
-            "task" => "Art Work - FB Cover",
-            "parent" => 1,
-            "calculate" => 0
+            'service_name' => 'Facebook Banner',
+            'project_cost' => '',
+            'task' => 'Art Work - FB Cover',
+            'status' => 'On-going',
+            'parent' => 1,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Facebook Page Creation",
-            "project_cost" => 50,
-            "task" => "FB Page Creation",
-            "parent" => 1,
-            "calculate" => 0
+            'service_name' => 'Facebook Page Creation',
+            'project_cost' => 50,
+            'task' => 'FB Page Creation',
+            'status' => 'On-going',
+            'parent' => 1,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "eBook Conversion",
-            "project_cost" => 0,
-            "task" => "Conversion",
-            "status" => "On-going",
-            "parent" => 2,
-            "calculate" => 1
+            'service_name' => 'eBook Conversion',
+            'project_cost' => 0,
+            'task' => 'Conversion',
+            'status' => 'On-going',
+            'parent' => 2,
+            'calculate' => 1,
         ],
 
         [
-            "service_name" => "Basic eBook Cover Art",
-            "project_cost" => 0,
-            "task" => "Art Work - Cover",
-            "status" => "On-Hold",
-            "parent" => 2,
-            "calculate" => 0
-        ],
-
-
-        [
-            "service_name" => "eBook Conversion",
-            "project_cost" => 0,
-            "task" => "Conversion",
-            "status" => "On-going",
-            "parent" => 3,
-            "calculate" => 1
+            'service_name' => 'Basic eBook Cover Art',
+            'project_cost' => 0,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-Hold',
+            'parent' => 2,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Basic eBook Cover Art",
-            "project_cost" => 0,
-            "task" => "Art Work - Cover",
-            "status" => "On-Hold",
-            "parent" => 3,
-            "calculate" => 0
+            'service_name' => 'eBook Conversion',
+            'project_cost' => 0,
+            'task' => 'Conversion',
+            'status' => 'On-going',
+            'parent' => 3,
+            'calculate' => 1,
         ],
 
         [
-            "service_name" => "Facebook Banner",
-            "project_cost" => 0,
-            "task" => "Art Work - FB Cover",
-            "status" => "On-Hold",
-            "parent" => 3,
-            "calculate" => 0
+            'service_name' => 'Basic eBook Cover Art',
+            'project_cost' => 0,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-Hold',
+            'parent' => 3,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Facebook Page Creation",
-            "project_cost" => 50,
-            "task" => "FB Page Creation",
-            "status" => "On-Hold",
-            "parent" => 3,
-            "calculate" => 0
+            'service_name' => 'Facebook Banner',
+            'project_cost' => 0,
+            'task' => 'Art Work - FB Cover',
+            'status' => 'On-Hold',
+            'parent' => 3,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "eBook Conversion",
-            "project_cost" => 0,
-            "task" => "Conversion",
-            "status" => "On-going",
-            "parent" => 4,
-            "calculate" => 1
+            'service_name' => 'Facebook Page Creation',
+            'project_cost' => 50,
+            'task' => 'FB Page Creation',
+            'status' => 'On-Hold',
+            'parent' => 3,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Premium eBook Cover Art",
-            "project_cost" => 100,
-            "task" => "Art Work - Cover",
-            "status" => "On-Hold",
-            "parent" => 4,
-            "calculate" => 0
+            'service_name' => 'eBook Conversion',
+            'project_cost' => 0,
+            'task' => 'Conversion',
+            'status' => 'On-going',
+            'parent' => 4,
+            'calculate' => 1,
         ],
 
         [
-            "service_name" => "Amazon eBook Upload",
-            "project_cost" => 50,
-            "task" => "eBook Upload",
-            "status" => "On-Hold",
-            "parent" => 4,
-            "calculate" => 0
+            'service_name' => 'Premium eBook Cover Art',
+            'project_cost' => 100,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-Hold',
+            'parent' => 4,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Facebook Banner",
-            "project_cost" => 0,
-            "task" => "Art Work - FB Cover",
-            "status" => "On-Hold",
-            "parent" => 4,
-            "calculate" => 0
-        ],
-
-
-        [
-            "service_name" => "Facebook Page Creation",
-            "project_cost" => 50,
-            "task" => "FB Page Creation",
-            "status" => "On-Hold",
-            "parent" => 4,
-            "calculate" => 0
+            'service_name' => 'Amazon eBook Upload',
+            'project_cost' => 50,
+            'task' => 'eBook Upload',
+            'status' => 'On-Hold',
+            'parent' => 4,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Interior Formatting",
-            "project_cost" => 0,
-            "task" => "Interior Formatting",
-            "status" => "On-Hold",
-            "parent" => 5,
-            "calculate" => 1
+            'service_name' => 'Facebook Banner',
+            'project_cost' => 0,
+            'task' => 'Art Work - FB Cover',
+            'status' => 'On-Hold',
+            'parent' => 4,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Interior Formatting",
-            "project_cost" => 0,
-            "task" => "Interior Formatting",
-            "status" => "On-Hold",
-            "parent" => 6,
-            "calculate" => 1
-        ],
-
-
-        [
-            "service_name" => "Premium Book Covert Art",
-            "project_cost" => 100,
-            "task" => "Interior Formatting",
-            "status" => "On-Hold",
-            "parent" => 6,
-            "calculate" => 0
+            'service_name' => 'Facebook Page Creation',
+            'project_cost' => 50,
+            'task' => 'FB Page Creation',
+            'status' => 'On-Hold',
+            'parent' => 4,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Interior Formatting",
-            "project_cost" => 0,
-            "task" => "Interior Formatting",
-            "status" => "On-Hold",
-            "parent" => 7,
-            "calculate" => 1
-        ],
-
-
-        [
-            "service_name" => "Premium Book Cover Art",
-            "project_cost" => 100,
-            "task" => "Art Work - Cover",
-            "status" => "On-Hold",
-            "parent" => 7,
-            "calculate" => 0
-        ],
-
-
-        [
-            "service_name" => "Amazon Print Upload",
-            "project_cost" => 50,
-            "task" => "Print Upload",
-            "status" => "On-Hold",
-            "parent" => 7,
-            "calculate" => 0
+            'service_name' => 'Interior Formatting',
+            'project_cost' => 0,
+            'task' => 'Interior Formatting',
+            'status' => 'On-Hold',
+            'parent' => 5,
+            'calculate' => 1,
         ],
 
         [
-            "service_name" => "Facebook Banner",
-            "project_cost" => 0,
-            "task" => "Art Work - FB Cover",
-            "status" => "On-Hold",
-            "parent" => 7,
-            "calculate" => 0
+            'service_name' => 'Interior Formatting',
+            'project_cost' => 0,
+            'task' => 'Interior Formatting',
+            'status' => 'On-Hold',
+            'parent' => 6,
+            'calculate' => 1,
         ],
 
         [
-            "service_name" => "Facebook Page Creation",
-            "project_cost" => 50,
-            "task" => "FB Page Creation",
-            "status" => "On-Hold",
-            "parent" => 7,
-            "calculate" => 0
+            'service_name' => 'Premium Book Covert Art',
+            'project_cost' => 100,
+            'task' => 'Interior Formatting',
+            'status' => 'On-Hold',
+            'parent' => 6,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Interior Formatting",
-            "project_cost" => 0,
-            "task" => "Interior Formatting",
-            "status" => "On-Hold",
-            "parent" => 8,
-            "calculate" => 1
-        ],
-
-
-        [
-            "service_name" => "eBook Conversion",
-            "project_cost" => 80,
-            "task" => "Conversion",
-            "status" => "On-Hold",
-            "parent" => 8,
-            "calculate" => 0
+            'service_name' => 'Interior Formatting',
+            'project_cost' => 0,
+            'task' => 'Interior Formatting',
+            'status' => 'On-Hold',
+            'parent' => 7,
+            'calculate' => 1,
         ],
 
         [
-            "service_name" => "Basic eBook Cover Art",
-            "project_cost" => 0,
-            "task" => "Art Work - Cover",
-            "status" => "On-Hold",
-            "parent" => 8,
-            "calculate" => 0
-        ],
-
-
-        [
-            "service_name" => "Interior Formatting",
-            "project_cost" => 0,
-            "task" => "Interior Formatting",
-            "status" => "On-Hold",
-            "parent" => 9,
-            "calculate" => 1
-        ],
-
-
-        [
-            "service_name" => "eBook Conversion",
-            "project_cost" => 100,
-            "task" => "Art Work - Cover",
-            "status" => "On-Hold",
-            "parent" => 9,
-            "calculate" => 0
+            'service_name' => 'Premium Book Cover Art',
+            'project_cost' => 100,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-Hold',
+            'parent' => 7,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Basic eBook Cover Art",
-            "project_cost" => 49,
-            "task" => "Conversion",
-            "status" => "On-Hold",
-            "parent" => 9,
-            "calculate" => 0
-        ],
-
-
-        [
-            "service_name" => "Web Design",
-            "project_cost" => 0,
-            "task" => "Web Creation",
-            "status" => "On-Hold",
-            "parent" => 10,
-            "calculate" => 1
-        ],
-
-
-        [
-            "service_name" => "Physical to Digital",
-            "project_cost" => 0,
-            "task" => "Physical to Digital",
-            "status" => "On-Hold",
-            "parent" => 11,
-            "calculate" => 0
-        ],
-
-
-        [
-            "service_name" => "Physical to eBook",
-            "project_cost" => 0,
-            "task" => "Physical to eBook",
-            "status" => "On-Hold",
-            "parent" => 11,
-            "calculate" => 0
+            'service_name' => 'Amazon Print Upload',
+            'project_cost' => 50,
+            'task' => 'Print Upload',
+            'status' => 'On-Hold',
+            'parent' => 7,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Copyediting",
-            "project_cost" => 0,
-            "task" => "Copyediting",
-            "status" => "On-Hold",
-            "parent" => 12,
-            "calculate" => 0
+            'service_name' => 'Facebook Banner',
+            'project_cost' => 0,
+            'task' => 'Art Work - FB Cover',
+            'status' => 'On-Hold',
+            'parent' => 7,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Proofreading",
-            "project_cost" => 0,
-            "task" => "Proofreading",
-            "status" => "On-Hold",
-            "parent" => 12,
-            "calculate" => 0
+            'service_name' => 'Facebook Page Creation',
+            'project_cost' => 50,
+            'task' => 'FB Page Creation',
+            'status' => 'On-Hold',
+            'parent' => 7,
+            'calculate' => 0,
         ],
 
         [
-            "service_name" => "Development Editing",
-            "project_cost" => 0,
-            "task" => "Development Editing",
-            "status" => "On-Hold",
-            "parent" => 12,
-            "calculate" => 0
+            'service_name' => 'Interior Formatting',
+            'project_cost' => 0,
+            'task' => 'Interior Formatting',
+            'status' => 'On-Hold',
+            'parent' => 8,
+            'calculate' => 1,
+        ],
+
+        [
+            'service_name' => 'eBook Conversion',
+            'project_cost' => 80,
+            'task' => 'Conversion',
+            'status' => 'On-Hold',
+            'parent' => 8,
+            'calculate' => 0,
+        ],
+
+        [
+            'service_name' => 'Basic eBook Cover Art',
+            'project_cost' => 0,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-Hold',
+            'parent' => 8,
+            'calculate' => 0,
+        ],
+
+        [
+            'service_name' => 'Interior Formatting',
+            'project_cost' => 0,
+            'task' => 'Interior Formatting',
+            'status' => 'On-Hold',
+            'parent' => 9,
+            'calculate' => 1,
+        ],
+
+        [
+            'service_name' => 'eBook Conversion',
+            'project_cost' => 100,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-Hold',
+            'parent' => 9,
+            'calculate' => 0,
+        ],
+
+        [
+            'service_name' => 'Basic eBook Cover Art',
+            'project_cost' => 49,
+            'task' => 'Conversion',
+            'status' => 'On-Hold',
+            'parent' => 9,
+            'calculate' => 0,
+        ],
+
+        [
+            'service_name' => 'Web Design',
+            'project_cost' => 0,
+            'task' => 'Web Creation',
+            'status' => 'On-Hold',
+            'parent' => 10,
+            'calculate' => 1,
+        ],
+
+        [
+            'service_name' => 'Physical to Digital',
+            'project_cost' => 0,
+            'task' => 'Physical to Digital',
+            'status' => 'On-Hold',
+            'parent' => 11,
+            'calculate' => 0,
+        ],
+
+        [
+            'service_name' => 'Physical to eBook',
+            'project_cost' => 0,
+            'task' => 'Physical to eBook',
+            'status' => 'On-Hold',
+            'parent' => 11,
+            'calculate' => 0,
+        ],
+
+        [
+            'service_name' => 'Copyediting',
+            'project_cost' => 0,
+            'task' => 'Copyediting',
+            'status' => 'On-Hold',
+            'parent' => 12,
+            'calculate' => 0,
+        ],
+
+        [
+            'service_name' => 'Proofreading',
+            'project_cost' => 0,
+            'task' => 'Proofreading',
+            'status' => 'On-Hold',
+            'parent' => 12,
+            'calculate' => 0,
+        ],
+
+        [
+            'service_name' => 'Development Editing',
+            'project_cost' => 0,
+            'task' => 'Development Editing',
+            'status' => 'On-Hold',
+            'parent' => 12,
+            'calculate' => 0,
         ],
     ];
 
@@ -398,18 +398,32 @@ class OrderController extends Controller
 
     public function index($id)
     {
-        $order = Order::leftJoin('service_packages', 'orders.Package_id', '=', 'service_packages.id')
-            ->select('orders.*', 'service_packages.*', 'orders.updated_at AS orderupdated', 'orders.Package_id AS PackID', 'orders.id AS ActivityID')
+        $order = Order::leftJoin(
+            'service_packages',
+            'orders.Package_id',
+            '=',
+            'service_packages.id'
+        )
+            ->select(
+                'orders.*',
+                'service_packages.*',
+                'orders.updated_at AS orderupdated',
+                'orders.Package_id AS PackID',
+                'orders.id AS ActivityID'
+            )
             ->where('customer_id', $id)
             ->latest('orders.created_at')
             ->get();
 
-        $customer = Customer::all()
-            ->where('id', $id);
+        $customer = Customer::all()->where('id', $id);
 
         $packages = service_package::all();
 
-        return view('order', ['order' => $order, 'customer' => $customer, 'packages' => $packages])->with("id", $id);
+        return view('order', [
+            'order' => $order,
+            'customer' => $customer,
+            'packages' => $packages,
+        ])->with('id', $id);
     }
 
     public function Store(request $request)
@@ -419,17 +433,18 @@ class OrderController extends Controller
             'user_id' => 'required',
             'sales_rep' => 'required',
             'remarks' => 'required',
-
         ]);
         $last_activity = Order::create($request->all());
         $status = customer::find(request('customer_id'));
         $status->last_activity = $last_activity['id'];
-        $status->customer_status = "Answered";
+        $status->customer_status = 'Answered';
         $status->reason_hold = null;
         $status->reason_lost = null;
         $status->reason_hold_date = null;
         $status->update();
-        return redirect()->route('order', [request('customer_id')])->with('success', config('messages.AddActivity'));
+        return redirect()
+            ->route('order', [request('customer_id')])
+            ->with('success', config('messages.AddActivity'));
     }
     public function show()
     {
@@ -437,19 +452,35 @@ class OrderController extends Controller
     }
     public function update(request $request, $id)
     {
-
         switch (request('customer_status')) {
-
             case 'Answered':
-                return $this->saveOrderStatus('Answered', $id, null, null, null);
+                return $this->saveOrderStatus(
+                    'Answered',
+                    $id,
+                    null,
+                    null,
+                    null
+                );
                 break;
 
             case 'Lost':
-                return $this->saveOrderStatus('Lost', $id, null, request('Reasonlost'), null);
+                return $this->saveOrderStatus(
+                    'Lost',
+                    $id,
+                    null,
+                    request('Reasonlost'),
+                    null
+                );
                 break;
 
             case 'Hold':
-                return $this->saveOrderStatus('Hold', $id, request('reason_hold'), null, request('reason_hold_date'));
+                return $this->saveOrderStatus(
+                    'Hold',
+                    $id,
+                    request('reason_hold'),
+                    null,
+                    request('reason_hold_date')
+                );
                 break;
         }
     }
@@ -460,26 +491,29 @@ class OrderController extends Controller
         $activity->customer_book = request('customer_book');
         $activity->remarks = request('remarks');
         $activity->update();
-        return redirect()->route('order', [$activity->customer_id])->with('success', config('messages.updatedactivity'));
+        return redirect()
+            ->route('order', [$activity->customer_id])
+            ->with('success', config('messages.updatedactivity'));
     }
     public function DestroyActivity($id)
     {
         $order = Order::find($id);
         $order->delete();
-        return redirect()->route('order', $order->customer_id)->with('success', config('messages.deleted'));
+        return redirect()
+            ->route('order', $order->customer_id)
+            ->with('success', config('messages.deleted'));
     }
 
     public function ConvertCustomer(request $request)
     {
-
-        $activity = new Order;
+        $activity = new Order();
         $activity->created_at = now()->toDateTimeString();
         $activity->updated_at = now()->toDateTimeString();
         $activity->customer_id = request('customer_id');
         $activity->user_id = request('user_id');
         $activity->sales_rep = request('sales_rep');
         $activity->customer_book = request('customer_book');
-        $activity->remarks = "Won";
+        $activity->remarks = 'Won';
         $activity->Package_id = request('Packages');
         $activity->save();
 
@@ -491,11 +525,14 @@ class OrderController extends Controller
         $status->reason_hold_date = null;
         $status->update();
 
-
-        $is_won_exist = won_customer::where('customer_id', '=', $request->input('customer_id'))->first();
+        $is_won_exist = won_customer::where(
+            'customer_id',
+            '=',
+            $request->input('customer_id')
+        )->first();
         $convert = [];
         if ($is_won_exist === null) {
-            $convert = new won_customer;
+            $convert = new won_customer();
             $convert->package_id = request('Packages');
             $convert->customer_id = request('customer_id');
             $convert->status = 'Won';
@@ -503,7 +540,7 @@ class OrderController extends Controller
         }
 
         $book = [];
-        $book = new Book;
+        $book = new Book();
         $book->book_title = request('customer_book');
         $book->transaction_ID = request('transaction_id');
         $book->won_id = request('customer_id');
@@ -564,49 +601,72 @@ class OrderController extends Controller
                 break;
         }
 
-        $this->createInclusions($this->inclusions_array, $book, $chosen_num, $request);
-        return redirect()->route('order', [request('customer_id')])->with('success', config('messages.NewConvert'));
+        $this->createInclusions(
+            $this->inclusions_array,
+            $book,
+            $chosen_num,
+            $request
+        );
+        return redirect()
+            ->route('order', [request('customer_id')])
+            ->with('success', config('messages.NewConvert'));
     }
 
-
-    private function createInclusions($arr_inclusions, $book, $parent_id, request $request)
-    {
+    private function createInclusions(
+        $arr_inclusions,
+        $book,
+        $parent_id,
+        request $request
+    ) {
         if ($parent_id === 11) {
-            $found = "";
+            $found = '';
             foreach ($arr_inclusions as $key => $inclusion) {
-                if ($inclusion['parent'] === $parent_id  && $inclusion['service_name'] === request()->input('fixed_inclusion')) {
+                if (
+                    $inclusion['parent'] === $parent_id &&
+                    $inclusion['service_name'] ===
+                        request()->input('fixed_inclusion')
+                ) {
                     $found = $inclusion['task'];
                 }
             }
             service_inclusion::insert([
-                "project_cost" => request()->input('project_cost'),
-                "book_id" => $book['id'],
-                "package_id" => request()->input('Packages'),
-                "won_id" =>  request()->input('customer_id'),
-                "service_name" => request()->input('fixed_inclusion'),
-                "task" =>  $found
-
+                'project_cost' => request()->input('project_cost'),
+                'book_id' => $book['id'],
+                'package_id' => request()->input('Packages'),
+                'won_id' => request()->input('customer_id'),
+                'service_name' => request()->input('fixed_inclusion'),
+                'task' => $found,
             ]);
         } elseif ($parent_id === 12) {
-            $found = "";
+            $found = '';
             foreach ($arr_inclusions as $key => $inclusion) {
-                if ($inclusion['parent'] === $parent_id  && $inclusion['service_name'] === request()->input('fixed_editing')) {
+                if (
+                    $inclusion['parent'] === $parent_id &&
+                    $inclusion['service_name'] ===
+                        request()->input('fixed_editing')
+                ) {
                     $found = $inclusion['task'];
                 }
             }
             service_inclusion::insert([
-                "project_cost" => request()->input('project_cost'),
-                "book_id" => $book['id'],
-                "package_id" => request()->input('Packages'),
-                "won_id" =>  request()->input('customer_id'),
-                "service_name" => request()->input('fixed_editing'),
-                "task" =>  $found
+                'project_cost' => request()->input('project_cost'),
+                'book_id' => $book['id'],
+                'package_id' => request()->input('Packages'),
+                'won_id' => request()->input('customer_id'),
+                'service_name' => request()->input('fixed_editing'),
+                'task' => $found,
             ]);
         } else {
             foreach ($arr_inclusions as $key => $inclusion) {
                 if ($inclusion['parent'] === $parent_id) {
                     if ($inclusion['calculate'] === 1) {
-                        $inclusion['project_cost'] = $this->caculateInclusionCost($arr_inclusions, $request, $parent_id);
+                        $inclusion[
+                            'project_cost'
+                        ] = $this->caculateInclusionCost(
+                            $arr_inclusions,
+                            $request,
+                            $parent_id
+                        );
                     }
                     unset($inclusion['parent']);
                     unset($inclusion['calculate']);
@@ -619,14 +679,16 @@ class OrderController extends Controller
         }
     }
 
-
     private function caculateInclusionCost($item, request $request, $parent_id)
     {
         $total = 0;
         $total_cost = request()->input('project_cost');
         foreach ($item as $key => $inclusion) {
-            if ($inclusion['project_cost'] > 0  && $inclusion['parent'] === $parent_id) {
-                $total_cost =  $total_cost -  $inclusion['project_cost'];
+            if (
+                $inclusion['project_cost'] > 0 &&
+                $inclusion['parent'] === $parent_id
+            ) {
+                $total_cost = $total_cost - $inclusion['project_cost'];
             }
         }
 
