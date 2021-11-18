@@ -5,19 +5,17 @@
 @section('header')
     <div class="col-md-12">
         <div class="row">
-            <div class="col-md-11">
+            <div class="col-md-10">
                 <h1 class="text-white font-weight bolder">History</h1>
             </div>
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <a href="{{ route('customer', [request()->segment(count(request()->segments()))]) }}"
                     class="btn btn-info mb-3 text-white mt-2">Book</a>
+                    <a href="{{ route('ExportHistory', [request()->segment(count(request()->segments()))]) }}"
+                        target="_blank"
+                        class="btn btn-info mb-3 text-white mt-2"><i class="bi bi-download"></i> Export</a>
             </div>
 
-            <div class="col-md-1">
-                <a href="{{ route('ExportHistory', [request()->segment(count(request()->segments()))]) }}"
-                    target="_blank"
-                    class="btn btn-info mb-3 text-white mt-2">Export</a>
-            </div>
         </div>
     </div>
 @endsection

@@ -261,7 +261,7 @@
                 <thead class="text-center">
                     <th>Service Inclusions</th>
                     <th>Owner</th>
-                    <th>Job Cost ($)</th>
+                    <th>Job Cost</th>
                     <th>Date Assigned</th>
                     <th>Date Completed</th>
                     <th>QA</th>
@@ -288,9 +288,13 @@
                                 </select>
 
                             </td>
-                            <td><input type="text" name="items[{{ $item['serID'] }}][job_cost]" style="margin-left:20%"
-                                    value="{{ explode('*', $item['job_cost'])[0] }} " id=""
-                                    class="form-control col-8 customerinput-text"> </td>
+                            
+                            <td><div class="input-group-prepend">
+                                <div class="input-group-text rounded-0"><i class="bi bi-currency-dollar"></i></div>
+                                <input type="text" name="items[{{ $item['serID'] }}][job_cost]" style=""
+                                value="{{ explode('*', $item['job_cost'])[0] }} " id=""
+                                class="form-control rounded-0 col-8 customerinput-text">
+                            </div> </td>
                             <td> <input data-id="{{ $item['id'] }}"  type="text" name="items[{{ $item['serID'] }}][date_assigned]"
                                     data-old="{{$item['date_assigned_old']}}"
                                     value="{{ explode('*', $item['date_assigned'])[0] }}" style="" 
@@ -300,18 +304,29 @@
                                     class="form-control datepicker col-11 customerinput-text" readonly> </td>
                             <td>
                                 <select name="items[{{ $item['serID'] }}][quality_assurance]" id=""
-                                    style="margin-left:-30%;width:180%" class="form-control customerinput-text">
-                                    <option selected value=" {{ $item['quality_assurance'] }} ">
+                                    style="" class="form-control mx-auto w-auto customerinput-text">
+                                    @if ($item['quality_assurance'])
+                                    <option selected value=" {{ $item['quality_assurance'] }} " disabled>
                                         {{ explode('*', $item['quality_assurance'])[0] }} </option>
+                                    @else
+                                    <option selected value="" disabled>
+                                      N/A </option>
+                                    @endif
+                                    
+
                                     @foreach ($qa as $qa_row)
                                         <option value="{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}">
                                             {{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}</option>
                                     @endforeach
                                 </select>
                             </td>
-                            <td> <input style="margin-left:25px;width:50%" id=""
-                                    name="items[{{ $item['serID'] }}][quality_score]"
-                                    class="form-control customerinput-text"></td>
+                          
+                            <td><div class="input-group-prepend">
+                                <div class="input-group-text rounded-0"><i class="bi bi-percent"></i></div>
+                                <input style="" id=""
+                                name="items[{{ $item['serID'] }}][quality_score]"
+                                class="form-control customerinput-text">
+                            </div></td>
                             <td> <input type="text" name="items[{{ $item['serID'] }}][uid]"
                                     value="{{ explode('*', $item['uid'])[0] }}" id=""
                                     class="form-control customerinput-text"></td>
@@ -351,7 +366,7 @@
                     count++;
             }
             let d = new Date(fromDate)
-            return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+            return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
     }
 
     const toggleDisabled = (isDisabled = false) => {

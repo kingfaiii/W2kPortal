@@ -11,7 +11,7 @@
     </div>
     <div class="col-md-2">
         <button class="btn btn-primary col-12" id="customers_refresh"><span class="glyphicon glyphicon-refresh"></span>
-            Refresh</button>
+            <i class="bi bi-arrow-clockwise"></i> Refresh</button>
     </div>
 
 @endsection
@@ -89,12 +89,12 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <a href="{{ route('order', [$row->id]) }}" class="btn btn-success">Edit</a>
+                                            <a href="{{ route('order', [$row->id]) }}" class="btn btn-success"><i class="bi bi-pencil-square"></i> Edit</a>
                                         </div>
 
                                         <div class="col-md-6">
                                             <button data-id="{{ $row->id }}"
-                                                class="btn btn-danger delete-confirm">Delete</button>
+                                                class="btn btn-danger delete-confirm"><i class="bi bi-trash-fill"></i> Delete</button>
                                         </div>
                                     </div>
                                 </td>
@@ -144,11 +144,11 @@
                                     <td>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <a href="/order/${k.id}" class="btn btn-success">Edit</a>
+                                                <a href="/order/${k.id}" class="btn btn-success"><i class="bi bi-pencil-square"></i> Edit</a>
                                             </div>
 
                                             <div class="col-md-6">
-                                                <a data-id="${k.id}" class="btn btn-danger delete-confirm">Delete</a>
+                                                <a data-id="${k.id}" class="btn btn-danger delete-confirm"><i class="bi bi-trash-fill"></i> Delete</a>
                                             </div>
                                         </div>
                                     </td>

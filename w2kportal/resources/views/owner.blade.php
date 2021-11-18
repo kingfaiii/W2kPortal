@@ -10,7 +10,7 @@
         </h3>
     </div>
     <div class="col-md-2">
-        <a type="button" href="#" class="btn btn-success col-5" data-toggle="modal" data-target="#exampleModalCenter">ADD</a>
+        <a type="button" href="#" class="btn btn-success col-5" data-toggle="modal" data-target="#exampleModalCenter"><i class="bi bi-person-plus-fill"></i> ADD</a>
     </div>
 @endsection
 @section('table')
