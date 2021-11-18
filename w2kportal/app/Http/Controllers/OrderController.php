@@ -387,7 +387,6 @@ class OrderController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
         $this->middleware(function ($request, $next) {
             if (session('success')) {
                 Alert::success(session('success'));
@@ -449,6 +448,19 @@ class OrderController extends Controller
     public function show()
     {
         return view('order');
+    }
+    public function updateCustomerInformation($id)
+    {
+        $customerInformation = Customer::find($id);
+        $customerInformation->customer_email = request('customer_email');
+        $customerInformation->secondary_email = request('secondary_email');
+        $customerInformation->first_email = request('first_email');
+        $customerInformation->second_email = request('second_email');
+        $customerInformation->third_email = request('third_email');
+        $customerInformation->fourth_email = request('fourth_email');
+        $customerInformation->fifth_email = request('fifth_email');
+        $customerInformation->update();
+        return redirect()->route('order', [$id])->with('success', 'Successfull Updated Customer Information');
     }
     public function update(request $request, $id)
     {

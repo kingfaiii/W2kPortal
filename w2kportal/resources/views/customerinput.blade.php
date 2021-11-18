@@ -7,6 +7,7 @@
     $classification = ['Ebook Conversion', 'Interior Formatting'];
     $layout = ['Ebook Conversion'];
     $count = ['Ebook Conversion', 'Interior Formatting', 'Development Editing', 'Copyediting'];
+    $qaAndQAScore = ['Development Editing','Copyediting']
     ?>
 @section('header')
     <form id="customerinput_form" name="customerinput_form" method="POST">
@@ -297,20 +298,47 @@
                             <td> <input type="date" name="items[{{ $item['serID'] }}][date_completed]"
                                     value="{{ explode('*', $item['date_completed'])[0] }}" style="margin-left:-5%" id=""
                                     class="form-control col-11 customerinput-text"> </td>
-                            <td>
-                                <select name="items[{{ $item['serID'] }}][quality_assurance]" id=""
-                                    style="margin-left:-30%;width:180%" class="form-control customerinput-text">
-                                    <option selected value=" {{ $item['quality_assurance'] }} ">
-                                        {{ explode('*', $item['quality_assurance'])[0] }} </option>
-                                    @foreach ($qa as $qa_row)
-                                        <option value="{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}">
-                                            {{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td> <input style="margin-left:25px;width:50%" id=""
-                                    name="items[{{ $item['serID'] }}][quality_score]"
-                                    class="form-control customerinput-text"></td>
+                         @if (in_array($item['service_name'],$qaAndQAScore))
+                         <td>
+                            <select disabled name="items[{{ $item['serID'] }}][quality_assurance]" id=""
+                                style="margin-left:-30%;width:180%" class="form-control customerinput-text">
+                                <option selected value=" {{ $item['quality_assurance'] }} ">
+                                    {{ explode('*', $item['quality_assurance'])[0] }} </option>
+                                @foreach ($qa as $qa_row)
+                                    <option value="{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}">
+                                        {{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                         @else
+                         <td>
+                            <select name="items[{{ $item['serID'] }}][quality_assurance]" id=""
+                                style="margin-left:-30%;width:180%" class="form-control customerinput-text">
+                                @if ($item['quality_assurance'] === null)
+                                <option selected value="N/A">N/A</option>
+                                @endif
+                                <option disabled value=" {{ $item['quality_assurance'] }} ">
+                                    {{ explode('*', $item['quality_assurance'])[0] }} </option>
+                                @foreach ($qa as $qa_row)
+                                    <option value="{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}">
+                                        {{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                         @endif      
+                         
+                         @if (in_array($item['service_name'],$qaAndQAScore))
+                         <td> <input disabled style="margin-left:25px;width:50%" id=""
+                            name="items[{{ $item['serID'] }}][quality_score]"
+                            class="form-control customerinput-text"></td>
+                         @else
+                         <td>
+                             <input style="margin-left:25px;width:50%" id=""
+                             name="items[{{ $item['serID'] }}][quality_score]"
+                             class="form-control customerinput-text" {{ $item['quality_assurance'] ? '' : 'disabled' }} >
+                        </td>
+                         @endif
+
                             <td> <input type="text" name="items[{{ $item['serID'] }}][uid]"
                                     value="{{ explode('*', $item['uid'])[0] }}" id=""
                                     class="form-control customerinput-text"></td>
@@ -465,7 +493,7 @@
 
             }) 
 
-            const msgResult = await messagePrompt("Are you sure?",'This Service Inclusion will be Updated', true, 'warning', "Yes Update it!!")
+            let msgResult = ''
 
             const errorInputs = globalDecInputs.filter(function() {
                 return $(this).hasClass('border border-danger');
@@ -474,6 +502,8 @@
             if( errorInputs.length > 0) {
                 await messagePrompt('Complete All Red Textboxes', "", false, "error", "Ok")
                 return 
+            } else {
+                msgResult = await messagePrompt("Are you sure?",'This Service Inclusion will be Updated', true, 'warning', "Yes Update it!!")
             }
 
             if (msgResult.isConfirmed && errorInputs.length === 0) {

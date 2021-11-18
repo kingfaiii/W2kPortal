@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\HistoryExport;
 use App\Models\inclusions_log;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InclusionsLogController extends Controller
 {
@@ -13,21 +14,32 @@ class InclusionsLogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $index_column;
+
+    public function __construct()
+    {
+        $this->index_column = [
+            'inclusions_logs.*',
+            'service_inclusions.service_name AS serName',
+        ];
+    }
 
     public function index($id)
     {
-        $history = inclusions_log::join(
+        return view('InclusionHistory', ['history' => $this->get_history_by_id($id, $this->index_column)]);
+    }
+
+    public function get_history_by_id($id, $columns = [])
+    {
+        $history =  inclusions_log::join(
             'service_inclusions',
             'service_inclusions.id',
             '=',
             'inclusions_logs.log_id'
         )
-            ->join('users', 'inclusions_logs.user_id', '=', 'users.id')
+            ->leftJoin('users', 'inclusions_logs.user_id', '=', 'users.id')
             ->where('inclusions_logs.book_id', '=', $id)
-            ->select(
-                'inclusions_logs.*',
-                'service_inclusions.service_name AS serName'
-            )
+            ->select($columns)
             ->orderBy('inclusions_logs.id', 'DESC')
             ->latest();
 
@@ -42,13 +54,25 @@ class InclusionsLogController extends Controller
                         $histories[$history_key]
                     );
                 } else {
-                    $history_info[$key][$history_key] =
-                        $histories[$history_key];
+                    $history_info[$key][$history_key] = $histories[$history_key];
+                }
+
+                if ($history_key === 'created_at') {
+                    $history_info[$key][$history_key] = date('d/m/Y h:m:s', strtotime($histories[$history_key]));
                 }
             }
         }
 
-        return view('InclusionHistory', ['history' => $history_info]);
+        // echo "<pre>";
+        // print_r($history_info);
+        // echo "</pre>";
+        // exit;
+        return $history_info;
+    }
+
+    public function export_log($id)
+    {
+        return (new HistoryExport($id))->download('History.xlsx');
     }
 
     private function get_user_details($id)

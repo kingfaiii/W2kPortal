@@ -23,6 +23,12 @@ class CreateCustomersTable extends Migration
             $table->string('reason_hold')->nullable();
             $table->string('reason_lost')->nullable();
             $table->date('reason_hold_date')->nullable();
+            $table->string('secondary_email')->nullable();
+            $table->string('first_email')->nullable();
+            $table->string('second_email')->nullable();
+            $table->string('third_email')->nullable();
+            $table->string('fourth_email')->nullable();
+            $table->string('fifth_email')->nullable();
             $table->timestamps();
         });
     }

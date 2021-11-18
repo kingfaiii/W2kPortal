@@ -13,7 +13,7 @@ use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
-    private $inclusions_field;
+    public $inclusions_field;
     private $user_updated;
     private $log_columns;
     //

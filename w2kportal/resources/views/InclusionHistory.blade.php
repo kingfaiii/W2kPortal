@@ -12,6 +12,11 @@
                 <a href="{{ route('customer', [request()->segment(count(request()->segments()))]) }}"
                     class="btn btn-info mb-3 text-white mt-2">Book</a>
             </div>
+
+            <div class="col-md-1">
+                <a href="{{ route('ExportHistory', [request()->segment(count(request()->segments()))]) }}"
+                    class="btn btn-info mb-3 text-white mt-2">Export</a>
+            </div>
         </div>
     </div>
 @endsection

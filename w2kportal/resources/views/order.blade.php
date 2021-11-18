@@ -17,7 +17,17 @@
                     <div class="col-md-10 bg-light mt-5">
                         <div class="card bg-light">
                             <div class="card-header bg-secondary">
-                                <h1 class="text-white font-weight-bolder">Customer Information</h1>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <h1 class="text-white font-weight-bolder">Customer Information</h1>
+                                    </div>
+                                    <div class="col-md-2 mx-auto">
+                                        <button type="button" class="btn btn-primary px-5 py-2" data-toggle="modal" data-target="#EditCustomer">
+                                            Edit
+                                        </button>
+                                        
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <div class="form-group row">
@@ -310,6 +320,42 @@
         </div>
     </form>
     {{-- Convert Customer --}}
+
+    {{-- Edit Customer Details --}}
+    @foreach ($customer as $customers)
+    <form action="{{ route('updateCustomerInformation', [$customers->id]) }}" Method="POST">
+        @csrf
+        <div class="modal fade" id="EditCustomer" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header text-center">
+                        <h5 class="modal-title text-white" id="exampleModalLongTitle">Update Customer Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="text-white" aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="email" name="customer_email" value="{{ $customers->customer_email }}"
+                            placeholder="Customer Email" required id="" class="form-control mb-5">
+                        <p class="text-white"><small>You can Add on this following Details:</small></p>
+                        <p class="text-white"><small>Note: This is only Optional</small></p>
+                        <input class="form-control" type="email" value="{{ $customers->secondary_email ? $customers->secondary_email : '' }}" name="secondary_email" placeholder="Secondary Email" id="">
+                        <input class="form-control" type="email" value="{{ $customers->first_email ? $customers->first_email : '' }}" name="first_email" placeholder="1st Email" id="">
+                        <input class="form-control" type="email" value="{{ $customers->second_email ? $customers->second_email : '' }}" name="second_email" placeholder="2nd Email" id="">
+                        <input class="form-control" type="email" value="{{ $customers->third_email ? $customers->third_email : '' }}" name="third_email" placeholder="3rd Email" id="">
+                        <input class="form-control" type="email" value="{{ $customers->fourth_email ? $customers->fourth_email : '' }}" name="fourth_email" placeholder="4th Email" id="">
+                        <input class="form-control" type="email" value="{{ $customers->fifth_email ? $customers->fifth_email : '' }}" name="fifth_email" placeholder="5th Email" id="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" value="Update Information" name="addactivitybtn" class="btn btn-success">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    @endforeach
 
     <script>
         // SweetAlert2

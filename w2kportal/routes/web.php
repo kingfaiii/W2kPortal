@@ -14,6 +14,7 @@ use App\Http\Controllers\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Auth::routes();
 
 Route::get('/', function () {
@@ -88,6 +89,12 @@ Route::group(
                 App\Http\Controllers\InclusionsLogController::class,
                 'index',
             ])->name('HistoryLog');
+
+            Route::get('/books/exports/{book_id}', [
+                App\Http\Controllers\InclusionsLogController::class,
+                'export_log',
+            ])->name('ExportHistory');
+
             Route::post('/books/edit/update', [
                 App\Http\Controllers\CustomerController::class,
                 'update',
@@ -122,6 +129,10 @@ Route::group(
                 App\Http\Controllers\OrderController::class,
                 'updateactivity',
             ])->name('UpdateActivity');
+            Route::post('/UpdateCustomerInformation/{id}', [
+                App\Http\Controllers\OrderController::class,
+                'updateCustomerInformation',
+            ])->name('updateCustomerInformation');
             Route::get('/delete/{id}', [
                 App\Http\Controllers\OrderController::class,
                 'DestroyActivity',

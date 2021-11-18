@@ -154,6 +154,7 @@ class WonCustomerController extends Controller
     public function supportUpdate($id)
     {
         $supportUpdateInformation = service_inclusion::find($id);
+        $supportUpdateInformation->date_assigned_old = 'value';
         $supportUpdateInformation->date_assigned = request('date_assigned');
         $supportUpdateInformation->date_assigned_by = auth()->user()->id;
         $supportUpdateInformation->update();
