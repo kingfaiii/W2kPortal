@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\HistoryExport;
+use App\Models\book;
 use App\Models\inclusions_log;
 use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
@@ -72,7 +73,11 @@ class InclusionsLogController extends Controller
 
     public function export_log($id)
     {
-        return (new HistoryExport($id))->download('History.xlsx');
+        $book = book::find($id);
+        $date_now = now()->toDateTimeString();
+        $date_Format = date('mdY', strtotime($date_now));
+
+        return (new HistoryExport($id))->download("{$book->book_title}-{$date_Format}.xlsx");
     }
 
     private function get_user_details($id)

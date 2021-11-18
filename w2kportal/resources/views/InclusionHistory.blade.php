@@ -15,6 +15,7 @@
 
             <div class="col-md-1">
                 <a href="{{ route('ExportHistory', [request()->segment(count(request()->segments()))]) }}"
+                    target="_blank"
                     class="btn btn-info mb-3 text-white mt-2">Export</a>
             </div>
         </div>

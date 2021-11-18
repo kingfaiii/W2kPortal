@@ -110,7 +110,18 @@ class HistoryExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyl
         $heading_range = [];
         foreach ($heading_base as $key => $value) {
 
-            $sheet->setSiz
+            $sheet->getRowDimension(1)->setRowHeight(70);
+
+            $sheet->getStyle($value . '1')->applyFromArray([
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                        'color' => ['argb' => '000000'],
+                    ]
+                ]
+            ]);
+
+            # FOR HEADINGS
             $heading_range[$value . '1'] = [
                 'font' => [
                     'size'  => 13,
@@ -125,15 +136,18 @@ class HistoryExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyl
                 'fill' => [
                     'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                     'startColor' => ['rgb' => 'FFFF00']
-                ]
+                ],
             ];
 
+            #DATA AFTER HEADING
             $heading_range[$value] = [
                 'font' => ['size' => 16,],
                 'alignment' => [
                     'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 ],
+
+
             ];
         }
 
