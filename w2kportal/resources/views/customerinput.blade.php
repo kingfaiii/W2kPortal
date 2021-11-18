@@ -277,7 +277,7 @@
                             <td> {{ $item['service_name'] }} </td>
                             <td>
                                 <select name="items[{{ $item['serID'] }}][owner]" id=""
-                                    style="width:180%;margin-left:-20%" class="form-control  customerinput-text">
+                                    style="" class="form-control w-auto customerinput-text">
                                     <option value="{{ $item['owner'] }}">{{ explode('*', $item['owner'])[0] }}
                                     </option>
                                     @foreach ($owner as $owner_row)
@@ -288,57 +288,30 @@
                                 </select>
 
                             </td>
-                            <td><input type="text" name="items[{{ $item['serID'] }}][job_cost]" style="margin-left:40%"
+                            <td><input type="text" name="items[{{ $item['serID'] }}][job_cost]" style="margin-left:20%"
                                     value="{{ explode('*', $item['job_cost'])[0] }} " id=""
                                     class="form-control col-8 customerinput-text"> </td>
-                            <td> <input data-id="{{ $item['id'] }}" type="date" name="items[{{ $item['serID'] }}][date_assigned]"
+                            <td> <input data-id="{{ $item['id'] }}"  type="text" name="items[{{ $item['serID'] }}][date_assigned]"
                                     data-old="{{$item['date_assigned_old']}}"
-                                    value="{{ explode('*', $item['date_assigned'])[0] }}" style="margin-left:-5%" id=""
-                                    class="form-control col-11 customerinput-text date-assigned" > </td>
-                            <td> <input type="date" name="items[{{ $item['serID'] }}][date_completed]"
-                                    value="{{ explode('*', $item['date_completed'])[0] }}" style="margin-left:-5%" id=""
-                                    class="form-control col-11 customerinput-text"> </td>
-                         @if (in_array($item['service_name'],$qaAndQAScore))
-                         <td>
-                            <select disabled name="items[{{ $item['serID'] }}][quality_assurance]" id=""
-                                style="margin-left:-30%;width:180%" class="form-control customerinput-text">
-                                <option selected value=" {{ $item['quality_assurance'] }} ">
-                                    {{ explode('*', $item['quality_assurance'])[0] }} </option>
-                                @foreach ($qa as $qa_row)
-                                    <option value="{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}">
-                                        {{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                         @else
-                         <td>
-                            <select name="items[{{ $item['serID'] }}][quality_assurance]" id=""
-                                style="margin-left:-30%;width:180%" class="form-control customerinput-text">
-                                @if ($item['quality_assurance'] === null)
-                                <option selected value="N/A">N/A</option>
-                                @endif
-                                <option disabled value=" {{ $item['quality_assurance'] }} ">
-                                    {{ explode('*', $item['quality_assurance'])[0] }} </option>
-                                @foreach ($qa as $qa_row)
-                                    <option value="{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}">
-                                        {{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                         @endif      
-                         
-                         @if (in_array($item['service_name'],$qaAndQAScore))
-                         <td> <input disabled style="margin-left:25px;width:50%" id=""
-                            name="items[{{ $item['serID'] }}][quality_score]"
-                            class="form-control customerinput-text"></td>
-                         @else
-                         <td>
-                             <input style="margin-left:25px;width:50%" id=""
-                             name="items[{{ $item['serID'] }}][quality_score]"
-                             class="form-control customerinput-text" {{ $item['quality_assurance'] ? '' : 'disabled' }} >
-                        </td>
-                         @endif
-
+                                    value="{{ explode('*', $item['date_assigned'])[0] }}" style="" 
+                                    class="form-control datepicker col-11 customerinput-text date-assigned" readonly> </td>
+                            <td> <input type="text" name="items[{{ $item['serID'] }}][date_completed]"
+                                    value="{{ explode('*', $item['date_completed'])[0] }}" style="" id=""
+                                    class="form-control datepicker col-11 customerinput-text" readonly> </td>
+                            <td>
+                                <select name="items[{{ $item['serID'] }}][quality_assurance]" id=""
+                                    style="margin-left:-30%;width:180%" class="form-control customerinput-text">
+                                    <option selected value=" {{ $item['quality_assurance'] }} ">
+                                        {{ explode('*', $item['quality_assurance'])[0] }} </option>
+                                    @foreach ($qa as $qa_row)
+                                        <option value="{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}">
+                                            {{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td> <input style="margin-left:25px;width:50%" id=""
+                                    name="items[{{ $item['serID'] }}][quality_score]"
+                                    class="form-control customerinput-text"></td>
                             <td> <input type="text" name="items[{{ $item['serID'] }}][uid]"
                                     value="{{ explode('*', $item['uid'])[0] }}" id=""
                                     class="form-control customerinput-text"></td>
@@ -367,7 +340,7 @@
 @endsection
 
 <script>
-   
+
 
     const calcWorkingDays = (fromDate, days) => {
             let count = 0;
@@ -392,6 +365,7 @@
     }
 
     $(document).ready(function() {
+       
         const messagePrompt = async (title = "", text = "", showCancel = false, icon = "info", textConfirm) => {
             return await Swal.fire({
                 title: title,

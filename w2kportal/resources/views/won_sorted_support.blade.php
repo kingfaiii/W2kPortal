@@ -38,7 +38,7 @@
                         </td>
                         <td>{{ $InclusionsData->commitment_date ? $InclusionsData->commitment_date : 'No Commitment Date' }}
                         </td>
-                        <td><input type="date" name="date_assigned" class="form-control" id=""></td>
+                        <td><input type="text" name="date_assigned" class="form-control datepicker" id="" readonly></td>
                         <td>
                             <div class="row">
                                 <div class="col-md-12">
