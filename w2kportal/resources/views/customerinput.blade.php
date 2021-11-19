@@ -395,6 +395,7 @@ $(document).ready(function() {
   
     let turnAroundTime = 0;
     const d = new Date()
+    const isDecimal =/^\d+(\.\d{1,2})?$/;
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August",
         "September", "October", "November", "December"
     ];
@@ -450,6 +451,20 @@ $(document).ready(function() {
 
     });
 
+    $('.qaScore').keypress(function(evt) {
+        evt = (evt) ? evt : window.event;
+        let charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode == 8 || charCode == 37) {
+            return true;
+        } else if (charCode == 46 && $(this).val().indexOf('.') != -1) {
+            return false;
+        } else if (charCode > 31 && charCode != 46 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+
+        return true;
+    });
+
     $('#customerinput_update').on('click', async function(e) {
         e.preventDefault()
         const arrFormValidation = []
@@ -476,7 +491,7 @@ $(document).ready(function() {
             const dateAssigned = $(`input[name="items[${service_id}][date_assigned]"]`)
             const assignedOld = dateAssigned.data('old')
             const inpStatus = $(`select[name="items[${service_id}][status]"]`)
-          
+
             let ctr = 0,
             currentLength = inputsArray.length
 
