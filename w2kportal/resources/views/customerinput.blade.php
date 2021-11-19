@@ -223,8 +223,8 @@
                                     class="form-control col-6 turnaround-time customerinput-text" maxlength="2">
                             </td>
                             <td>
-                                <select class="form-control customerinput-status customerinput-text"
-                                    style="width:136%;margin-left:-28%;" name="items[{{$item['serID']}}][status]"
+                                <select class="form-control customerinput-status mx-auto w-auto customerinput-text"
+                                    style="" name="items[{{$item['serID']}}][status]"
                                     data-id="{{ $item['id'] }}"
                                     data-service="{{$item['serID']}}"
                                     id="customerinput_status">
@@ -242,12 +242,12 @@
                             @endphp
                             @if ($item['commitment_date'])
 
-                                <td> <input placeholder="dd/mm/yyyy" type="text"
+                                <td> <input placeholder="mm/dd/yyyy" type="text"
                                         name="items[{{ $item['serID'] }}][commitment_date]"
                                         value="{{ str_replace('-', '/', $date) }}" style="margin-left:5%"
                                         id="date_timepicker_end" class="form-control col-11 commitment-date" readonly> </td>
                             @else
-                                <td> <input readonly placeholder="dd/mm/yyyy" type="text"
+                                <td> <input readonly placeholder="mm/dd/yyyy" type="text"
                                         name="items[{{ $item['serID'] }}][commitment_date]" value=""
                                         style="margin-left:5%" id="date_timepicker_end"
                                         class="form-control col-11 commitment-date" readonly> </td>
@@ -291,25 +291,25 @@
                             
                             <td><div class="input-group-prepend">
                                 <div class="input-group-text rounded-0"><i class="bi bi-currency-dollar"></i></div>
-                                <input type="text" name="items[{{ $item['serID'] }}][job_cost]" style=""
+                                <input type="text" name="items[{{ $item['serID'] }}][job_cost]" 
                                 value="{{ explode('*', $item['job_cost'])[0] }} " id=""
                                 class="form-control rounded-0 col-8 customerinput-text">
                             </div> </td>
-                            <td> <input data-id="{{ $item['id'] }}"  type="text" name="items[{{ $item['serID'] }}][date_assigned]"
+                            <td> <input placeholder="mm/dd/yyyy" data-id="{{ $item['id'] }}"  type="text" name="items[{{ $item['serID'] }}][date_assigned]"
                                     data-old="{{$item['date_assigned_old']}}"
-                                    value="{{ explode('*', $item['date_assigned'])[0] }}" style="" 
+                                    value="{{ explode('*', $item['date_assigned'])[0] }}"
                                     class="form-control datepicker col-11 customerinput-text date-assigned" readonly> </td>
-                            <td> <input type="text" name="items[{{ $item['serID'] }}][date_completed]"
-                                    value="{{ explode('*', $item['date_completed'])[0] }}" style="" id=""
+                            <td> <input placeholder="mm/dd/yyyy" type="text" name="items[{{ $item['serID'] }}][date_completed]"
+                                    value="{{ explode('*', $item['date_completed'])[0] }}"  id=""
                                     class="form-control datepicker col-11 customerinput-text" readonly> </td>
                             <td>
-                                <select name="items[{{ $item['serID'] }}][quality_assurance]" id=""
-                                    style="" class="form-control mx-auto w-auto customerinput-text">
+                                <select onchange="disabled(this)" name="items[{{ $item['serID'] }}][quality_assurance]" id=""
+                                    style="" class="form-control qaName mx-auto w-auto customerinput-text">
                                     @if ($item['quality_assurance'])
                                     <option selected value=" {{ $item['quality_assurance'] }} " disabled>
                                         {{ explode('*', $item['quality_assurance'])[0] }} </option>
                                     @else
-                                    <option selected value="" disabled>
+                                    <option selected value="">
                                       N/A </option>
                                     @endif
                                     
@@ -322,10 +322,10 @@
                             </td>
                           
                             <td><div class="input-group-prepend">
-                                <div class="input-group-text rounded-0"><i class="bi bi-percent"></i></div>
+                                <div class="input-group-text  rounded-0"><i class="bi bi-percent"></i></div>
                                 <input style="" id=""
                                 name="items[{{ $item['serID'] }}][quality_score]"
-                                class="form-control customerinput-text">
+                                class="form-control qaScore customerinput-text">
                             </div></td>
                             <td> <input type="text" name="items[{{ $item['serID'] }}][uid]"
                                     value="{{ explode('*', $item['uid'])[0] }}" id=""
@@ -355,6 +355,10 @@
 @endsection
 
 <script>
+     
+           
+       
+        
 
 
     const calcWorkingDays = (fromDate, days) => {
@@ -380,6 +384,18 @@
     }
 
     $(document).ready(function() {
+
+        function disabled(select){
+            if(select === ''){
+            $('.qaScore').prop('disabled',true)
+        }else{
+            $('.qaScore').removeAttr('disabled')
+        }
+        }
+        let nameQA = $('.qaName option:selected').val()
+        console.log(nameQA)
+       disabled(nameQA)
+      
        
         const messagePrompt = async (title = "", text = "", showCancel = false, icon = "info", textConfirm) => {
             return await Swal.fire({
