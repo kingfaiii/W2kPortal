@@ -232,6 +232,10 @@ class CustomerController extends Controller
                 if (!empty($inclusions['date_assigned'])) {
                     $inclusions['date_assigned_old'] = 'value';
                 }
+
+                if (!empty($inclusions['quality_score'])) {
+                    $inclusions['quality_score'] = round(floatval($inclusions['quality_score']), 2);
+                }
                 $service->update($inclusions);
             }
 

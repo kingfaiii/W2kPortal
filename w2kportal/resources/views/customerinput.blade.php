@@ -303,7 +303,8 @@
                                     value="{{ explode('*', $item['date_completed'])[0] }}"  id=""
                                     class="form-control datepicker col-11 customerinput-text" readonly> </td>
                             <td>
-                                <select onchange="disabled(this)" name="items[{{ $item['serID'] }}][quality_assurance]" id=""
+                                <select name="items[{{ $item['serID'] }}][quality_assurance]" id=""
+                                    data-id="{{ $item['serID'] }}"
                                     style="" class="form-control qaName mx-auto w-auto customerinput-text">
                                     @if ($item['quality_assurance'])
                                     <option selected value=" {{ $item['quality_assurance'] }} " disabled>
@@ -313,7 +314,6 @@
                                       N/A </option>
                                     @endif
                                     
-
                                     @foreach ($qa as $qa_row)
                                         <option value="{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}">
                                             {{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}</option>
@@ -325,7 +325,7 @@
                                 <div class="input-group-text  rounded-0"><i class="bi bi-percent"></i></div>
                                 <input style="" id=""
                                 name="items[{{ $item['serID'] }}][quality_score]"
-                                pattern="[0-9]+([\.,][0-9]+)?" class="form-control qaScore customerinput-text">
+                                onkeypress="isNumberKey(this, event);" class="form-control qaScore customerinput-text" value={{$item['quality_score']}}>
                             </div></td>
                             <td> <input type="text" name="items[{{ $item['serID'] }}][uid]"
                                     value="{{ explode('*', $item['uid'])[0] }}" id=""
@@ -355,12 +355,7 @@
 @endsection
 
 <script>
-     
-           
-       
-        
-
-
+    
     const calcWorkingDays = (fromDate, days) => {
             let count = 0;
 
@@ -383,21 +378,7 @@
             })
     }
 
-    $(document).ready(function() {
-
-        function disabled(select){
-            if(select === ''){
-            $('.qaScore').prop('disabled',true)
-        }else{
-            $('.qaScore').removeAttr('disabled')
-        }
-        }
-        let nameQA = $('.qaName option:selected').val()
-        console.log(nameQA)
-       disabled(nameQA)
-      
-       
-        const messagePrompt = async (title = "", text = "", showCancel = false, icon = "info", textConfirm) => {
+    const messagePrompt = async (title = "", text = "", showCancel = false, icon = "info", textConfirm) => {
             return await Swal.fire({
                 title: title,
                 text: text,
@@ -408,144 +389,166 @@
                 confirmButtonText: textConfirm
             })
 
+    }
+
+$(document).ready(function() {
+  
+    let turnAroundTime = 0;
+    const d = new Date()
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August",
+        "September", "October", "November", "December"
+    ];
+    const currentDate = `${d.getDate()}/${monthNames[d.getMonth()]}/${d.getFullYear()}`
+
+
+
+    $('.qaName').each(function() {
+       const service_id = $(this).data('id')
+       const qaScore =  $(`input[name="items[${service_id}][quality_score]"]`)
+
+        if(!this.value) {
+            qaScore.prop('disabled', true)
         }
-        let turnAroundTime = 0;
-        const d = new Date()
-        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August",
-            "September", "October", "November", "December"
-        ];
-        const currentDate = `${d.getDate()}/${monthNames[d.getMonth()]}/${d.getFullYear()}`
-    
-        $('.customerinput-status').on('change', function() {
-            const service_id = $(this).data('service')
-            const dateAssigned = $(`input[name="items[${service_id}][date_assigned]"]`)
-            if (this.value === 'On-going' && parseInt(turnAroundTime) > 0) {
-                $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(currentDate), turnAroundTime))
-            }
-
-            if(this.value === "On Hold") {
-                dateAssigned.val('')
-            }
-        })
-
-        $('.turnaround-time').keyup(function() {
-            if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
-                this.value = this.value.replace(/[^0-9\.]/g, '');
-            }
-
-            turnAroundTime = this.value
-
-            let inputStatus = $(this).closest('tr').find('.customerinput-status').val()
-
-            if (inputStatus === 'On-going' && parseInt(turnAroundTime) > 0) {
-                $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(
-                    currentDate), turnAroundTime))
-
-            }
-
-        });
-
-        $('#customerinput_update').on('click', async function(e) {
-            e.preventDefault()
-            const arrFormValidation = []
-        
-            $('.customerinput-text').each(function() {
-                const inputValue = $.trim($(this).val())
-
-                if (!inputValue) arrFormValidation.push(inputValue)
-            })
-
-            if (arrFormValidation.length === $('.customerinput-text').length) {
-                await messagePrompt('The Form is Empty', "", false, "error", "Ok")
-
-                return
-            }
-
-            let arr = $('#customerinput_form').serialize();
-            
-            const globalDecInputs = $('.customerinput-text:not(:disabled):not([readonly="readonly"]):not([type="hidden"])')
-        
-            $('.upper-row').each( async function() {
-         
-                const service_id = $(this).data('id')
-                const inputsArray = $(this).closest('tr').find(':input:not(:disabled):not([readonly="readonly"]):not([type="hidden"])')
-                const dateAssigned = $(`input[name="items[${service_id}][date_assigned]"]`)
-                const assignedOld = dateAssigned.data('old')
-                const inpStatus = $(`select[name="items[${service_id}][status]"]`)
-          
-                let ctr = 0,
-                currentLength = inputsArray.length
-
-                if(inpStatus.val() === 'On-going' && !dateAssigned.val() && $.trim(assignedOld)) {
-                    dateAssigned.addClass('border border-danger')
-                }  else {
-                    dateAssigned.removeClass('border border-danger')
-                }
-
-                const nullInputs = inputsArray.filter(function() {
-                    return $.trim($(this).val()) === ''
-                })
-
-                inputsArray.each(function() {
-                    $(this).removeClass('border border-danger')
-                })
-             
-                if(nullInputs.length !== currentLength) {
-                    nullInputs.each(function() {
-                        $(this).addClass('border border-danger')
-                    })
-                }  
-
-            }) 
-
-            let msgResult = ''
-
-            const errorInputs = globalDecInputs.filter(function() {
-                return $(this).hasClass('border border-danger');
-            })
-            
-            if( errorInputs.length > 0) {
-                await messagePrompt('Complete All Red Textboxes', "", false, "error", "Ok")
-                return 
-            } else {
-                msgResult = await messagePrompt("Are you sure?",'This Service Inclusion will be Updated', true, 'warning', "Yes Update it!!")
-            }
-
-            if (msgResult.isConfirmed && errorInputs.length === 0) {
-                toggleDisabled(false)
-                $.ajax({
-                    type: "POST",
-                    url: "{{ route('UpdateInclusions') }}",
-                    data: decodeURIComponent(escape(arr)),
-                    success: async function(data, xhr, status) {
-                        if (xhr === 'success') {
-                          const res = await messagePrompt('Successfully Updated', "",false, "success", "Got it")
-                            
-                            return res.isConfirmed  ? location.reload() : false
-                        }
-                    },
-                    complete: function() {
-                        toggleDisabled(true)
-                    },
-                    error: async function (data, xhr, status) { // if error occured
-                        let message =''
-                        const element_name = data.responseJSON.element_name
-
-                        if(data.responseJSON.msg) {
-                            message = data.responseJSON.msg
-                        } else {
-                            message = 'Error occured.please try again'
-                        }
-                       await messagePrompt(message, "", false,
-                            "error", "Ok")
-                        
-                        // $(`input[name="${element_name}"]`).addClass('border border-danger')
-                    },
-                })
-
-            }
-
-        })
     })
+
+    $('.qaName').on('change', function() {
+        const service_id = $(this).data('id')
+        const qaScore =  $(`input[name="items[${service_id}][quality_score]"]`)
+
+        if(this.value) {
+            qaScore.prop('disabled', false)
+        } else {
+            qaScore.prop('disabled', true)
+        }
+    })
+
+    $('.customerinput-status').on('change', function() {
+        const service_id = $(this).data('service')
+        const dateAssigned = $(`input[name="items[${service_id}][date_assigned]"]`)
+        if (this.value === 'On-going' && parseInt(turnAroundTime) > 0) {
+            $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(currentDate), turnAroundTime))
+        }
+
+        if(this.value === "On Hold") {
+            dateAssigned.val('')
+        }
+    })
+
+    $('.turnaround-time').keyup(function() {
+        if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
+            this.value = this.value.replace(/[^0-9\.]/g, '');
+        }
+
+        turnAroundTime = this.value
+        let inputStatus = $(this).closest('tr').find('.customerinput-status').val()
+
+        if (inputStatus === 'On-going' && parseInt(turnAroundTime) > 0) {
+            $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(
+                currentDate), turnAroundTime))
+
+        }
+
+    });
+
+    $('#customerinput_update').on('click', async function(e) {
+        e.preventDefault()
+        const arrFormValidation = []
+    
+        $('.customerinput-text').each(function() {
+            const inputValue = $.trim($(this).val())
+
+            if (!inputValue) arrFormValidation.push(inputValue)
+        })
+
+        if (arrFormValidation.length === $('.customerinput-text').length) {
+            await messagePrompt('The Form is Empty', "", false, "error", "Ok")
+
+            return
+        }
+
+        let arr = $('#customerinput_form').serialize();
+        
+        const globalDecInputs = $('.customerinput-text:not(:disabled):not([readonly="readonly"]):not([type="hidden"])')
+    
+        $('.upper-row').each( async function() {
+            const service_id = $(this).data('id')
+            const inputsArray = $(this).closest('tr').find(':input:not(:disabled):not([readonly="readonly"]):not([type="hidden"])')
+            const dateAssigned = $(`input[name="items[${service_id}][date_assigned]"]`)
+            const assignedOld = dateAssigned.data('old')
+            const inpStatus = $(`select[name="items[${service_id}][status]"]`)
+          
+            let ctr = 0,
+            currentLength = inputsArray.length
+
+            if(inpStatus.val() === 'On-going' && !dateAssigned.val() && $.trim(assignedOld)) {
+                dateAssigned.addClass('border border-danger')
+            }  else {
+                dateAssigned.removeClass('border border-danger')
+            }
+
+            const nullInputs = inputsArray.filter(function() {
+                return $.trim($(this).val()) === ''
+            })
+
+            inputsArray.each(function() {
+                $(this).removeClass('border border-danger')
+            })
+            
+            if(nullInputs.length !== currentLength) {
+                nullInputs.each(function() {
+                    $(this).addClass('border border-danger')
+                })
+            }  
+
+        }) 
+
+        let msgResult = ''
+        const errorInputs = globalDecInputs.filter(function() {
+            return $(this).hasClass('border border-danger');
+        })
+        
+        if( errorInputs.length > 0) {
+            await messagePrompt('Complete All Red Textboxes', "", false, "error", "Ok")
+            return 
+        } else {
+            msgResult = await messagePrompt("Are you sure?",'This Service Inclusion will be Updated', true, 'warning', "Yes Update it!!")
+        }
+
+        if (msgResult.isConfirmed && errorInputs.length === 0) {
+            toggleDisabled(false)
+            $.ajax({
+                type: "POST",
+                url: "{{ route('UpdateInclusions') }}",
+                data: decodeURIComponent(escape(arr)),
+                success: async function(data, xhr, status) {
+                    if (xhr === 'success') {
+                        const res = await messagePrompt('Successfully Updated', "",false, "success", "Got it")
+                        
+                        return res.isConfirmed  ? location.reload() : false
+                    }
+                },
+                complete: function() {
+                    toggleDisabled(true)
+                },
+                error: async function (data, xhr, status) { // if error occured
+                    let message =''
+                    const element_name = data.responseJSON.element_name
+
+                    if(data.responseJSON.msg) {
+                        message = data.responseJSON.msg
+                    } else {
+                        message = 'Error occured.please try again'
+                    }
+                    await messagePrompt(message, "", false,
+                        "error", "Ok")
+                    
+                    // $(`input[name="${element_name}"]`).addClass('border border-danger')
+                },
+            })
+
+        }
+
+    })
+})
 </script>
 @endsection
