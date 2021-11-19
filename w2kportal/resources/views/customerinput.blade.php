@@ -325,7 +325,7 @@
                                 <div class="input-group-text  rounded-0"><i class="bi bi-percent"></i></div>
                                 <input style="" id=""
                                 name="items[{{ $item['serID'] }}][quality_score]"
-                                class="form-control qaScore customerinput-text">
+                                pattern="[0-9]+([\.,][0-9]+)?" class="form-control qaScore customerinput-text">
                             </div></td>
                             <td> <input type="text" name="items[{{ $item['serID'] }}][uid]"
                                     value="{{ explode('*', $item['uid'])[0] }}" id=""
