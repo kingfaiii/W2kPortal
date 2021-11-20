@@ -325,7 +325,7 @@
                                 <div class="input-group-text  rounded-0"><i class="bi bi-percent"></i></div>
                                 <input style="" id=""
                                 name="items[{{ $item['serID'] }}][quality_score]"
-                                class="form-control qaScore customerinput-text" value={{$item['quality_score']}}>
+                                onkeypress="isNumberKey(this, event);" class="form-control qaScore customerinput-text" value={{$item['quality_score']}}>
                             </div></td>
                             <td> <input type="text" name="items[{{ $item['serID'] }}][uid]"
                                     value="{{ explode('*', $item['uid'])[0] }}" id=""
@@ -355,6 +355,7 @@
 @endsection
 
 <script>
+    
     const calcWorkingDays = (fromDate, days) => {
             let count = 0;
 
@@ -391,6 +392,7 @@
     }
 
 $(document).ready(function() {
+  
     let turnAroundTime = 0;
     const d = new Date()
     const isDecimal =/^\d+(\.\d{1,2})?$/;
@@ -398,6 +400,8 @@ $(document).ready(function() {
         "September", "October", "November", "December"
     ];
     const currentDate = `${d.getDate()}/${monthNames[d.getMonth()]}/${d.getFullYear()}`
+
+
 
     $('.qaName').each(function() {
        const service_id = $(this).data('id')
