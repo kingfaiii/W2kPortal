@@ -334,6 +334,9 @@ class CustomerController extends Controller
                     array_filter($service_array_latest)
                 );
                 if (!empty($diff_log)) {
+                    if (!empty($inclusions['quality_score'])) {
+                        $inclusions['quality_score'] = round(floatval($inclusions['quality_score']), 2);
+                    }
                     if (!empty(array_filter($inclusions))) {
                         $inclusions['log_id']     = $get_foreign_ids['id'];
                         $inclusions['won_id']     = $get_foreign_ids['won_id'];
