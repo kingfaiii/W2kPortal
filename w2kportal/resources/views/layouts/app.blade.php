@@ -23,8 +23,6 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     {{-- For Date Pickers --}}
-   
-    
 </head>
 <body>
     <div id="app">

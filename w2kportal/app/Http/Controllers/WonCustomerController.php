@@ -19,9 +19,10 @@ class WonCustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index()
+    private $info_book;
+    public function __construct()
     {
-        $information = won_customer::join(
+        $this->info_book = won_customer::join(
             'customers',
             'won_customers.customer_id',
             '=',
@@ -33,10 +34,25 @@ class WonCustomerController extends Controller
                 '=',
                 'won_customers.package_id'
             )
-            ->where('won_customers.status', '=', 'won')
-            ->get();
+            ->where('won_customers.status', '=', 'won');
+    }
 
-        return view('won', ['information' => $information]);
+    public function index()
+    {
+        $request = request()->input();
+        $information = $this->info_book->when(array_key_exists('request_data', $request),  function ($q) use ($request) {
+            return $q->where(function ($q) use ($request) {
+                return $q->where('customers.customer_fname', 'LIKE', '%' . trim($request['request_data']) . '%')
+                    ->orWhere('customers.customer_lname', 'LIKE', '%' . trim($request['request_data']) . '%')
+                    ->orWhere('customers.customer_email', 'LIKE', '%' . trim($request['request_data']) . '%');
+            });
+        });
+
+        if (array_key_exists('request_data', $request)) {
+            return response()->json($information->get()->toArray(), 200);
+        } else {
+            return view('won', ['information' => $information->get()]);
+        }
     }
 
     public function woncustomerview($id)
@@ -48,7 +64,17 @@ class WonCustomerController extends Controller
             'customers.id'
         )->where('won_customers.customer_id', '=', $id);
 
-        $information = won_customer::join(
+        $information = $this->find_wonCustomer_by_won_id($id);
+
+        return view('customerwon', [
+            'information' => $information->get(),
+            'user' => $user->get(),
+        ]);
+    }
+
+    private function find_wonCustomer_by_won_id($id)
+    {
+        return  won_customer::join(
             'customers',
             'won_customers.customer_id',
             '=',
@@ -56,12 +82,8 @@ class WonCustomerController extends Controller
         )
             ->join('books', 'won_customers.customer_id', '=', 'books.won_id')
             ->where('books.won_id', '=', $id);
-
-        return view('customerwon', [
-            'information' => $information->get(),
-            'user' => $user->get(),
-        ]);
     }
+
     public function wonGetAdmin()
     {
         $ownerInformation = owner::all();
