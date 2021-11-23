@@ -65,19 +65,19 @@ class WonCustomerController extends Controller
     public function wonGetAdmin()
     {
         $ownerInformation = owner::all();
-        $getServiceInclusion = service_inclusion::join(
+        $getServiceInclusion = service_inclusion::leftJoin(
             'won_customers',
             'service_inclusions.won_id',
             '=',
-            'won_customers.id'
+            'won_customers.customer_id'
         )
-            ->join(
+            ->leftJoin(
                 'customers',
                 'won_customers.customer_id',
                 '=',
                 'customers.id'
             )
-            ->join('books', 'service_inclusions.book_id', '=', 'books.id')
+            ->leftJoin('books', 'service_inclusions.book_id', '=', 'books.id')
             ->select(
                 'service_inclusions.*',
                 'service_inclusions.id AS serID',
@@ -90,6 +90,7 @@ class WonCustomerController extends Controller
             ->where('service_inclusions.status', 'On-going')
             ->whereNull('service_inclusions.owner')
             ->get();
+        // ->toArray();
 
         return view('won_sorted_admin', [
             'getServiceInclusion' => $getServiceInclusion,
