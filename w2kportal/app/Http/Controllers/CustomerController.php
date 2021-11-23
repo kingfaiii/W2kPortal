@@ -10,6 +10,7 @@ use App\Models\QualityAssurance;
 use App\Models\service_inclusion;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CustomerController extends Controller
 {
@@ -19,6 +20,18 @@ class CustomerController extends Controller
     //
     public function __construct()
     {
+        $this->middleware(function ($request, $next) {
+            if (session('success')) {
+                Alert::success(session('success'));
+            }
+
+            if (session('error')) {
+                Alert::error(session('error'));
+            }
+
+            return $next($request);
+        });
+
         $this->inclusions_field = [
             'layout',
             'page_count',
@@ -128,6 +141,7 @@ class CustomerController extends Controller
                 'customers.id'
             )
             ->select(
+                'books.id AS bookID',
                 'customers.id',
                 'customers.customer_fname',
                 'customers.customer_lname',
@@ -137,7 +151,7 @@ class CustomerController extends Controller
                 'customers.customer_email',
                 'won_customers.created_at AS won_createdAt',
                 'books.total_project_cost AS cost',
-                'service_packages.package_name',
+                'service_packages.package_name'
             )
             ->where('books.id', '=', $id);
 
@@ -191,18 +205,18 @@ class CustomerController extends Controller
                                 }
                             } elseif (
                                 $service_array[$service_key] !==
-                                $inclusions[$service_key] &&
+                                    $inclusions[$service_key] &&
                                 $updated_by_columns[$owner_key] !==
-                                strval(Auth::user()->id)
+                                    strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     $inclusions[$owner_key] = Auth::user()->id;
                                 }
                             } elseif (
                                 $service_array[$service_key] ===
-                                $inclusions[$service_key] &&
+                                    $inclusions[$service_key] &&
                                 $updated_by_columns[$owner_key] ===
-                                strval(Auth::user()->id)
+                                    strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     $inclusions[$owner_key] =
@@ -210,9 +224,9 @@ class CustomerController extends Controller
                                 }
                             } elseif (
                                 $service_array[$service_key] !==
-                                $inclusions[$service_key] &&
+                                    $inclusions[$service_key] &&
                                 $updated_by_columns[$owner_key] ===
-                                strval(Auth::user()->id)
+                                    strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     $inclusions[$owner_key] = Auth::user()->id;
@@ -222,7 +236,10 @@ class CustomerController extends Controller
                     }
                 }
 
-                if (array_key_exists('status', $inclusions) && $inclusions['status'] === 'On Hold') {
+                if (
+                    array_key_exists('status', $inclusions) &&
+                    $inclusions['status'] === 'On Hold'
+                ) {
                     $inclusions['date_assigned'] = '';
                     $inclusions['date_assigned_by'] = '';
                 }
@@ -234,7 +251,10 @@ class CustomerController extends Controller
                 }
 
                 if (!empty($inclusions['quality_score'])) {
-                    $inclusions['quality_score'] = round(floatval($inclusions['quality_score']), 2);
+                    $inclusions['quality_score'] = round(
+                        floatval($inclusions['quality_score']),
+                        2
+                    );
                 }
                 $service->update($inclusions);
             }
@@ -289,8 +309,10 @@ class CustomerController extends Controller
 
                 unset($inclusions['service_id']);
 
-                foreach ($get_updated_inclusions
-                    as $service_key => $inclusion) {
+                foreach (
+                    $get_updated_inclusions
+                    as $service_key => $inclusion
+                ) {
                     foreach ($updated_by_columns as $owner_key => $owner) {
                         if (
                             array_key_exists($service_key, $inclusions) &&
@@ -299,7 +321,7 @@ class CustomerController extends Controller
                             if (
                                 !empty($inclusions[$service_key]) &&
                                 $updated_by_columns[$owner_key] !==
-                                strval(Auth::user()->id)
+                                    strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     unset($inclusions[$owner_key]);
@@ -310,7 +332,7 @@ class CustomerController extends Controller
                             if (
                                 !empty($inclusions[$service_key]) &&
                                 $updated_by_columns[$owner_key] ===
-                                strval(Auth::user()->id)
+                                    strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     // $inclusions[$service_key] = $inclusions[$service_key];
@@ -335,20 +357,37 @@ class CustomerController extends Controller
                 );
                 if (!empty($diff_log)) {
                     if (!empty($inclusions['quality_score'])) {
-                        $inclusions['quality_score'] = round(floatval($inclusions['quality_score']), 2);
+                        $inclusions['quality_score'] = round(
+                            floatval($inclusions['quality_score']),
+                            2
+                        );
                     }
                     if (!empty(array_filter($inclusions))) {
-                        $inclusions['log_id']     = $get_foreign_ids['id'];
-                        $inclusions['won_id']     = $get_foreign_ids['won_id'];
-                        $inclusions['book_id']    = $get_foreign_ids['book_id'];
-                        $inclusions['package_id'] = $get_foreign_ids['package_id'];
-                        $inclusions['user_id']    = Auth::user()->id;
-                        $inclusions['created_at'] = Carbon::now()->toDateTimeString();
-                        $inclusions['updated_at'] = Carbon::now()->toDateTimeString();
+                        $inclusions['log_id'] = $get_foreign_ids['id'];
+                        $inclusions['won_id'] = $get_foreign_ids['won_id'];
+                        $inclusions['book_id'] = $get_foreign_ids['book_id'];
+                        $inclusions['package_id'] =
+                            $get_foreign_ids['package_id'];
+                        $inclusions['user_id'] = Auth::user()->id;
+                        $inclusions[
+                            'created_at'
+                        ] = Carbon::now()->toDateTimeString();
+                        $inclusions[
+                            'updated_at'
+                        ] = Carbon::now()->toDateTimeString();
                     }
                     inclusions_log::insert(array_filter($inclusions));
                 }
             }
         }
+    }
+    public function updateBook($id)
+    {
+        $upBookInfor = book::find($id);
+        $upBookInfor->book_title = request('book_title');
+        $upBookInfor->update();
+        return redirect()
+            ->route('customer', [$id])
+            ->with('success', 'Book Title Sucessfully Changed');
     }
 }

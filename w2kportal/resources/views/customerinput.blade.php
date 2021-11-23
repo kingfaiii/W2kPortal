@@ -1,23 +1,37 @@
 @extends('layouts.table')
 @extends('layouts.app')
-
+@include('sweetalert::alert')
 
 @section('content')
     <?php
     $classification = ['Ebook Conversion', 'Interior Formatting'];
     $layout = ['Ebook Conversion'];
     $count = ['Ebook Conversion', 'Interior Formatting', 'Development Editing', 'Copyediting'];
-    $qaAndQAScore = ['Development Editing','Copyediting']
+    $qaAndQAScore = ['Development Editing', 'Copyediting'];
     ?>
 @section('header')
     <form id="customerinput_form" name="customerinput_form" method="POST">
         @csrf
         <div class="col-12">
-
-            <a href="{{ route('HistoryLog', [request()->segment(count(request()->segments()))]) }}"
-                class="btn btn-info mb-3 text-white mt-2">History</a>
-
-
+            <div class="row">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row mx-auto mb-3">
+                            <div class="col-md-10">
+                                <x-modal-button>
+                                    <x-slot name="targetID">#updateBookTitle</x-slot>
+                                    <x-slot name="btnClass">btn btn-info text-white mt-2</x-slot>
+                                    Book Title
+                                </x-modal-button>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="{{ route('HistoryLog', [request()->segment(count(request()->segments()))]) }}"
+                                    class="btn btn-info  text-white mt-2">History</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <p class="h2 text-white font-weight-bold">Convert Customer Details</p>
         </div>
 
@@ -119,10 +133,11 @@
                 <tbody>
 
                     @foreach ($book_information as $item)
-                   
-                        <tr data-id="{{ $item['serID'] }}" class="text-center align-center justify-content-center upper-row">
+
+                        <tr data-id="{{ $item['serID'] }}"
+                            class="text-center align-center justify-content-center upper-row">
                             <input type="hidden" name="items[{{ $item['serID'] }}][service_id]"
-                            value="{{ $item['serID'] }}">
+                                value="{{ $item['serID'] }}">
                             <input type="hidden" name="items[{{ $item['serID'] }}][layout_by]"
                                 value="{{ $item['layout_by'] }}">
                             <input type="hidden" name="items[{{ $item['serID'] }}][page_count_by]"
@@ -223,12 +238,10 @@
                                     class="form-control col-6 turnaround-time customerinput-text" maxlength="2">
                             </td>
                             <td>
-                                <select class="form-control customerinput-status mx-auto w-auto customerinput-text"
-                                    style="" name="items[{{$item['serID']}}][status]"
-                                    data-id="{{ $item['id'] }}"
-                                    data-service="{{$item['serID']}}"
-                                    id="customerinput_status">
-                                    <option selected value="{{ $item['status'] }}" >
+                                <select class="form-control customerinput-status mx-auto w-auto customerinput-text" style=""
+                                    name="items[{{ $item['serID'] }}][status]" data-id="{{ $item['id'] }}"
+                                    data-service="{{ $item['serID'] }}" id="customerinput_status">
+                                    <option selected value="{{ $item['status'] }}">
                                         {{ explode('*', $item['status'])[0] }} </option>
                                     <option value="Completed">Completed</option>
                                     <option value="On-going">On-going</option>
@@ -271,13 +284,13 @@
                 </thead>
                 <tbody>
                     @foreach ($book_information as $item)
-                        <tr  class="text-center bottom-row">
+                        <tr class="text-center bottom-row">
                             <input type="hidden" name="items[{{ $item['serID'] }}][service_id]"
                                 value="{{ $item['serID'] }}">
                             <td> {{ $item['service_name'] }} </td>
                             <td>
-                                <select name="items[{{ $item['serID'] }}][owner]" id=""
-                                    style="" class="form-control w-auto customerinput-text">
+                                <select name="items[{{ $item['serID'] }}][owner]" id="" style=""
+                                    class="form-control w-auto customerinput-text">
                                     <option value="{{ $item['owner'] }}">{{ explode('*', $item['owner'])[0] }}
                                     </option>
                                     @foreach ($owner as $owner_row)
@@ -288,45 +301,52 @@
                                 </select>
 
                             </td>
-                            
-                            <td><div class="input-group-prepend">
-                                <div class="input-group-text rounded-0"><i class="bi bi-currency-dollar"></i></div>
-                                <input type="text" name="items[{{ $item['serID'] }}][job_cost]" 
-                                value="{{ explode('*', $item['job_cost'])[0] }} " id=""
-                                class="form-control rounded-0 col-8 customerinput-text">
-                            </div> </td>
-                            <td> <input placeholder="mm/dd/yyyy" data-id="{{ $item['id'] }}"  type="text" name="items[{{ $item['serID'] }}][date_assigned]"
-                                    data-old="{{$item['date_assigned_old']}}"
+
+                            <td>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text rounded-0"><i class="bi bi-currency-dollar"></i></div>
+                                    <input type="text" name="items[{{ $item['serID'] }}][job_cost]"
+                                        value="{{ explode('*', $item['job_cost'])[0] }} " id=""
+                                        class="form-control rounded-0 col-8 customerinput-text">
+                                </div>
+                            </td>
+                            <td> <input placeholder="mm/dd/yyyy" data-id="{{ $item['id'] }}" type="text"
+                                    name="items[{{ $item['serID'] }}][date_assigned]"
+                                    data-old="{{ $item['date_assigned_old'] }}"
                                     value="{{ explode('*', $item['date_assigned'])[0] }}"
                                     class="form-control datepicker col-11 customerinput-text date-assigned" readonly> </td>
-                            <td> <input placeholder="mm/dd/yyyy" type="text" name="items[{{ $item['serID'] }}][date_completed]"
-                                    value="{{ explode('*', $item['date_completed'])[0] }}"  id=""
+                            <td> <input placeholder="mm/dd/yyyy" type="text"
+                                    name="items[{{ $item['serID'] }}][date_completed]"
+                                    value="{{ explode('*', $item['date_completed'])[0] }}" id=""
                                     class="form-control datepicker col-11 customerinput-text" readonly> </td>
                             <td>
                                 <select name="items[{{ $item['serID'] }}][quality_assurance]" id=""
-                                    data-id="{{ $item['serID'] }}"
-                                    style="" class="form-control qaName mx-auto w-auto customerinput-text">
+                                    data-id="{{ $item['serID'] }}" style=""
+                                    class="form-control qaName mx-auto w-auto customerinput-text">
                                     @if ($item['quality_assurance'])
-                                    <option selected value=" {{ $item['quality_assurance'] }} " disabled>
-                                        {{ explode('*', $item['quality_assurance'])[0] }} </option>
+                                        <option selected value=" {{ $item['quality_assurance'] }} " disabled>
+                                            {{ explode('*', $item['quality_assurance'])[0] }} </option>
                                     @else
-                                    <option selected value="">
-                                      N/A </option>
+                                        <option selected value="">
+                                            N/A </option>
                                     @endif
-                                    
+
                                     @foreach ($qa as $qa_row)
                                         <option value="{{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}">
                                             {{ $qa_row['qa_fname'] }} {{ $qa_row['qa_lname'] }}</option>
                                     @endforeach
                                 </select>
                             </td>
-                          
-                            <td><div class="input-group-prepend">
-                                <div class="input-group-text  rounded-0"><i class="bi bi-percent"></i></div>
-                                <input style="" id=""
-                                name="items[{{ $item['serID'] }}][quality_score]"
-                                onkeypress="isNumberKey(this, event);" class="form-control qaScore customerinput-text" value={{$item['quality_score']}}>
-                            </div></td>
+
+                            <td>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text  rounded-0"><i class="bi bi-percent"></i></div>
+                                    <input style="" id="" name="items[{{ $item['serID'] }}][quality_score]"
+                                        onkeypress="isNumberKey(this, event);"
+                                        class="form-control qaScore customerinput-text"
+                                        value={{ $item['quality_score'] }}>
+                                </div>
+                            </td>
                             <td> <input type="text" name="items[{{ $item['serID'] }}][uid]"
                                     value="{{ explode('*', $item['uid'])[0] }}" id=""
                                     class="form-control customerinput-text"></td>
@@ -352,218 +372,238 @@
             </div>
         </div>
     </form>
+    @include('sweetalert::alert')
+    @foreach ($customer_information as $customer_informations)
+        <x-modal>
+            <x-slot name="route">{{ route('upBookInfo', [request()->segment(count(request()->segments()))]) }}</x-slot>
+            <x-slot name="idtarget">updateBookTitle</x-slot>
+            <x-slot name="modalHeaderTitle">Update Book Title Information</x-slot>
+            <x-slot name="modalValueInput">Update Book Title</x-slot>
+            <input type="text" name="book_title" id="" value="{{ $customer_informations->book_title }}"
+                placeholder="Book Title" class="form-control">
+        </x-modal>
+    @endforeach
 @endsection
 
 <script>
-    
     const calcWorkingDays = (fromDate, days) => {
-            let count = 0;
+        let count = 0;
 
-            while (count < parseInt(days)) {
-                fromDate.setDate(fromDate.getDate() + 1);
-                if (fromDate.getDay() != 0 && fromDate.getDay() != 6) // Skip weekends
-                    count++;
-            }
-            let d = new Date(fromDate)
-            return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+        while (count < parseInt(days)) {
+            fromDate.setDate(fromDate.getDate() + 1);
+            if (fromDate.getDay() != 0 && fromDate.getDay() != 6) // Skip weekends
+                count++;
+        }
+        let d = new Date(fromDate)
+        return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
     }
 
     const toggleDisabled = (isDisabled = false) => {
-            $('.disabled-field').each(function() {
-                if (!isDisabled) {
-                    $(this).removeAttr('disabled')
-                } else {
-                    $(this).prop('disabled', true)
-                }
-            })
+        $('.disabled-field').each(function() {
+            if (!isDisabled) {
+                $(this).removeAttr('disabled')
+            } else {
+                $(this).prop('disabled', true)
+            }
+        })
     }
 
     const messagePrompt = async (title = "", text = "", showCancel = false, icon = "info", textConfirm) => {
-            return await Swal.fire({
-                title: title,
-                text: text,
-                icon: icon,
-                showCancelButton: showCancel,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: textConfirm
-            })
+        return await Swal.fire({
+            title: title,
+            text: text,
+            icon: icon,
+            showCancelButton: showCancel,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: textConfirm
+        })
 
     }
 
-$(document).ready(function() {
-  
-    let turnAroundTime = 0;
-    const d = new Date()
-    const isDecimal =/^\d+(\.\d{1,2})?$/;
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August",
-        "September", "October", "November", "December"
-    ];
-    const currentDate = `${d.getDate()}/${monthNames[d.getMonth()]}/${d.getFullYear()}`
+    $(document).ready(function() {
+
+        let turnAroundTime = 0;
+        const d = new Date()
+        const isDecimal = /^\d+(\.\d{1,2})?$/;
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August",
+            "September", "October", "November", "December"
+        ];
+        const currentDate = `${d.getDate()}/${monthNames[d.getMonth()]}/${d.getFullYear()}`
 
 
 
-    $('.qaName').each(function() {
-       const service_id = $(this).data('id')
-       const qaScore =  $(`input[name="items[${service_id}][quality_score]"]`)
+        $('.qaName').each(function() {
+            const service_id = $(this).data('id')
+            const qaScore = $(`input[name="items[${service_id}][quality_score]"]`)
 
-        if(!this.value) {
-            qaScore.prop('disabled', true)
-        }
-    })
-
-    $('.qaName').on('change', function() {
-        const service_id = $(this).data('id')
-        const qaScore =  $(`input[name="items[${service_id}][quality_score]"]`)
-
-        if(this.value) {
-            qaScore.prop('disabled', false)
-        } else {
-            qaScore.prop('disabled', true)
-        }
-    })
-
-    $('.customerinput-status').on('change', function() {
-        const service_id = $(this).data('service')
-        const dateAssigned = $(`input[name="items[${service_id}][date_assigned]"]`)
-        if (this.value === 'On-going' && parseInt(turnAroundTime) > 0) {
-            $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(currentDate), turnAroundTime))
-        }
-
-        if(this.value === "On Hold") {
-            dateAssigned.val('')
-        }
-    })
-
-    $('.turnaround-time').keyup(function() {
-        if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
-            this.value = this.value.replace(/[^0-9\.]/g, '');
-        }
-
-        turnAroundTime = this.value
-        let inputStatus = $(this).closest('tr').find('.customerinput-status').val()
-
-        if (inputStatus === 'On-going' && parseInt(turnAroundTime) > 0) {
-            $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(
-                currentDate), turnAroundTime))
-
-        }
-
-    });
-
-    $('.qaScore').keypress(function(evt) {
-        evt = (evt) ? evt : window.event;
-        let charCode = (evt.which) ? evt.which : evt.keyCode;
-        if (charCode == 8 || charCode == 37) {
-            return true;
-        } else if (charCode == 46 && $(this).val().indexOf('.') != -1) {
-            return false;
-        } else if (charCode > 31 && charCode != 46 && (charCode < 48 || charCode > 57)) {
-            return false;
-        }
-
-        return true;
-    });
-
-    $('#customerinput_update').on('click', async function(e) {
-        e.preventDefault()
-        const arrFormValidation = []
-    
-        $('.customerinput-text').each(function() {
-            const inputValue = $.trim($(this).val())
-
-            if (!inputValue) arrFormValidation.push(inputValue)
+            if (!this.value) {
+                qaScore.prop('disabled', true)
+            }
         })
 
-        if (arrFormValidation.length === $('.customerinput-text').length) {
-            await messagePrompt('The Form is Empty', "", false, "error", "Ok")
-
-            return
-        }
-
-        let arr = $('#customerinput_form').serialize();
-        
-        const globalDecInputs = $('.customerinput-text:not(:disabled):not([readonly="readonly"]):not([type="hidden"])')
-    
-        $('.upper-row').each( async function() {
+        $('.qaName').on('change', function() {
             const service_id = $(this).data('id')
-            const inputsArray = $(this).closest('tr').find(':input:not(:disabled):not([readonly="readonly"]):not([type="hidden"])')
+            const qaScore = $(`input[name="items[${service_id}][quality_score]"]`)
+
+            if (this.value) {
+                qaScore.prop('disabled', false)
+            } else {
+                qaScore.prop('disabled', true)
+            }
+        })
+
+        $('.customerinput-status').on('change', function() {
+            const service_id = $(this).data('service')
             const dateAssigned = $(`input[name="items[${service_id}][date_assigned]"]`)
-            const assignedOld = dateAssigned.data('old')
-            const inpStatus = $(`select[name="items[${service_id}][status]"]`)
-
-            let ctr = 0,
-            currentLength = inputsArray.length
-
-            if(inpStatus.val() === 'On-going' && !dateAssigned.val() && $.trim(assignedOld)) {
-                dateAssigned.addClass('border border-danger')
-            }  else {
-                dateAssigned.removeClass('border border-danger')
+            if (this.value === 'On-going' && parseInt(turnAroundTime) > 0) {
+                $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(
+                    currentDate), turnAroundTime))
             }
 
-            const nullInputs = inputsArray.filter(function() {
-                return $.trim($(this).val()) === ''
-            })
-
-            inputsArray.each(function() {
-                $(this).removeClass('border border-danger')
-            })
-            
-            if(nullInputs.length !== currentLength) {
-                nullInputs.each(function() {
-                    $(this).addClass('border border-danger')
-                })
-            }  
-
-        }) 
-
-        let msgResult = ''
-        const errorInputs = globalDecInputs.filter(function() {
-            return $(this).hasClass('border border-danger');
+            if (this.value === "On Hold") {
+                dateAssigned.val('')
+            }
         })
-        
-        if( errorInputs.length > 0) {
-            await messagePrompt('Complete All Red Textboxes', "", false, "error", "Ok")
-            return 
-        } else {
-            msgResult = await messagePrompt("Are you sure?",'This Service Inclusion will be Updated', true, 'warning', "Yes Update it!!")
-        }
 
-        if (msgResult.isConfirmed && errorInputs.length === 0) {
-            toggleDisabled(false)
-            $.ajax({
-                type: "POST",
-                url: "{{ route('UpdateInclusions') }}",
-                data: decodeURIComponent(escape(arr)),
-                success: async function(data, xhr, status) {
-                    if (xhr === 'success') {
-                        const res = await messagePrompt('Successfully Updated', "",false, "success", "Got it")
-                        
-                        return res.isConfirmed  ? location.reload() : false
-                    }
-                },
-                complete: function() {
-                    toggleDisabled(true)
-                },
-                error: async function (data, xhr, status) { // if error occured
-                    let message =''
-                    const element_name = data.responseJSON.element_name
+        $('.turnaround-time').keyup(function() {
+            if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+            }
 
-                    if(data.responseJSON.msg) {
-                        message = data.responseJSON.msg
-                    } else {
-                        message = 'Error occured.please try again'
-                    }
-                    await messagePrompt(message, "", false,
-                        "error", "Ok")
-                    
-                    // $(`input[name="${element_name}"]`).addClass('border border-danger')
-                },
+            turnAroundTime = this.value
+            let inputStatus = $(this).closest('tr').find('.customerinput-status').val()
+
+            if (inputStatus === 'On-going' && parseInt(turnAroundTime) > 0) {
+                $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(
+                    currentDate), turnAroundTime))
+
+            }
+
+        });
+
+        $('.qaScore').keypress(function(evt) {
+            evt = (evt) ? evt : window.event;
+            let charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode == 8 || charCode == 37) {
+                return true;
+            } else if (charCode == 46 && $(this).val().indexOf('.') != -1) {
+                return false;
+            } else if (charCode > 31 && charCode != 46 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+
+            return true;
+        });
+
+        $('#customerinput_update').on('click', async function(e) {
+            e.preventDefault()
+            const arrFormValidation = []
+
+            $('.customerinput-text').each(function() {
+                const inputValue = $.trim($(this).val())
+
+                if (!inputValue) arrFormValidation.push(inputValue)
             })
 
-        }
+            if (arrFormValidation.length === $('.customerinput-text').length) {
+                await messagePrompt('The Form is Empty', "", false, "error", "Ok")
 
+                return
+            }
+
+            let arr = $('#customerinput_form').serialize();
+
+            const globalDecInputs = $(
+                '.customerinput-text:not(:disabled):not([readonly="readonly"]):not([type="hidden"])'
+            )
+
+            $('.upper-row').each(async function() {
+                const service_id = $(this).data('id')
+                const inputsArray = $(this).closest('tr').find(
+                    ':input:not(:disabled):not([readonly="readonly"]):not([type="hidden"])'
+                )
+                const dateAssigned = $(
+                    `input[name="items[${service_id}][date_assigned]"]`)
+                const assignedOld = dateAssigned.data('old')
+                const inpStatus = $(`select[name="items[${service_id}][status]"]`)
+
+                let ctr = 0,
+                    currentLength = inputsArray.length
+
+                if (inpStatus.val() === 'On-going' && !dateAssigned.val() && $.trim(
+                        assignedOld)) {
+                    dateAssigned.addClass('border border-danger')
+                } else {
+                    dateAssigned.removeClass('border border-danger')
+                }
+
+                const nullInputs = inputsArray.filter(function() {
+                    return $.trim($(this).val()) === ''
+                })
+
+                inputsArray.each(function() {
+                    $(this).removeClass('border border-danger')
+                })
+
+                if (nullInputs.length !== currentLength) {
+                    nullInputs.each(function() {
+                        $(this).addClass('border border-danger')
+                    })
+                }
+
+            })
+
+            let msgResult = ''
+            const errorInputs = globalDecInputs.filter(function() {
+                return $(this).hasClass('border border-danger');
+            })
+
+            if (errorInputs.length > 0) {
+                await messagePrompt('Complete All Red Textboxes', "", false, "error", "Ok")
+                return
+            } else {
+                msgResult = await messagePrompt("Are you sure?",
+                    'This Service Inclusion will be Updated', true, 'warning', "Yes Update it!!"
+                )
+            }
+
+            if (msgResult.isConfirmed && errorInputs.length === 0) {
+                toggleDisabled(false)
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('UpdateInclusions') }}",
+                    data: decodeURIComponent(escape(arr)),
+                    success: async function(data, xhr, status) {
+                        if (xhr === 'success') {
+                            const res = await messagePrompt('Successfully Updated', "",
+                                false, "success", "Got it")
+
+                            return res.isConfirmed ? location.reload() : false
+                        }
+                    },
+                    complete: function() {
+                        toggleDisabled(true)
+                    },
+                    error: async function(data, xhr, status) { // if error occured
+                        let message = ''
+                        const element_name = data.responseJSON.element_name
+
+                        if (data.responseJSON.msg) {
+                            message = data.responseJSON.msg
+                        } else {
+                            message = 'Error occured.please try again'
+                        }
+                        await messagePrompt(message, "", false,
+                            "error", "Ok")
+
+                        // $(`input[name="${element_name}"]`).addClass('border border-danger')
+                    },
+                })
+
+            }
+
+        })
     })
-})
 </script>
 @endsection

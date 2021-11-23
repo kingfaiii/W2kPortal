@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
@@ -26,7 +27,6 @@ Route::get('/', function () {
 Route::group(
     ['middleware' => 'prevent-back', 'middleware' => 'auth'],
     function () {
-        Route::get('/home', 'HomeController@index');
         Route::resource('home', HomeController::class);
         Route::resource('list', CustomerlistController::class);
 
@@ -99,6 +99,10 @@ Route::group(
                 App\Http\Controllers\CustomerController::class,
                 'update',
             ])->name('UpdateInclusions');
+            Route::post('/books/information/update/{id}', [
+                App\Http\Controllers\CustomerController::class,
+                'updateBook',
+            ])->name('upBookInfo');
         });
 
         // Reports Function Routes
