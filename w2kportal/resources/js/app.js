@@ -1,7 +1,10 @@
-require('./bootstrap');
+require("./bootstrap");
 
-import $ from 'jquery';
+import $ from "jquery";
 window.$ = window.jQuery = $;
 
-import 'jquery-ui/ui/widgets/datepicker.js';
-$('.datepicker').datepicker();
+import "jquery-ui/ui/widgets/datepicker.js";
+var dateToday = new Date();
+$(".datepicker").datepicker({
+    minDate: dateToday,
+});

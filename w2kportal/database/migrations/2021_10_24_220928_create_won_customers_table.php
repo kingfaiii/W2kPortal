@@ -15,7 +15,6 @@ class CreateWonCustomersTable extends Migration
     {
         Schema::create('won_customers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('package_id');
             $table->string('customer_id');
             $table->string('status');
             $table->timestamps();

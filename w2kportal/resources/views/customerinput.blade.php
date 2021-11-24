@@ -4,9 +4,9 @@
 
 @section('content')
     <?php
-    $classification = ['Ebook Conversion', 'Interior Formatting'];
-    $layout = ['Ebook Conversion'];
-    $count = ['Ebook Conversion', 'Interior Formatting', 'Development Editing', 'Copyediting'];
+    $classification = ['eBook Conversion', 'Interior Formatting'];
+    $layout = ['eBook Conversion'];
+    $count = ['eBook Conversion', 'Interior Formatting', 'Development Editing', 'Copyediting'];
     $qaAndQAScore = ['Development Editing', 'Copyediting'];
     ?>
 @section('header')
@@ -167,7 +167,7 @@
                             <input type="hidden" name="items[{{ $item['serID'] }}][project_link_by]"
                                 value="{{ $item['project_link_by'] }}">
                             <td> {{ $item['service_name'] }} </td>
-                            <td> ${{ $item['project_cost'] }} </td>
+                            <td> ${{ $item['project_cost'] ? $item['project_cost'] : '0' }} </td>
                             <td>
                                 @if (in_array($item['service_name'], $layout))
                                     <select class="form-control customerinput-text" style="width:115%"

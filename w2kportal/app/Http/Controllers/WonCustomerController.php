@@ -27,26 +27,35 @@ class WonCustomerController extends Controller
             'won_customers.customer_id',
             '=',
             'customers.id'
-        )
-            ->join(
-                'service_packages',
-                'service_packages.id',
-                '=',
-                'won_customers.package_id'
-            )
-            ->where('won_customers.status', '=', 'won');
+        )->where('won_customers.status', '=', 'won');
     }
 
     public function index()
     {
         $request = request()->input();
-        $information = $this->info_book->when(array_key_exists('request_data', $request),  function ($q) use ($request) {
-            return $q->where(function ($q) use ($request) {
-                return $q->where('customers.customer_fname', 'LIKE', '%' . trim($request['request_data']) . '%')
-                    ->orWhere('customers.customer_lname', 'LIKE', '%' . trim($request['request_data']) . '%')
-                    ->orWhere('customers.customer_email', 'LIKE', '%' . trim($request['request_data']) . '%');
-            });
-        });
+        $information = $this->info_book->when(
+            array_key_exists('request_data', $request),
+            function ($q) use ($request) {
+                return $q->where(function ($q) use ($request) {
+                    return $q
+                        ->where(
+                            'customers.customer_fname',
+                            'LIKE',
+                            '%' . trim($request['request_data']) . '%'
+                        )
+                        ->orWhere(
+                            'customers.customer_lname',
+                            'LIKE',
+                            '%' . trim($request['request_data']) . '%'
+                        )
+                        ->orWhere(
+                            'customers.customer_email',
+                            'LIKE',
+                            '%' . trim($request['request_data']) . '%'
+                        );
+                });
+            }
+        );
 
         if (array_key_exists('request_data', $request)) {
             return response()->json($information->get()->toArray(), 200);
@@ -74,7 +83,7 @@ class WonCustomerController extends Controller
 
     private function find_wonCustomer_by_won_id($id)
     {
-        return  won_customer::join(
+        return won_customer::join(
             'customers',
             'won_customers.customer_id',
             '=',
@@ -121,11 +130,11 @@ class WonCustomerController extends Controller
     }
     public function wonGetSupport()
     {
-        $getServiceInclusion = service_inclusion::join(
+        $getServiceInclusion = service_inclusion::leftJoin(
             'won_customers',
             'service_inclusions.won_id',
             '=',
-            'won_customers.id'
+            'won_customers.customer_id'
         )
             ->join(
                 'customers',

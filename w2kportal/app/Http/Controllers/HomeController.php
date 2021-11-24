@@ -36,7 +36,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         $home = Customer::all();
 
         return view('home', ['home' => $home]);
@@ -50,15 +49,30 @@ class HomeController extends Controller
             'customer_lname' => 'required',
             'customer_status' => 'required',
         ]);
-        $users = Customer::where('customer_email', '=', $request->input('customer_email'))->first();
+        $users = Customer::where(
+            'customer_email',
+            '=',
+            $request->input('customer_email')
+        )->first();
         if ($users === null) {
             // User does not exist
-            $dataid = Customer::create($request->all());
+            $firstName = ucwords(request('customer_fname'));
+            $lastName = ucwords(request('customer_lname'));
+            $dataid = new Customer;
+            $dataid->customer_fname = $firstName;
+            $dataid->customer_lname = $lastName;
+            $dataid->customer_email = ucfirst(request('customer_email'));
+            $dataid->customer_status = 'Answered';
+            $dataid->save();
             $id = $dataid->id;
-            return redirect()->route('order', [$id])->with('success', 'Customer added successfully.');
+            return redirect()
+                ->route('order', [$id])
+                ->with('success', 'Customer added successfully.');
         } else {
             // alert()->error('Sweet Alert with error.');
-            return redirect()->route('home')->with('error', 'This Customer is already on the list.');
+            return redirect()
+                ->route('home')
+                ->with('error', 'This Customer is already on the list.');
         }
     }
     public function Destroy($id)

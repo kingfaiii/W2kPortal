@@ -61,7 +61,7 @@ class OrderController extends Controller
         ],
 
         [
-            'service_name' => 'Ebook Conversion',
+            'service_name' => 'eBook Conversion',
             'project_cost' => 0,
             'task' => 'Conversion',
             'status' => 'On-Hold',
@@ -433,17 +433,41 @@ class OrderController extends Controller
             'sales_rep' => 'required',
             'remarks' => 'required',
         ]);
-        $last_activity = Order::create($request->all());
         $status = customer::find(request('customer_id'));
-        $status->last_activity = $last_activity['id'];
-        $status->customer_status = 'Answered';
-        $status->reason_hold = null;
-        $status->reason_lost = null;
-        $status->reason_hold_date = null;
-        $status->update();
-        return redirect()
-            ->route('order', [request('customer_id')])
-            ->with('success', config('messages.AddActivity'));
+        if ($status->customer_status === 'Hold') {
+            if (
+                request('remarks') === '1st Follow up' ||
+                request('remarks') === '2nd Follow up' ||
+                request('remarks') === '3rd Follow up'
+            ) {
+                $last_activity = Order::create($request->all());
+                return redirect()
+                    ->route('order', [request('customer_id')])
+                    ->with('success', config('messages.AddActivity'));
+            } else {
+                $last_activity = Order::create($request->all());
+                $status->last_activity = $last_activity['id'];
+                $status->customer_status = 'Answered';
+                $status->reason_hold = null;
+                $status->reason_lost = null;
+                $status->reason_hold_date = null;
+                $status->update();
+                return redirect()
+                    ->route('order', [request('customer_id')])
+                    ->with('success', config('messages.AddActivity'));
+            }
+        } else {
+            $last_activity = Order::create($request->all());
+            $status->last_activity = $last_activity['id'];
+            $status->customer_status = 'Answered';
+            $status->reason_hold = null;
+            $status->reason_lost = null;
+            $status->reason_hold_date = null;
+            $status->update();
+            return redirect()
+                ->route('order', [request('customer_id')])
+                ->with('success', config('messages.AddActivity'));
+        }
     }
     public function show()
     {
@@ -460,7 +484,9 @@ class OrderController extends Controller
         $customerInformation->fourth_email = request('fourth_email');
         $customerInformation->fifth_email = request('fifth_email');
         $customerInformation->update();
-        return redirect()->route('order', [$id])->with('success', 'Successfull Updated Customer Information');
+        return redirect()
+            ->route('order', [$id])
+            ->with('success', 'Successfull Updated Customer Information');
     }
     public function update(request $request, $id)
     {
@@ -518,6 +544,28 @@ class OrderController extends Controller
 
     public function ConvertCustomer(request $request)
     {
+        $is_won_exist = won_customer::where(
+            'customer_id',
+            '=',
+            $request->input('customer_id')
+        )->first();
+        $convert = [];
+        if ($is_won_exist === null) {
+            $convert = new won_customer();
+            $convert->customer_id = request('customer_id');
+            $convert->status = 'Won';
+            $convert->save();
+        }
+
+        $book = [];
+        $book = new Book();
+        $book->book_title = request('customer_book');
+        $book->package_id = request('Packages');
+        $book->transaction_ID = request('transaction_id');
+        $book->won_id = request('customer_id');
+        $book->total_project_cost = request('project_cost');
+        $book->save();
+
         $activity = new Order();
         $activity->created_at = now()->toDateTimeString();
         $activity->updated_at = now()->toDateTimeString();
@@ -527,6 +575,7 @@ class OrderController extends Controller
         $activity->customer_book = request('customer_book');
         $activity->remarks = 'Won';
         $activity->Package_id = request('Packages');
+        $activity->book_id = $book->id;
         $activity->save();
 
         $status = customer::find(request('customer_id'));
@@ -536,28 +585,6 @@ class OrderController extends Controller
         $status->reason_lost = null;
         $status->reason_hold_date = null;
         $status->update();
-
-        $is_won_exist = won_customer::where(
-            'customer_id',
-            '=',
-            $request->input('customer_id')
-        )->first();
-        $convert = [];
-        if ($is_won_exist === null) {
-            $convert = new won_customer();
-            $convert->package_id = request('Packages');
-            $convert->customer_id = request('customer_id');
-            $convert->status = 'Won';
-            $convert->save();
-        }
-
-        $book = [];
-        $book = new Book();
-        $book->book_title = request('customer_book');
-        $book->transaction_ID = request('transaction_id');
-        $book->won_id = request('customer_id');
-        $book->total_project_cost = request('project_cost');
-        $book->save();
 
         $chosen_num = 0;
         switch (request('Packages')) {
@@ -636,7 +663,7 @@ class OrderController extends Controller
                 if (
                     $inclusion['parent'] === $parent_id &&
                     $inclusion['service_name'] ===
-                    request()->input('fixed_inclusion')
+                        request()->input('fixed_inclusion')
                 ) {
                     $found = $inclusion['task'];
                 }
@@ -655,7 +682,7 @@ class OrderController extends Controller
                 if (
                     $inclusion['parent'] === $parent_id &&
                     $inclusion['service_name'] ===
-                    request()->input('fixed_editing')
+                        request()->input('fixed_editing')
                 ) {
                     $found = $inclusion['task'];
                 }
@@ -672,7 +699,9 @@ class OrderController extends Controller
             foreach ($arr_inclusions as $key => $inclusion) {
                 if ($inclusion['parent'] === $parent_id) {
                     if ($inclusion['calculate'] === 1) {
-                        $inclusion['project_cost'] = $this->caculateInclusionCost(
+                        $inclusion[
+                            'project_cost'
+                        ] = $this->caculateInclusionCost(
                             $arr_inclusions,
                             $request,
                             $parent_id
@@ -703,5 +732,16 @@ class OrderController extends Controller
         }
 
         return $total_cost;
+    }
+    public function deleteServiceInclusions($id)
+    {
+        $bookInfo = Book::find($id);
+        $serviceInclusions = service_inclusion::where('book_id', $id);
+        $activity = Order::where('book_id', $id)->first();
+        $activity->delete();
+        $bookInfo->delete();
+        $serviceInclusions->delete();
+
+        return back();
     }
 }
