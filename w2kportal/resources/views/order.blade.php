@@ -145,8 +145,17 @@
                                 </div>
                             </td>
                         @else
-                            <td><a href="{{ route('destroyBook', [$orders->book_id]) }}"
-                                    class="btn btn-danger delete-confirm col-12">Delete</a></td>
+                            <td>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a href="{{ route('customer',[$orders->book_id]) }}" class="btn btn-secondary col-12">View</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{{ route('destroyBook', [$orders->book_id]) }}"
+                                        class="btn btn-danger delete-confirm col-12">Delete</a>
+                                </div>
+                            </div>
+                          </td>
                         @endif
                     @endif
                 </tr>

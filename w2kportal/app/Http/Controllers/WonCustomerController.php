@@ -130,11 +130,11 @@ class WonCustomerController extends Controller
     }
     public function wonGetSupport()
     {
-        $getServiceInclusion = service_inclusion::join(
+        $getServiceInclusion = service_inclusion::leftJoin(
             'won_customers',
             'service_inclusions.won_id',
             '=',
-            'won_customers.id'
+            'won_customers.customer_id'
         )
             ->join(
                 'customers',
