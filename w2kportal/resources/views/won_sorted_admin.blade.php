@@ -31,7 +31,7 @@
                     <tr class="text-center">
                         <td>{{ $InclusionsData->custFname }} {{ $InclusionsData->custLname }}</td>
                         <td>{{ $InclusionsData->service_name }}</td>
-                        <td>${{ $InclusionsData->project_cost }}</td>
+                        <td>${{ $InclusionsData->project_cost ? $InclusionsData->project_cost : '0' }}</td>
                         <td>{{ $InclusionsData->bookTitle }}</td>
                         <td>{{ $InclusionsData->layout ? $InclusionsData->layout : 'No Layout' }}</td>
                         <td>{{ $InclusionsData->page_count ? $InclusionsData->page_count : 'No Page/Word Count' }}</td>

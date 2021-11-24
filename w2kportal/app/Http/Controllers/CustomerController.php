@@ -130,7 +130,7 @@ class CustomerController extends Controller
         )
             ->join(
                 'service_packages',
-                'won_customers.package_id',
+                'books.package_id',
                 '=',
                 'service_packages.id'
             )

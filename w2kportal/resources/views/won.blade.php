@@ -94,7 +94,7 @@ const getTableBody = (arr = []) =>{
                                 <td>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <a href="${ stringedRout }"
+                                            <a href="${ stringedRoute }"
                                                 class="btn btn-success col-12">view</a>
                                         </div>
 

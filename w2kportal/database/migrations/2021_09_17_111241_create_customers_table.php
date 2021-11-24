@@ -22,7 +22,7 @@ class CreateCustomersTable extends Migration
             $table->string('last_activity')->nullable();
             $table->string('reason_hold')->nullable();
             $table->string('reason_lost')->nullable();
-            $table->date('reason_hold_date')->nullable();
+            $table->string('reason_hold_date')->nullable();
             $table->string('secondary_email')->nullable();
             $table->string('first_email')->nullable();
             $table->string('second_email')->nullable();

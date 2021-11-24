@@ -141,6 +141,10 @@ Route::group(
                 App\Http\Controllers\OrderController::class,
                 'DestroyActivity',
             ])->name('DestroyActivity');
+            Route::get('/delete/book/{id}', [
+                App\Http\Controllers\OrderController::class,
+                'deleteServiceInclusions',
+            ])->name('destroyBook');
             Route::post('/convert', [
                 App\Http\Controllers\OrderController::class,
                 'ConvertCustomer',
