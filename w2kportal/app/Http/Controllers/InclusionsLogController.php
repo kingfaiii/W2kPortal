@@ -77,7 +77,7 @@ class InclusionsLogController extends Controller
         $date_now = now()->toDateTimeString();
         $date_Format = date('mdY', strtotime($date_now));
 
-        return (new HistoryExport($id))->download("{$book->book_title}-{$date_Format}.xlsx");
+        return (new HistoryExport($id))->download("{$book->book_title}-{$date_Format}.csv");
     }
 
     private function get_user_details($id)
