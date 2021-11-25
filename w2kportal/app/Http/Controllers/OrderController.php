@@ -585,7 +585,7 @@ class OrderController extends Controller
         $status->reason_lost = null;
         $status->reason_hold_date = null;
         $status->update();
-
+        
         $chosen_num = 0;
         switch (request('Packages')) {
             case 1:
