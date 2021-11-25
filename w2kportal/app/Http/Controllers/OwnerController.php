@@ -62,7 +62,7 @@ class OwnerController extends Controller
         $ownerData = Owner::find($id);
         $ownerData->owner_fname = request('owner_fname');
         $ownerData->owner_lname = request('owner_lname');
-        $ownerData->owner_email = request('owner_role');
+        $ownerData->role = request('owner_role');
         $ownerData->update();
 
         return back();

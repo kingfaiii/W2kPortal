@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\won_customer;
-use App\Models\Customer;
-use App\Models\Order;
-use App\Models\Book;
+use App\Models\customer;
+use App\Models\order;
+use App\Models\book;
 use App\Models\service_inclusion;
 use App\Models\service_package;
 use Illuminate\Http\Request;
@@ -27,7 +27,7 @@ class OrderController extends Controller
         $status->customer_status = request('customer_status');
         $status->update();
 
-        $activity = new Order();
+        $activity = new order();
         $activity->created_at = now()->toDateTimeString();
         $activity->updated_at = now()->toDateTimeString();
         $activity->customer_id = request('updatestatuscustomerid');
@@ -397,7 +397,7 @@ class OrderController extends Controller
 
     public function index($id)
     {
-        $order = Order::leftJoin(
+        $order = order::leftJoin(
             'service_packages',
             'orders.Package_id',
             '=',
@@ -414,7 +414,7 @@ class OrderController extends Controller
             ->latest('orders.created_at')
             ->get();
 
-        $customer = Customer::all()->where('id', $id);
+        $customer = customer::all()->where('id', $id);
 
         $packages = service_package::all();
 
@@ -438,12 +438,12 @@ class OrderController extends Controller
             if (
                 request('remarks') === '1st Follow up' || request('remarks') === '2nd Follow up' || request('remarks') === '3rd Follow up'
             ) {
-                $last_activity = Order::create($request->all());
+                $last_activity = order::create($request->all());
                 return redirect()
                     ->route('order', [request('customer_id')])
                     ->with('success', config('messages.AddActivity'));
             } else {
-                $last_activity = Order::create($request->all());
+                $last_activity = order::create($request->all());
                 $status->last_activity = $last_activity['id'];
                 $status->customer_status = 'Answered';
                 $status->reason_hold = null;
@@ -455,7 +455,7 @@ class OrderController extends Controller
                     ->with('success', config('messages.AddActivity'));
             }
         } else {
-            $last_activity = Order::create($request->all());
+            $last_activity = order::create($request->all());
             $status->last_activity = $last_activity['id'];
             $status->customer_status = 'Answered';
             $status->reason_hold = null;
@@ -473,7 +473,7 @@ class OrderController extends Controller
     }
     public function updateCustomerInformation($id)
     {
-        $customerInformation = Customer::find($id);
+        $customerInformation = customer::find($id);
         $customerInformation->customer_email = request('customer_email');
         $customerInformation->secondary_email = request('secondary_email');
         $customerInformation->first_email = request('first_email');
@@ -524,7 +524,7 @@ class OrderController extends Controller
 
     public function updateactivity($id)
     {
-        $activity = Order::find($id);
+        $activity = order::find($id);
         $activity->customer_book = request('customer_book');
         $activity->remarks = request('remarks');
         $activity->update();
@@ -534,7 +534,7 @@ class OrderController extends Controller
     }
     public function DestroyActivity($id)
     {
-        $order = Order::find($id);
+        $order = order::find($id);
         $order->delete();
         return redirect()
             ->route('order', $order->customer_id)
@@ -561,7 +561,7 @@ class OrderController extends Controller
 
         // BOOK TABLE
         $book = [];
-        $book = new Book();
+        $book = new book();
         $book->book_title         = request('customer_book');
         $book->package_id         = request('Packages');
         $book->transaction_ID     = request('transaction_id');
@@ -570,7 +570,7 @@ class OrderController extends Controller
         $book->save();
 
         // ORDER TABLE
-        $activity = new Order();
+        $activity = new order();
         $activity->created_at    = now()->toDateTimeString();
         $activity->updated_at    = now()->toDateTimeString();
         $activity->customer_id   = request('customer_id');
@@ -582,7 +582,7 @@ class OrderController extends Controller
         $activity->book_id       = $book->id;
         $activity->save();
 
-        $group_transactions = Book::select('transaction_ID')->where('won_id', '=',  request('customer_id'))->groupBy('transaction_ID')->get()->toArray();
+        $group_transactions = book::select('transaction_ID')->where('won_id', '=',  request('customer_id'))->groupBy('transaction_ID')->get()->toArray();
 
         $client_type = '';
         if (count($group_transactions) > 1) {
@@ -746,9 +746,9 @@ class OrderController extends Controller
     }
     public function deleteServiceInclusions($id)
     {
-        $bookInfo = Book::find($id);
+        $bookInfo = book::find($id);
         $serviceInclusions = service_inclusion::where('book_id', $id);
-        $activity = Order::where('book_id', $id)->first();
+        $activity = order::where('book_id', $id)->first();
         $activity->delete();
         $bookInfo->delete();
         $serviceInclusions->delete();

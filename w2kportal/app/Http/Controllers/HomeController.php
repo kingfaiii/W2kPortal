@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
+use App\Models\customer;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -36,7 +36,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $home = Customer::all();
+        $home = customer::all();
 
         return view('home', ['home' => $home]);
     }
@@ -49,7 +49,7 @@ class HomeController extends Controller
             'customer_lname' => 'required',
             'customer_status' => 'required',
         ]);
-        $users = Customer::where(
+        $users = customer::where(
             'customer_email',
             '=',
             $request->input('customer_email')
@@ -58,7 +58,7 @@ class HomeController extends Controller
             // User does not exist
             $firstName = ucwords(request('customer_fname'));
             $lastName = ucwords(request('customer_lname'));
-            $dataid = new Customer;
+            $dataid = new customer;
             $dataid->customer_fname = $firstName;
             $dataid->customer_lname = $lastName;
             $dataid->customer_email = ucfirst(request('customer_email'));
@@ -77,7 +77,7 @@ class HomeController extends Controller
     }
     public function Destroy($id)
     {
-        $customer = Customer::Find($id);
+        $customer = customer::Find($id);
         $customer->delete();
         return back();
     }

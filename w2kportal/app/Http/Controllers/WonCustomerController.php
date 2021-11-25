@@ -4,12 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\won_customer;
 use App\Models\service_inclusion;
-use Illuminate\Support\Facades\DB;
-use App\Models\book;
-use App\Models\customer;
 use App\Models\inclusions_log;
 use App\Models\owner;
-use Illuminate\Http\Request;
 
 class WonCustomerController extends Controller
 {

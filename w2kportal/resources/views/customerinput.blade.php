@@ -572,7 +572,7 @@
                 toggleDisabled(false)
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('UpdateInclusions') }}",
+                    url: "/won/books/edit/update",
                     data: decodeURIComponent(escape(arr)),
                     success: async function(data, xhr, status) {
                         if (xhr === 'success') {

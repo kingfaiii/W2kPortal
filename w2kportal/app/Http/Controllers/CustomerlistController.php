@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\book;
-use App\Models\Customer;
-
-use App\Models\customerlist;
-
+use App\Models\customer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class CustomerlistController extends Controller
 {
@@ -21,7 +16,7 @@ class CustomerlistController extends Controller
      */
     public function index()
     {
-        $customers = Customer::leftJoin('orders', 'customers.last_activity', '=', 'orders.id')
+        $customers = customer::leftJoin('orders', 'customers.last_activity', '=', 'orders.id')
             ->select('customers.*', 'orders.remarks', 'orders.updated_at AS orderUpdated')
             ->get()->toArray();
 
@@ -31,7 +26,7 @@ class CustomerlistController extends Controller
     public function queryCustomerList(Request $request)
     {
         $query = $request->all();
-        $customers = Customer::leftJoin('orders', 'customers.last_activity', '=', 'orders.id')
+        $customers = customer::leftJoin('orders', 'customers.last_activity', '=', 'orders.id')
             ->select('customers.*', 'orders.remarks', 'orders.updated_at AS orderUpdated');
 
         if (!empty($query['date_from']) && !empty($query['date_to'])) {
@@ -58,7 +53,7 @@ class CustomerlistController extends Controller
 
     public function Destroy($id)
     {
-        $customer = Customer::Find($id);
+        $customer = customer::Find($id);
         $customer->delete();
         return back();
     }

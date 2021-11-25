@@ -6,7 +6,6 @@ use App\Exports\HistoryExport;
 use App\Models\book;
 use App\Models\inclusions_log;
 use App\Models\User;
-use Maatwebsite\Excel\Facades\Excel;
 
 class InclusionsLogController extends Controller
 {
@@ -63,11 +62,6 @@ class InclusionsLogController extends Controller
                 }
             }
         }
-
-        // echo "<pre>";
-        // print_r($history_info);
-        // echo "</pre>";
-        // exit;
         return $history_info;
     }
 

@@ -109,7 +109,7 @@ const getTableBody = (arr = []) =>{
 }
 
 $(document).ready(function() {
-    let wonBaseUrl = '{{route("WonCustomers")}}'
+    let wonBaseUrl = '/won'
 
     $('#search_won').keyup(function() {
             const search = $.trim($(this).val());
