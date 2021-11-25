@@ -436,9 +436,7 @@ class OrderController extends Controller
         $status = customer::find(request('customer_id'));
         if ($status->customer_status === 'Hold') {
             if (
-                request('remarks') === '1st Follow up' ||
-                request('remarks') === '2nd Follow up' ||
-                request('remarks') === '3rd Follow up'
+                request('remarks') === '1st Follow up' || request('remarks') === '2nd Follow up' || request('remarks') === '3rd Follow up'
             ) {
                 $last_activity = Order::create($request->all());
                 return redirect()
@@ -488,6 +486,7 @@ class OrderController extends Controller
             ->route('order', [$id])
             ->with('success', 'Successfull Updated Customer Information');
     }
+
     public function update(request $request, $id)
     {
         switch (request('customer_status')) {
@@ -549,41 +548,59 @@ class OrderController extends Controller
             '=',
             $request->input('customer_id')
         )->first();
+
         $convert = [];
         if ($is_won_exist === null) {
+            // ID === WON_ID
             $convert = new won_customer();
             $convert->customer_id = request('customer_id');
             $convert->status = 'Won';
             $convert->save();
         }
 
+
+        // BOOK TABLE
         $book = [];
         $book = new Book();
-        $book->book_title = request('customer_book');
-        $book->package_id = request('Packages');
-        $book->transaction_ID = request('transaction_id');
-        $book->won_id = request('customer_id');
+        $book->book_title         = request('customer_book');
+        $book->package_id         = request('Packages');
+        $book->transaction_ID     = request('transaction_id');
+        $book->won_id             = request('customer_id');
         $book->total_project_cost = request('project_cost');
         $book->save();
 
+        // ORDER TABLE
         $activity = new Order();
-        $activity->created_at = now()->toDateTimeString();
-        $activity->updated_at = now()->toDateTimeString();
-        $activity->customer_id = request('customer_id');
-        $activity->user_id = request('user_id');
-        $activity->sales_rep = request('sales_rep');
+        $activity->created_at    = now()->toDateTimeString();
+        $activity->updated_at    = now()->toDateTimeString();
+        $activity->customer_id   = request('customer_id');
+        $activity->user_id       = request('user_id');
+        $activity->sales_rep     = request('sales_rep');
         $activity->customer_book = request('customer_book');
-        $activity->remarks = 'Won';
-        $activity->Package_id = request('Packages');
-        $activity->book_id = $book->id;
+        $activity->remarks       = 'Won';
+        $activity->Package_id    = request('Packages');
+        $activity->book_id       = $book->id;
         $activity->save();
 
-        $status = customer::find(request('customer_id'));
-        $status->customer_status = 'Won';
-        $status->reason_hold = null;
-        $status->last_activity = $activity['id'];
-        $status->reason_lost = null;
+        $group_transactions = Book::select('transaction_ID')->where('won_id', '=',  request('customer_id'))->groupBy('transaction_ID')->get()->toArray();
+
+        $client_type = '';
+        if (count($group_transactions) > 1) {
+            $client_type = 'Repeat';
+        } else if (empty($group_transactions)) {
+            $client_type = 'New';
+        } else if (count($group_transactions) === 1) {
+            $client_type = 'New';
+        }
+
+        // CUSTOMER
+        $status                   = customer::find(request('customer_id'));
+        $status->customer_status  = 'Won';
+        $status->reason_hold      = null;
+        $status->last_activity    = $activity['id'];
+        $status->reason_lost      = null;
         $status->reason_hold_date = null;
+        $status->client_type      = $client_type;
         $status->update();
 
         $chosen_num = 0;
@@ -651,19 +668,15 @@ class OrderController extends Controller
             ->with('success', config('messages.NewConvert'));
     }
 
-    private function createInclusions(
-        $arr_inclusions,
-        $book,
-        $parent_id,
-        request $request
-    ) {
+    private function createInclusions($arr_inclusions, $book, $parent_id, request $request)
+    {
         if ($parent_id === 11) {
             $found = '';
             foreach ($arr_inclusions as $key => $inclusion) {
                 if (
                     $inclusion['parent'] === $parent_id &&
                     $inclusion['service_name'] ===
-                        request()->input('fixed_inclusion')
+                    request()->input('fixed_inclusion')
                 ) {
                     $found = $inclusion['task'];
                 }
@@ -682,7 +695,7 @@ class OrderController extends Controller
                 if (
                     $inclusion['parent'] === $parent_id &&
                     $inclusion['service_name'] ===
-                        request()->input('fixed_editing')
+                    request()->input('fixed_editing')
                 ) {
                     $found = $inclusion['task'];
                 }
@@ -699,9 +712,7 @@ class OrderController extends Controller
             foreach ($arr_inclusions as $key => $inclusion) {
                 if ($inclusion['parent'] === $parent_id) {
                     if ($inclusion['calculate'] === 1) {
-                        $inclusion[
-                            'project_cost'
-                        ] = $this->caculateInclusionCost(
+                        $inclusion['project_cost'] = $this->caculateInclusionCost(
                             $arr_inclusions,
                             $request,
                             $parent_id
