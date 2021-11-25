@@ -267,7 +267,6 @@ class CustomerController extends Controller
 
     public function create_logs($user_logs)
     {
-        // ALGORITHM SHOULD BE IF PAST DATA !== CURRENT DATA AND PAST ID === CURRENT_ID.
         if (!empty($user_logs)) {
             $new_log = [];
             foreach ($user_logs as $key => $inclusions) {
@@ -335,18 +334,9 @@ class CustomerController extends Controller
                                     strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
-                                    // $inclusions[$service_key] = $inclusions[$service_key];
                                     $inclusions[$owner_key] = Auth::user()->id;
                                 }
                             }
-
-                            // if (!empty($inclusions[$service_key]) && $updated_by_columns[$owner_key] !== strval(Auth::user()->id)) {
-
-                            //     if (str_contains($owner_key, $service_key)) {
-                            //         // $inclusions[$service_key] = $inclusions[$service_key];
-                            //         $inclusions[$owner_key] = Auth::user()->id;
-                            //     }
-                            // }
                         }
                     }
                 }

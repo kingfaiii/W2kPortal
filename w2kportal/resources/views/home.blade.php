@@ -11,10 +11,6 @@
 
                         <div class="content-overlay"></div>
                         <img src="{{ asset('/Images/button_add.png') }}" alt="Add Customer" class="content-image">
-                        {{-- <div class="content-details">
-                                <h3 class="content-title">Add Customer</h3>
-                            </div> --}}
-
                     </a>
                 </div>
             </div>
@@ -23,9 +19,6 @@
                     <a href="{{ route('list') }}">
                         <div class="content-overlay"></div>
                         <img src="{{ asset('/Images/button_search.png') }}" alt="Search Customer" class="content-image">
-                        {{-- <div class="content-details">
-                                <h3 class="content-title">Search/Update Customer</h3>
-                            </div> --}}
                     </a>
                 </div>
             </div>

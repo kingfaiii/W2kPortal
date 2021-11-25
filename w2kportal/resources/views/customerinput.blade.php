@@ -355,7 +355,6 @@
                                     class="form-control customerinput-text"> </td>
                         </tr>
                     @endforeach
-
                 </tbody>
             </table>
         </div>
@@ -597,7 +596,6 @@
                         await messagePrompt(message, "", false,
                             "error", "Ok")
 
-                        // $(`input[name="${element_name}"]`).addClass('border border-danger')
                     },
                 })
 

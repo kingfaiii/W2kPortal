@@ -299,8 +299,6 @@
                     })
             }
         });
-
-
     })
 </script>
 @endsection
