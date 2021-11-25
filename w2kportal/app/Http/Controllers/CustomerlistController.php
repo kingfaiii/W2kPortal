@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\book;
 use App\Models\Customer;
 
 use App\Models\customerlist;
@@ -22,11 +23,10 @@ class CustomerlistController extends Controller
     {
         $customers = Customer::leftJoin('orders', 'customers.last_activity', '=', 'orders.id')
             ->select('customers.*', 'orders.remarks', 'orders.updated_at AS orderUpdated')
-            ->get();
+            ->get()->toArray();
 
         return view('list', ['home' => $customers]);
     }
-
 
     public function queryCustomerList(Request $request)
     {
@@ -56,7 +56,8 @@ class CustomerlistController extends Controller
         return response()->json($results->get(), 200);
     }
 
-    public function Destroy($id){
+    public function Destroy($id)
+    {
         $customer = Customer::Find($id);
         $customer->delete();
         return back();

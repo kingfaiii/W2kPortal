@@ -71,6 +71,7 @@
                             <th>Email</th>
                             <th>Status</th>
                             <th>Remarks</th>
+                            <th>New Book</th>
                             <th>Date</th>
                             <th>Action</th>
                         </tr>
@@ -79,21 +80,22 @@
                     <tbody id="customerlist_body">
                         @foreach ($home as $row)
                             <tr class="text-center">
-                                <td>W2k-{{ $row->id }}</td>
-                                <td>{{ $row->customer_fname }} {{ $row->customer_lname }}</td>
-                                <td>{{ $row->customer_email }}</td>
-                                <td>{{ $row->customer_status }}</td>
-                                <td>{{ $row->remarks ? $row->remarks : 'No Remarks' }}</td>
-                                <td>{{ date('m/d/Y', strtotime($row->orderUpdated)) ? date('m/d/Y', strtotime($row->orderUpdated)) : 'No Activity' }}
+                                <td>W2k-{{ $row['id'] }}</td>
+                                <td>{{ $row['customer_fname'] }} {{ $row['customer_lname'] }}</td>
+                                <td>{{ $row['customer_email'] }}</td>
+                                <td>{{ $row['customer_status'] }}</td>
+                                <td>{{ $row['remarks'] ? $row['remarks'] : 'No Remarks' }}</td>
+                                <td>{{ $row['client_type'] ?  $row['client_type'] : 'No Book' }}
+                                <td>{{ date('m/d/Y', strtotime($row['orderUpdated'])) ? date('m/d/Y', strtotime($row['orderUpdated'])) : 'No Activity' }}
                                 </td>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <a href="{{ route('order', [$row->id]) }}" class="btn btn-success"><i class="bi bi-pencil-square"></i> Edit</a>
+                                            <a href="{{ route('order', [$row['id']]) }}" class="btn btn-success"><i class="bi bi-pencil-square"></i> Edit</a>
                                         </div>
 
                                         <div class="col-md-6">
-                                            <button data-id="{{ $row->id }}"
+                                            <button data-id="{{ $row['id'] }}"
                                                 class="btn btn-danger delete-confirm"><i class="bi bi-trash-fill"></i> Delete</button>
                                         </div>
                                     </div>

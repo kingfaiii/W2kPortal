@@ -29,6 +29,7 @@ class CreateCustomersTable extends Migration
             $table->string('third_email')->nullable();
             $table->string('fourth_email')->nullable();
             $table->string('fifth_email')->nullable();
+            $table->string('client_type')->nullable();
             $table->timestamps();
         });
     }
