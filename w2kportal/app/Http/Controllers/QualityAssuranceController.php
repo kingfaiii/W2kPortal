@@ -46,7 +46,11 @@ class QualityAssuranceController extends Controller
         $users = QualityAssurance::where('qa_email', '=', $request->input('qa_email'))->first();
         if ($users === null) {
             // User does not exist
-            QualityAssurance::create($request->all());
+           $qa = new QualityAssurance;
+           $qa->qa_fname = ucwords(strtolower(request('qa_fname')));
+           $qa->qa_lname = ucwords(strtolower(request('qa_lname')));
+           $qa->qa_email = ucfirst(strtolower(request('qa_email')));
+           $qa->save();
 
             return back()->with('success', 'Quality Assurance added successfully.');
         } else {
@@ -55,13 +59,13 @@ class QualityAssuranceController extends Controller
         }
     }
     
-    public function update(Request $request, QualityAssurance $qa, $id)
+    public function update($id)
     {
         //
         $qaData = QualityAssurance::find($id);
-        $qaData->qa_fname = request()->input('qa_fname');
-        $qaData->qa_lname = request()->input('qa_lname');
-        $qaData->qa_email = request()->input('qa_email');
+        $qaData->qa_fname = ucwords(strtolower(request('qa_fname')));
+        $qaData->qa_lname = ucwords(strtolower(request('qa_lname')));
+        $qaData->qa_email = ucfirst(strtolower(request('qa_email')));
         $qaData->update();
 
         return back();
@@ -73,7 +77,7 @@ class QualityAssuranceController extends Controller
      * @param  \App\Models\owner  $owner
      * @return \Illuminate\Http\Response
      */
-    public function destroy(QualityAssurance $qa,$id)
+    public function destroy($id)
     {
         $order = QualityAssurance::find($id);
         $order->delete();

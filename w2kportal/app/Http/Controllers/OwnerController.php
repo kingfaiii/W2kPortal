@@ -44,8 +44,11 @@ class OwnerController extends Controller
         //
 
         // User does not exist
-        owner::create($request->all());
-
+        $owner = new owner;
+        $owner->owner_fname = ucwords(strtolower(request('owner_fname')));
+        $owner->owner_fname = ucwords(strtolower(request('owner_lname')));
+        $owner->owner_fname = request('owner_role');
+        $owner->save();
         return back()->with('success', 'Owner added successfully.');
     }
 
@@ -60,8 +63,8 @@ class OwnerController extends Controller
     {
         //
         $ownerData = Owner::find($id);
-        $ownerData->owner_fname = request('owner_fname');
-        $ownerData->owner_lname = request('owner_lname');
+        $ownerData->owner_fname = ucwords(strtolower(request('owner_fname')));
+        $ownerData->owner_lname = ucwords(strtolower(request('owner_lname')));
         $ownerData->role = request('owner_role');
         $ownerData->update();
 

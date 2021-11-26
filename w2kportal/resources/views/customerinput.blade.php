@@ -3,6 +3,8 @@
 @include('sweetalert::alert')
 
 @section('content')
+<form id="customerinput_form" name="customerinput_form" method="POST">
+    @csrf
     <?php
     $classification = ['eBook Conversion', 'Interior Formatting'];
     $layout = ['eBook Conversion'];
@@ -10,31 +12,24 @@
     $qaAndQAScore = ['Development Editing', 'Copyediting'];
     ?>
 @section('header')
-    <form id="customerinput_form" name="customerinput_form" method="POST">
-        @csrf
-        <div class="col-12">
-            <div class="row">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row mx-auto mb-3">
-                            <div class="col-md-10">
+                    <div class="col-md-9">
+                     <p class="h2 text-white font-weight-bold">Convert Customer Details</p>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-6">
                                 <x-modal-button>
                                     <x-slot name="targetID">#updateBookTitle</x-slot>
                                     <x-slot name="btnClass">btn btn-info text-white mt-2</x-slot>
                                     Book Title
                                 </x-modal-button>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-6">
                                 <a href="{{ route('HistoryLog', [request()->segment(count(request()->segments()))]) }}"
                                     class="btn btn-info  text-white mt-2">History</a>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <p class="h2 text-white font-weight-bold">Convert Customer Details</p>
-        </div>
-
     @endsection
 
     @section('otherforms')

@@ -56,12 +56,12 @@ class HomeController extends Controller
         )->first();
         if ($users === null) {
             // User does not exist
-            $firstName = ucwords(request('customer_fname'));
-            $lastName = ucwords(request('customer_lname'));
+            $firstName = ucwords(strtolower(request('customer_fname')));
+            $lastName = ucwords(strtolower(request('customer_lname')));
             $dataid = new customer;
             $dataid->customer_fname = $firstName;
             $dataid->customer_lname = $lastName;
-            $dataid->customer_email = ucfirst(request('customer_email'));
+            $dataid->customer_email = ucfirst(strtolower(request('customer_email')));
             $dataid->customer_status = 'Answered';
             $dataid->save();
             $id = $dataid->id;
