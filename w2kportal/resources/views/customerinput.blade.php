@@ -171,7 +171,7 @@
                                         </option>
                                         <option value="Reflowable">Reflowable</option>
                                         <option value="Fixed Virtual">Fixed Virtual</option>
-                                        <option value="ixed Hidden">Fixed Hidden</option>
+                                        <option value="Fixed Hidden">Fixed Hidden</option>
                                         <option value="Combination">Combination</option>
                                     </select>
                                 @else
@@ -181,11 +181,10 @@
                                         </option>
                                         <option value="Reflowable">Reflowable</option>
                                         <option value="Fixed Virtual">Fixed Virtual</option>
-                                        <option value="ixed Hidden">Fixed Hidden</option>
+                                        <option value="Fixed Hidden">Fixed Hidden</option>
                                         <option value="Combination">Combination</option>
                                     </select>
                                 @endif
-
                             </td>
                             <td>
 

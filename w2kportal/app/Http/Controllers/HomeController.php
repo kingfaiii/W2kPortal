@@ -61,7 +61,7 @@ class HomeController extends Controller
             $dataid = new customer;
             $dataid->customer_fname = $firstName;
             $dataid->customer_lname = $lastName;
-            $dataid->customer_email = ucfirst(strtolower(request('customer_email')));
+            $dataid->customer_email = strtolower(request('customer_email'));
             $dataid->customer_status = 'Answered';
             $dataid->save();
             $id = $dataid->id;

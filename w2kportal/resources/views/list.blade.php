@@ -71,7 +71,7 @@
                             <th>Email</th>
                             <th>Status</th>
                             <th>Remarks</th>
-                            <th>New Book</th>
+                            <th>Client Type</th>
                             <th>Date</th>
                             <th>Action</th>
                         </tr>
@@ -85,7 +85,7 @@
                                 <td>{{ $row['customer_email'] }}</td>
                                 <td>{{ $row['customer_status'] }}</td>
                                 <td>{{ $row['remarks'] ? $row['remarks'] : 'No Remarks' }}</td>
-                                <td>{{ $row['client_type'] ?  $row['client_type'] : 'No Book' }}</td>
+                                <td>{{ $row['client_type'] ?  $row['client_type'] : 'New' }}</td>
                                 <td>{{ date('m/d/Y', strtotime($row['orderUpdated'])) ? date('m/d/Y', strtotime($row['orderUpdated'])) : 'No Activity' }}
                                 </td>
                                 <td>
@@ -142,7 +142,7 @@
                                     <td>${k.customer_email} </td>
                                     <td>${k.customer_status}</td>
                                     <td>${k.remarks ? k.remarks : 'No Remarks'}</td>
-                                    <td>${k.client_type ? k.client_type : 'No Book'}</td>
+                                    <td>${k.client_type ? k.client_type : 'New'}</td>
                                     <td>${ date_object.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric'}) ? date_object.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric'}) : 'No Activity'}</td>
                                     <td>
                                         <div class="row">
