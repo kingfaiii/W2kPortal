@@ -107,6 +107,14 @@
                     </div>
                 </div>
             </div>
+            <div class="row ml-2">
+                <div class="col-md-5">
+
+                </div>
+                <div class="col-md-5">
+                    
+                </div>
+            </div>
         @endforeach
     @endsection
     @section('table')

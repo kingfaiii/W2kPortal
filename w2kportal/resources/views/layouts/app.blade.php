@@ -83,6 +83,9 @@
                                     <a href="{{ route('qualityassurance') }}" class="dropdown-item">
                                         QA
                                     </a>
+                                    <a href="{{ route('ProjectManager.index') }}" class="dropdown-item">
+                                        Project Manager
+                                    </a>
                                 </div>
                                </li>
                             <li class="nav-item dropdown">

@@ -4,6 +4,7 @@ use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProjectManagerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,7 @@ Route::group(
     function () {
         Route::resource('home', HomeController::class);
         Route::resource('list', CustomerlistController::class);
-
+        Route::resource('ProjectManager',ProjectManagerController::class);
         Route::get('/home', [
             App\Http\Controllers\HomeController::class,
             'index',

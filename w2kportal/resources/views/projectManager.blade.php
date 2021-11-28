@@ -25,20 +25,24 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($owner as $item)
+            @foreach ($pm as $projectManagers)
                 <tr class="text-center">
-                    <td>{{ $item->id }}</td>
-                    <td>{{ $item->owner_fname }} {{ $item->owner_lname }}</td>
-                    <td>{{ $item->role }}</td>
-                    <td>{{ $item->created_at }}</td>
+                    <td>{{ $projectManagers->id }}</td>
+                    <td>{{ $projectManagers->pm_fname }} {{ $projectManagers->pm_lname }}</td>
+                    <td>{{ $projectManagers->pm_email }}</td>
+                    <td>{{ $projectManagers->created_at }}</td>
                     <td>
                         <div class="row">
                             <div class="col-md-6">
                                 <a type="button" href="#" class="btn btn-success col-12" data-toggle="modal"
-                                    data-target="#exampleModalCenter{{ $item->id }}">Edit</a>
+                                    data-target="#exampleModalCenter{{ $projectManagers->id }}">Edit</a>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ route('OwnerDelete', [$item->id]) }}" class="btn btn-danger col-12">Delete</a>
+                                <form action="{{ route('ProjectManager.destroy',[$projectManagers->id]) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                <button class="btn btn-danger col-12">Delete</button>
+                                </form>
                             </div>
                         </div>
                     </td>
@@ -48,29 +52,24 @@
     </table>
 @endsection
 {{-- Add Owner Modal --}}
-<form action="{{ route('OwnerAdd') }}" Method="POST">
+<form action="{{ route('ProjectManager.store') }}" Method="POST">
     @csrf
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-secondary text-center">
-                    <h5 class="modal-title text-white" id="exampleModalLongTitle">Add Owner</h5>
+                    <h5 class="modal-title text-white" id="exampleModalLongTitle">Add Project Manager</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="text-white" aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body py-4">
-                    <input type="text" placeholder="Owner First Name" name="owner_fname" value="" id=""
+                    <input type="text" placeholder="Project Manager First Name" name="pm_fname" value="" id=""
                         class="form-control">
-                    <input type="text" placeholder="Owner Last Name" name="owner_lname" value="" id=""
+                    <input type="text" placeholder="Project Manager Last Name" name="pm_lname" value="" id=""
                         class="form-control">
-                    <select name="role" id="" class="form-control">
-                        <option value="Ebook Converter">Ebook Converter</option>
-                        <option value="Layout Artist">Layout Artist</option>
-                        <option value="Graphic Artist">Graphic Artist</option>
-                        <option value="Editor">Editor</option>
-                    </select>
+                    <input type="email" name="pm_email" id="" placeholder="Project Manager Email" class="form-control">
                 </div>
                 <div class="modal-footer bg-secondary">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -84,11 +83,12 @@
 {{-- Add Owner Modal --}}
 
 {{-- Update Owner Modal --}}
-@foreach ($owner as $item)
-    <form action="{{ route('OwnerUpdate', [$item->id]) }}" Method="POST">
+@foreach ($pm as $projectManagers)
+    <form action="{{ route('ProjectManager.update',[$projectManagers->id]) }}" Method="POST">
         @csrf
+        @method('PUT')
 
-        <div class="modal fade" id="exampleModalCenter{{ $item->id }}" tabindex="-1" role="dialog"
+        <div class="modal fade" id="exampleModalCenter{{ $projectManagers->id }}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -100,17 +100,11 @@
                     </div>
                     <div class="modal-body py-4">
                         <input type="text" hidden name="ownerID" value="" id="">
-                        <input type="text" placeholder="Owner First Name" name="owner_fname"
-                            value="{{ $item->owner_fname }}" id="" class="form-control">
-                        <input type="text" placeholder="Owner Last Name" name="owner_lname"
-                            value="{{ $item->owner_lname }}" id="" class="form-control">
-                        <select name="owner_role" id="" class="form-control">
-                            <option value="{{ $item->role }}">{{ $item->role }}</option>
-                            <option value="Ebook Converter">Ebook Converter</option>
-                            <option value="Layout Artist">Layout Artist</option>
-                            <option value="Graphic Artist">Graphic Artist</option>
-                            <option value="Editor">Editor</option>
-                        </select>
+                        <input type="text" placeholder="Owner First Name" name="pm_fname"
+                            value="{{ $projectManagers->pm_fname }}" id="" class="form-control">
+                        <input type="text" placeholder="Owner Last Name" name="pm_lname"
+                            value="{{ $projectManagers->pm_lname }}" id="" class="form-control">
+                        <input type="email" name="pm_email" value="{{ $projectManagers->pm_email }}" id="" class="form-control">
                     </div>
                     <div class="modal-footer bg-secondary">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

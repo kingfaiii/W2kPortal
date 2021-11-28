@@ -14,17 +14,8 @@ class ProjectManagerController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $pm = projectManager::all();
+        return view('projectManager',['pm'=>$pm]);
     }
 
     /**
@@ -35,29 +26,14 @@ class ProjectManagerController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'pm_fname' => 'required',
+            'pm_lname' => 'required',
+            'pm_email' => 'required',
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\projectManager  $projectManager
-     * @return \Illuminate\Http\Response
-     */
-    public function show(projectManager $projectManager)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\projectManager  $projectManager
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(projectManager $projectManager)
-    {
-        //
+        ]);
+        projectManager::create($request->all());
+        return redirect()->route('ProjectManager.index');
     }
 
     /**
@@ -67,9 +43,14 @@ class ProjectManagerController extends Controller
      * @param  \App\Models\projectManager  $projectManager
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, projectManager $projectManager)
+    public function update(Request $request,$id)
     {
-        //
+  
+        
+        $updatepProjectManager = projectManager::Find($id);
+        $updatepProjectManager->update($request->all());
+
+        return redirect()->route('ProjectManager.index');
     }
 
     /**
@@ -78,8 +59,10 @@ class ProjectManagerController extends Controller
      * @param  \App\Models\projectManager  $projectManager
      * @return \Illuminate\Http\Response
      */
-    public function destroy(projectManager $projectManager)
+    public function destroy($id)
     {
-        //
+        $deletePM = projectManager::Find($id);
+        $deletePM->delete();
+        return redirect()->route('ProjectManager.index');
     }
 }
