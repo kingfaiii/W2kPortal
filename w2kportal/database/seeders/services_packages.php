@@ -14,26 +14,51 @@ class services_packages extends Seeder
      */
     public function run()
     {
-        $keys = array_keys($this->generatePackage());
-        for ($i = 0; $i < count($this->generatePackage()); $i++) {
-            foreach ($this->generatePackage()[$keys[$i]] as $key => $package) {
-                DB::table('service_packages')->insert(["package_name" => $package]);
-            }
+        foreach ($this->generatePackage() as $key => $package) {
+            DB::table('service_packages')->insert($package);
         }
     }
 
     public function generatePackage()
     {
         return [
-            ["package_name" => "eBook & Print Deluxe Package"],
-            ["package_name" => "eBook Basic Package"],
-            ["package_name" => "eBook Value Package"],
-            ["package_name" => "eBook Deluxe Package"],
-            ["package_name" => "Print Basic Package"],
-            ["package_name" => "Print Value Package"],
-            ["package_name" => "Print Deluxe Package"],
-            ["package_name" => "eBook & Print Basic Package"],
-            ["package_name" => "eBook & Print Value Package"],
+            [
+                "package_name" => "eBook Basic Package",
+                "sibling_id"   => 1
+            ],
+
+            [
+                "package_name" => "eBook Value Package",
+                "sibling_id"   => 1
+            ],
+            [
+                "package_name" => "eBook Deluxe Package",
+                "sibling_id"   => 1
+            ],
+            [
+                "package_name" => "Print Basic Package",
+                "sibling_id"   => 2
+            ],
+            [
+                "package_name" => "Print Value Package",
+                "sibling_id"   => 2
+            ],
+            [
+                "package_name" => "Print Deluxe Package",
+                "sibling_id"   => 2
+            ],
+            [
+                "package_name" => "eBook & Print Deluxe Package",
+                "sibling_id"   => 3
+            ],
+            [
+                "package_name" => "eBook & Print Basic Package",
+                "sibling_id"   => 3
+            ],
+            [
+                "package_name" => "eBook & Print Value Package",
+                "sibling_id"   => 3
+            ],
             ["package_name" => "Website Development"],
             ["package_name" => "Physical To Digital/Ebook"],
             ["package_name" => "Editing Service"],

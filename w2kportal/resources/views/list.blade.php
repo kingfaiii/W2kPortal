@@ -56,13 +56,8 @@
         </div>
     @endif
 
-    <div class="container">
-
-
         <div class="row">
-
             <div class="col-md-12">
-
                 <table id="customerlist_table" class="table table-stripped">
                     <thead id="customerlist_header">
                         <tr class="text-center">
@@ -107,7 +102,6 @@
                 </table>
             </div>
         </div>
-    </div>
 @endsection
 
 <script>

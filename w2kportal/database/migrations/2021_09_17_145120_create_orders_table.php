@@ -20,6 +20,8 @@ class CreateOrdersTable extends Migration
             $table->string('sales_rep');
             $table->string('remarks');
             $table->string('customer_book')->nullable();
+            $table->string('new_book')->nullable();
+            $table->string('old_book')->nullable();
             $table->string('Package_id')->nullable();
             $table->string('book_id')->nullable();
             $table->timestamps();

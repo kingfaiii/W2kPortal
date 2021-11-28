@@ -17,6 +17,7 @@ class CreateBooksTable extends Migration
             $table->increments('id');
             $table->string('transaction_ID')->nullable();
             $table->string('book_title')->nullable();
+            $table->string('old_book_title')->nullable();
             $table->string('package_id');
             $table->string('total_project_cost');
             $table->string('won_id')->nullable();

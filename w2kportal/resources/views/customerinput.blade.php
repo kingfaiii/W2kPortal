@@ -12,21 +12,26 @@
     $qaAndQAScore = ['Development Editing', 'Copyediting'];
     ?>
 @section('header')
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                      <p class="h2 text-white font-weight-bold">Convert Customer Details</p>
                     </div>
-                    <div class="col-md-3">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <x-modal-button>
+                    <div class="col-md-6">
+                        <div class="row mt-2">
+                            <div class="col-md-4">
+                                @foreach ($customer_information as $customer_informations)
+                                <a href="{{ route('order',[$customer_informations->won_id]) }}" class="btn col-12 btn-info text-white ">Customer Information</a>
+                                @endforeach
+                            </div>
+                            <div class="col-md-4">
+                                <x-modal-button >
                                     <x-slot name="targetID">#updateBookTitle</x-slot>
-                                    <x-slot name="btnClass">btn btn-info text-white mt-2</x-slot>
+                                    <x-slot name="btnClass">btn btn-info text-white  col-12</x-slot>
                                     Book Title
                                 </x-modal-button>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <a href="{{ route('HistoryLog', [request()->segment(count(request()->segments()))]) }}"
-                                    class="btn btn-info  text-white mt-2">History</a>
+                                    class="btn btn-info col-12  text-white ">History</a>
                             </div>
                         </div>
                     </div>
@@ -374,6 +379,12 @@
             <x-slot name="modalValueInput">Update Book Title</x-slot>
             <input type="text" name="book_title" id="" value="{{ $customer_informations->book_title }}"
                 placeholder="Book Title" class="form-control">
+            <input hidden type="text" name="old_book_title" id="" value="{{ $customer_informations->book_title }}"
+                placeholder="old Book Title" class="form-control">
+            <input hidden  type="text" name="customer_id" id="" value="{{ $customer_informations->won_id }}"
+                placeholder="old Book Title" class="form-control">
+            <input hidden type="text" name="book_id" id="" value="{{ request()->segment(count(request()->segments())) }}"
+                placeholder="book_id" class="form-control">
         </x-modal>
     @endforeach
 @endsection
@@ -423,8 +434,6 @@
             "September", "October", "November", "December"
         ];
         const currentDate = `${d.getDate()}/${monthNames[d.getMonth()]}/${d.getFullYear()}`
-
-
 
         $('.qaName').each(function() {
             const service_id = $(this).data('id')
@@ -569,8 +578,7 @@
                     data: decodeURIComponent(escape(arr)),
                     success: async function(data, xhr, status) {
                         if (xhr === 'success') {
-                            const res = await messagePrompt('Successfully Updated', "",
-                                false, "success", "Got it")
+                            const res = await messagePrompt('Successfully Updated', "", false, "success", "Got it")
 
                             return res.isConfirmed ? location.reload() : false
                         }
@@ -587,8 +595,7 @@
                         } else {
                             message = 'Error occured.please try again'
                         }
-                        await messagePrompt(message, "", false,
-                            "error", "Ok")
+                        await messagePrompt(message, "", false, "error", "Ok")
 
                     },
                 })
