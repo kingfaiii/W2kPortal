@@ -5,7 +5,7 @@
 
 
 @section('header')
-    <div class="col-md-8 pl-5">
+    <div class="col-md-8">
         <h3 class="text-white font-weight-bold">
             {{ __('List of Won Customers') }}
         </h3>
@@ -21,18 +21,20 @@
         </div>
     </div>
 @endsection
+@section('otherforms')
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label class="text-white"  for="">Search List:</label>
+                <input type="text" id="search_won" class="form-control" placeholder="Search...">
+            </div>
+        </div>
+    </div>
+@endsection
 @section('table')
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label  for="">Search List:</label>
-                            <input type="text" id="search_won" class="form-control" placeholder="Search...">
-                        </div>
-                    </div>
-                </div>
                 <table id="customerlist_table" class="table table-stripped">
                     <thead id="customerlist_header">
                         <tr class="text-center">

@@ -16,6 +16,7 @@ class CreateServicePackagesTable extends Migration
         Schema::create('service_packages', function (Blueprint $table) {
             $table->increments('id');
             $table->string('package_name');
+            $table->string('sibling_id')->default(0);
             $table->timestamps();
         });
     }

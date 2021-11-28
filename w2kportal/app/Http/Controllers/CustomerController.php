@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\book;
 use App\Models\inclusions_log;
+use App\Models\order;
 use App\Models\owner;
 use App\Models\QualityAssurance;
 use App\Models\service_inclusion;
@@ -143,6 +144,7 @@ class CustomerController extends Controller
             ->select(
                 'books.id AS bookID',
                 'customers.id',
+                'books.won_id',
                 'customers.customer_fname',
                 'customers.customer_lname',
                 'books.transaction_ID',
@@ -205,18 +207,18 @@ class CustomerController extends Controller
                                 }
                             } elseif (
                                 $service_array[$service_key] !==
-                                    $inclusions[$service_key] &&
+                                $inclusions[$service_key] &&
                                 $updated_by_columns[$owner_key] !==
-                                    strval(Auth::user()->id)
+                                strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     $inclusions[$owner_key] = Auth::user()->id;
                                 }
                             } elseif (
                                 $service_array[$service_key] ===
-                                    $inclusions[$service_key] &&
+                                $inclusions[$service_key] &&
                                 $updated_by_columns[$owner_key] ===
-                                    strval(Auth::user()->id)
+                                strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     $inclusions[$owner_key] =
@@ -224,9 +226,9 @@ class CustomerController extends Controller
                                 }
                             } elseif (
                                 $service_array[$service_key] !==
-                                    $inclusions[$service_key] &&
+                                $inclusions[$service_key] &&
                                 $updated_by_columns[$owner_key] ===
-                                    strval(Auth::user()->id)
+                                strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     $inclusions[$owner_key] = Auth::user()->id;
@@ -308,10 +310,8 @@ class CustomerController extends Controller
 
                 unset($inclusions['service_id']);
 
-                foreach (
-                    $get_updated_inclusions
-                    as $service_key => $inclusion
-                ) {
+                foreach ($get_updated_inclusions
+                    as $service_key => $inclusion) {
                     foreach ($updated_by_columns as $owner_key => $owner) {
                         if (
                             array_key_exists($service_key, $inclusions) &&
@@ -320,7 +320,7 @@ class CustomerController extends Controller
                             if (
                                 !empty($inclusions[$service_key]) &&
                                 $updated_by_columns[$owner_key] !==
-                                    strval(Auth::user()->id)
+                                strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     unset($inclusions[$owner_key]);
@@ -331,7 +331,7 @@ class CustomerController extends Controller
                             if (
                                 !empty($inclusions[$service_key]) &&
                                 $updated_by_columns[$owner_key] ===
-                                    strval(Auth::user()->id)
+                                strval(Auth::user()->id)
                             ) {
                                 if (str_contains($owner_key, $service_key)) {
                                     $inclusions[$owner_key] = Auth::user()->id;
@@ -359,12 +359,8 @@ class CustomerController extends Controller
                         $inclusions['package_id'] =
                             $get_foreign_ids['package_id'];
                         $inclusions['user_id'] = Auth::user()->id;
-                        $inclusions[
-                            'created_at'
-                        ] = Carbon::now()->toDateTimeString();
-                        $inclusions[
-                            'updated_at'
-                        ] = Carbon::now()->toDateTimeString();
+                        $inclusions['created_at'] = Carbon::now()->toDateTimeString();
+                        $inclusions['updated_at'] = Carbon::now()->toDateTimeString();
                     }
                     inclusions_log::insert(array_filter($inclusions));
                 }
@@ -374,10 +370,28 @@ class CustomerController extends Controller
     public function updateBook($id)
     {
         $upBookInfor = book::find($id);
-        $upBookInfor->book_title = request('book_title');
-        $upBookInfor->update();
-        return redirect()
-            ->route('customer', [$id])
-            ->with('success', 'Book Title Sucessfully Changed');
+        if ($upBookInfor->old_book_title === request('book_title')) {
+            return redirect()
+                ->route('customer', [$id])
+                ->with('success', 'Book Title Sucessfully Changed');
+        } else {
+            $upBookInfor->book_title = request('book_title');
+            $upBookInfor->old_book_title = request('old_book_title');
+            $upBookInfor->update();
+
+            $bookActivity = new order;
+            $bookActivity->new_book = request('book_title');
+            $bookActivity->old_book = request('old_book_title');
+            $bookActivity->user_id = auth()->user()->id;
+            $bookActivity->sales_rep = auth()->user()->name;
+            $bookActivity->customer_id = request('customer_id');
+            $bookActivity->book_id = request('book_id');
+            $bookActivity->Remarks = 'Changed Book Title';
+            $bookActivity->save();
+
+            return redirect()
+                ->route('customer', [$id])
+                ->with('success', 'Book Title Sucessfully Changed');
+        }
     }
 }

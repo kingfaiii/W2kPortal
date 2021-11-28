@@ -18,16 +18,27 @@
                         <div class="card bg-light">
                             <div class="card-header bg-secondary">
                                 <div class="row">
-                                    <div class="col-md-10">
+                                    <div class="col-md-7">
                                         <h1 class="text-white font-weight-bolder">Customer Information</h1>
                                     </div>
-                                    <div class="col-md-2 mx-auto">
-                                        <button type="button" class="btn btn-primary px-5 py-2" data-toggle="modal"
-                                            data-target="#EditCustomer">
-                                            Edit
-                                        </button>
-
+                                    <div class="col-md-5">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button type="button" class="btn btn-primary " data-toggle="modal"
+                                                    data-target="#package_subscription">
+                                                    Package Subscription
+                                                </button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-primary px-5 py-2" data-toggle="modal"
+                                                data-target="#EditCustomer">
+                                                Edit
+                                            </button>
+                                            </div>
+                                        </div>
                                     </div>
+
+                                   
                                 </div>
                             </div>
                             <div class="card-body">
@@ -119,6 +130,11 @@
                     <td class="pt-3">
                         {{ $orders->remarks }}
                     </td>
+                    @if ($orders->remarks === 'Changed Book Title')
+                        <td>{{ $orders->new_book }}<br>
+                            <small>({{ $orders->old_book }})</small>
+                        </td>
+                    @else
                     <td>{{ $orders->customer_book }}<br>
                         @if ($orders->PackID === null)
 
@@ -128,8 +144,24 @@
                             </small>
                         @endif
                     </td>
+                    @endif
+                
                     @if ($orders->sales_rep == Auth::user()->name)
                         @if ($orders->PackID == null)
+                            @if ($orders->remarks === 'Changed Book Title')
+                            <td>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <a href="{{ route('customer',[$orders->book_id]) }}" class="btn btn-secondary col-12">View</a>
+                                    </div>
+    
+                                    <div class="col-md-6">
+                                        <a href="{{ route('destroyBook', [$orders->book_id]) }}"
+                                            class="btn btn-danger delete-confirm col-12">Delete</a>
+                                    </div>
+                                </div>
+                              </td>
+                            @else
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -144,12 +176,14 @@
                                     </div>
                                 </div>
                             </td>
+                            @endif
                         @else
                             <td>
                             <div class="row">
                                 <div class="col-md-6">
                                     <a href="{{ route('customer',[$orders->book_id]) }}" class="btn btn-secondary col-12">View</a>
                                 </div>
+
                                 <div class="col-md-6">
                                     <a href="{{ route('destroyBook', [$orders->book_id]) }}"
                                         class="btn btn-danger delete-confirm col-12">Delete</a>
@@ -380,6 +414,52 @@
         </form>
     @endforeach
 
+    {{-- PACKAGE SUBSCRIPTION --}}
+        <form action="" Method="POST">
+            @csrf
+            <div class="modal fade" id="package_subscription" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header text-center">
+                            <h5 class="modal-title text-white" id="exampleModalLongTitle">Package Subscription</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span class="text-white" aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" hidden name="" value="" id="" class="form-control">
+                            <p class="text-white">Current Book and Packages:</p>
+                            <select name="remarks" id="" class="form-control col-12" Value="">
+                                @foreach ($order as $row)
+                                <option value=""> {{ $row->customer_book }} <small>({{ $row->package_name }})</small> </option>
+                                @endforeach
+                            </select>
+
+                            <p class="text-white">Current Book and Packages:</p>
+                            <select name="remarks" id="" class="form-control col-12" Value="">
+                                @foreach ($packages  as $package)
+                                <option value="">  <small>({{ $package->package_name }})</small> </option>
+                                @endforeach
+                            </select>
+
+                            <br />
+                            <p class="text-white">Update Subscription:</p>
+                            <select name="remarks" id="" class="form-control col-12" Value="">
+                                <option value="1">Upgrade</option>
+                                <option value="2">Downgrade</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="submit" value="Update Remarks" name="addactivitybtn" class="btn btn-success">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    {{-- PACKAGE SUBSCRIPTION --}}
+
     <script>
         // SweetAlert2
         $('.delete-confirm').on('click', function(event) {
@@ -399,8 +479,8 @@
                 }
             });
         });
-        // SweetAlert2
 
+        // SweetAlert2
         let reasonContainer = document.getElementById('reason_container')
         let reasonhold = document.getElementById('reasonhold')
 

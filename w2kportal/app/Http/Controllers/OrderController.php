@@ -563,6 +563,7 @@ class OrderController extends Controller
         $book = [];
         $book = new book();
         $book->book_title         = request('customer_book');
+        $book->old_book_title     = request('customer_book');
         $book->package_id         = request('Packages');
         $book->transaction_ID     = request('transaction_id');
         $book->won_id             = request('customer_id');
@@ -602,7 +603,7 @@ class OrderController extends Controller
         $status->reason_hold_date = null;
         $status->client_type      = $client_type;
         $status->update();
-        
+
         $chosen_num = 0;
         switch (request('Packages')) {
             case 1:
@@ -693,13 +694,12 @@ class OrderController extends Controller
             $found = '';
             foreach ($arr_inclusions as $key => $inclusion) {
                 if (
-                    $inclusion['parent'] === $parent_id &&
-                    $inclusion['service_name'] ===
-                    request()->input('fixed_editing')
+                    $inclusion['parent'] === $parent_id && $inclusion['service_name'] === request()->input('fixed_editing')
                 ) {
                     $found = $inclusion['task'];
                 }
             }
+
             service_inclusion::insert([
                 'project_cost' => request()->input('project_cost'),
                 'book_id' => $book['id'],
