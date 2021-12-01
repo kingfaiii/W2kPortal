@@ -10,7 +10,8 @@
         </h3>
     </div>
     <div class="col-md-2">
-        <a type="button" href="#" class="btn btn-success col-5" data-toggle="modal" data-target="#exampleModalCenter"><i class="bi bi-person-plus-fill"></i> ADD</a>
+        <a type="button" href="#" class="btn btn-success col-5" data-toggle="modal" data-target="#exampleModalCenter"><i
+                class="bi bi-person-plus-fill"></i> ADD</a>
     </div>
 @endsection
 
@@ -20,7 +21,6 @@
             <tr class="text-center">
                 <th>ID #</th>
                 <th>Name</th>
-                <th>Email</th>
                 <th>Date Created</th>
                 <th>Action</th>
             </tr>
@@ -30,7 +30,6 @@
                 <tr class="text-center">
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->qa_fname }} {{ $item->qa_lname }}</td>
-                    <td>{{ $item->qa_email }}</td>
                     <td>{{ $item->created_at }}</td>
                     <td>
                         <div class="row">
@@ -66,8 +65,6 @@
                         class="form-control">
                     <input type="text" placeholder="Quality Assurance Last Name" name="qa_lname" value="" id=""
                         class="form-control">
-                    <input type="text" placeholder="Quality Assurance Email Address" name="qa_email" value="" id=""
-                        class="form-control">
                 </div>
                 <div class="modal-footer bg-secondary">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -101,8 +98,6 @@
                             value="{{ $item->qa_fname }}" id="" class="form-control">
                         <input type="text" placeholder="Quality Assurance Last Name" name="qa_lname"
                             value="{{ $item->qa_lname }}" id="" class="form-control">
-                        <input type="text" placeholder="Quality Assurance Email Address" name="qa_email"
-                            value="{{ $item->qa_email }}" id="" class="form-control">
                     </div>
                     <div class="modal-footer bg-secondary">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

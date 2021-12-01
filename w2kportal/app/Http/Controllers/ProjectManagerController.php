@@ -15,7 +15,7 @@ class ProjectManagerController extends Controller
     public function index()
     {
         $pm = projectManager::all();
-        return view('projectManager',['pm'=>$pm]);
+        return view('projectManager', ['pm' => $pm]);
     }
 
     /**
@@ -29,8 +29,6 @@ class ProjectManagerController extends Controller
         $request->validate([
             'pm_fname' => 'required',
             'pm_lname' => 'required',
-            'pm_email' => 'required',
-
         ]);
         projectManager::create($request->all());
         return redirect()->route('ProjectManager.index');
@@ -43,10 +41,8 @@ class ProjectManagerController extends Controller
      * @param  \App\Models\projectManager  $projectManager
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-  
-        
         $updatepProjectManager = projectManager::Find($id);
         $updatepProjectManager->update($request->all());
 

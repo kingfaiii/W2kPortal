@@ -17,7 +17,6 @@ class CreateQualityAssurancesTable extends Migration
             $table->id();
             $table->string('qa_fname');
             $table->string('qa_lname');
-            $table->string('qa_email');
             $table->timestamps();
         });
     }

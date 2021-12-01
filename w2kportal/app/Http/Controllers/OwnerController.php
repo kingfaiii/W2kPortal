@@ -30,7 +30,7 @@ class OwnerController extends Controller
     public function index()
     {
         //
-        $owner = Owner::all();
+        $owner = owner::all();
         return view('owner', ['owner' => $owner]);
     }
 
@@ -44,10 +44,10 @@ class OwnerController extends Controller
         //
 
         // User does not exist
-        $owner = new owner;
+        $owner = new owner();
         $owner->owner_fname = ucwords(strtolower(request('owner_fname')));
-        $owner->owner_fname = ucwords(strtolower(request('owner_lname')));
-        $owner->owner_fname = request('owner_role');
+        $owner->owner_lname = ucwords(strtolower(request('owner_lname')));
+        $owner->role = request('role');
         $owner->save();
         return back()->with('success', 'Owner added successfully.');
     }
@@ -62,11 +62,11 @@ class OwnerController extends Controller
     public function update(Request $request, owner $owner, $id)
     {
         //
-        $ownerData = Owner::find($id);
-        $ownerData->owner_fname = ucwords(strtolower(request('owner_fname')));
-        $ownerData->owner_lname = ucwords(strtolower(request('owner_lname')));
-        $ownerData->role = request('owner_role');
-        $ownerData->update();
+        $owner = owner::Find($id);
+        $owner->owner_fname = ucwords(strtolower(request('owner_fname')));
+        $owner->owner_lname = ucwords(strtolower(request('owner_lname')));
+        $owner->role = request('role');
+        $owner->update();
 
         return back();
     }
@@ -79,8 +79,7 @@ class OwnerController extends Controller
      */
     public function destroy(owner $owner, $id)
     {
-        //
-        $order = Owner::find($id);
+        $order = owner::Find($id);
         $order->delete();
         return back();
     }

@@ -25,14 +25,14 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <button type="button" class="btn btn-primary px-5 py-2" data-toggle="modal"
-                                                data-target="#EditCustomer">
-                                                Edit
-                                            </button>
+                                                    data-target="#EditCustomer">
+                                                    Edit
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
 
-                                   
+
                                 </div>
                             </div>
                             <div class="card-body">
@@ -129,62 +129,64 @@
                             <small>({{ $orders->old_book }})</small>
                         </td>
                     @else
-                    <td>{{ $orders->customer_book }}<br>
-                        @if ($orders->PackID === null)
+                        <td>{{ $orders->customer_book }}<br>
+                            @if ($orders->PackID === null)
 
-                        @else
-                            <small>
-                                ({{ $orders->package_name }})
-                            </small>
-                        @endif
-                    </td>
+                            @else
+                                <small>
+                                    ({{ $orders->package_name }})
+                                </small>
+                            @endif
+                        </td>
                     @endif
-                
+
                     @if ($orders->sales_rep == Auth::user()->name)
                         @if ($orders->PackID == null)
                             @if ($orders->remarks === 'Changed Book Title')
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a href="{{ route('customer', [$orders->book_id]) }}"
+                                                class="btn btn-secondary col-12">View</a>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <a href="{{ route('destroyBook', [$orders->book_id]) }}"
+                                                class="btn btn-danger delete-confirm col-12">Delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            @else
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-success col-12" data-toggle="modal"
+                                                data-target="#activity{{ $orders->ActivityID }}">
+                                                Edit
+                                            </button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a href="{{ route('DestroyActivity', [$orders->ActivityID]) }}"
+                                                class="btn btn-danger delete-confirm col-12">Delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            @endif
+                        @else
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <a href="{{ route('customer',[$orders->book_id]) }}" class="btn btn-secondary col-12">View</a>
+                                        <a href="{{ route('customer', [$orders->book_id]) }}"
+                                            class="btn btn-secondary col-12">View</a>
                                     </div>
-    
+
                                     <div class="col-md-6">
                                         <a href="{{ route('destroyBook', [$orders->book_id]) }}"
                                             class="btn btn-danger delete-confirm col-12">Delete</a>
                                     </div>
                                 </div>
-                              </td>
-                            @else
-                            <td>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <button type="button" class="btn btn-success col-12" data-toggle="modal"
-                                            data-target="#activity{{ $orders->ActivityID }}">
-                                            Edit
-                                        </button>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <a href="{{ route('DestroyActivity', [$orders->ActivityID]) }}"
-                                            class="btn btn-danger delete-confirm col-12">Delete</a>
-                                    </div>
-                                </div>
                             </td>
                             @endif
-                        @else
-                            <td>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <a href="{{ route('customer',[$orders->book_id]) }}" class="btn btn-secondary col-12">View</a>
-                                </div>
-                          
-                                <div class="col-md-6">
-                                    <a href="{{ route('destroyBook', [$orders->book_id]) }}"
-                                        class="btn btn-danger delete-confirm col-12">Delete</a>
-                                </div>
-                            </div>
-                          </td>
-                        @endif
                     @endif
                 </tr>
             @endforeach
@@ -327,14 +329,12 @@
                             class="form-control">
                         <input type="text" required name="transaction_id" value="" placeholder="Transaction ID" id=""
                             class="form-control mb-5">
-                        <input type="text" name="project_cost" placeholder="Total Project Cost" id=""
-                            class="form-control">
+
                         <select name="Packages" class="form-control" id="orders_packages">
                             @foreach ($packages as $item)
                                 <option value="{{ $item->id }}">{{ $item->package_name }}</option>
                             @endforeach
                         </select>
-
                         <select name="fixed_inclusion" class="form-control" id="fixed_inclusions">
                             <option value="Physical to Digital">Physical to Digital</option>
                             <option value="Physical to eBook">Physical to eBook</option>
@@ -344,10 +344,10 @@
                             <option value="Proofreading">Proofreading</option>
                             <option value="Development Editing">Development Editing</option>
                         </select>
-
-
                         <p class="text-white"><small>Note:</small> Choose One Only</p>
                         <input type="text" hidden name="sales_rep" value="{{ Auth::user()->name }}" id=""
+                            class="form-control">
+                        <input type="text" name="project_cost" placeholder="Total Project Cost" id="p_cost"
                             class="form-control">
                     </div>
                     <div class="modal-footer">
@@ -408,70 +408,87 @@
         </form>
     @endforeach
 
-<script>
-function show(select) {
-    if (select.value === "Hold" || select === "Hold") {
+    <script>
+        function show(select) {
+            if (select.value === "Hold" || select === "Hold") {
 
-        reasonhold.style.display = "block";
-        document.getElementById('ReasonLost').style.display = "none";
-        document.getElementById('reasonlabel').style.display = "block";
+                reasonhold.style.display = "block";
+                document.getElementById('ReasonLost').style.display = "none";
+                document.getElementById('reasonlabel').style.display = "block";
 
-    } else if (select.value === "Lost" || select === "Lost") {
-        document.getElementById('ReasonLost').style.display = "block";
-        document.getElementById('reasonlabel').style.display = "block";
-        reasonhold.style.display = "none";
-    } else if (select.value === "Answered" || select === 'Answered') {
-        document.getElementById('ReasonLost').style.display = "none";
-        reasonhold.style.display = "none";
-        document.getElementById('reasonlabel').style.display = "none";
-    } else if (select.value === "Won" || select === 'Won') {
-        document.getElementById('ReasonLost').style.display = "none";
-        reasonhold.style.display = "none";
-        document.getElementById('reasonlabel').style.display = "none";
-    }
-}
-$(document).ready(function() {
-
-       // SweetAlert2
-       $('.delete-confirm').on('click', function(event) {
-            event.preventDefault();
-            const url = $(this).attr('href');
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "This activity will be deleted permanently",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ok!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = url;
+            } else if (select.value === "Lost" || select === "Lost") {
+                document.getElementById('ReasonLost').style.display = "block";
+                document.getElementById('reasonlabel').style.display = "block";
+                reasonhold.style.display = "none";
+            } else if (select.value === "Answered" || select === 'Answered') {
+                document.getElementById('ReasonLost').style.display = "none";
+                reasonhold.style.display = "none";
+                document.getElementById('reasonlabel').style.display = "none";
+            } else if (select.value === "Won" || select === 'Won') {
+                document.getElementById('ReasonLost').style.display = "none";
+                reasonhold.style.display = "none";
+                document.getElementById('reasonlabel').style.display = "none";
+            }
+        }
+        $(document).ready(function() {
+            $("#orders_packages").change(function() {
+                var conceptName = $('#orders_packages').find(":selected").text();
+                var p_cost = $('#p_cost');
+                if (conceptName === 'Print Basic Package') {
+                    p_cost.attr('readonly', 'readonly');
+                    p_cost.val('149')
+                } else if (conceptName === 'Print Deluxe Package') {
+                    p_cost.attr('readonly', 'readonly');
+                    p_cost.val('349')
+                } else if (conceptName === 'Print Value Package') {
+                    p_cost.attr('readonly', 'readonly');
+                    p_cost.val('249')
+                } else {
+                    p_cost.removeAttr('readonly');
+                    p_cost.val('');
                 }
             });
-        });
+            
+            // SweetAlert2
+            $('.delete-confirm').on('click', function(event) {
+                event.preventDefault();
+                const url = $(this).attr('href');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This activity will be deleted permanently",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = url;
+                    }
+                });
+            });
 
-        // SweetAlert2
-        let reasonContainer = document.getElementById('reason_container')
-        let reasonhold = document.getElementById('reasonhold')
+            // SweetAlert2
+            let reasonContainer = document.getElementById('reason_container')
+            let reasonhold = document.getElementById('reasonhold')
 
-        $('#fixed_editing, #fixed_inclusions').hide()
-        $('#orders_packages').on('change', function() {
-            if ($(this).val() === "11") {
-                $('#fixed_inclusions').show()
-            } else {
-                $('#fixed_inclusions').hide()
-            }
-            if ($(this).val() === "12") {
-                $('#fixed_editing').show()
-            } else {
-                $('#fixed_editing').hide()
-            }
+            $('#fixed_editing, #fixed_inclusions').hide()
+            $('#orders_packages').on('change', function() {
+                if ($(this).val() === "11") {
+                    $('#fixed_inclusions').show()
+                } else {
+                    $('#fixed_inclusions').hide()
+                }
+                if ($(this).val() === "12") {
+                    $('#fixed_editing').show()
+                } else {
+                    $('#fixed_editing').hide()
+                }
+            })
+
+            let getValue = document.querySelector('#customer_status_test').selectedOptions[0].value
+            show(getValue)
+
         })
-
-        let getValue = document.querySelector('#customer_status_test').selectedOptions[0].value
-        show(getValue)
-
-})
-</script>
+    </script>
 @endsection
