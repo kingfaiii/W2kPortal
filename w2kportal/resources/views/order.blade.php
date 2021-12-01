@@ -207,7 +207,7 @@
                                     </div>
                                 </div>
                             </td>
-                        @endif
+                            @endif
                     @endif
                 </tr>
             @endforeach
@@ -468,6 +468,7 @@
                     p_cost.val('');
                 }
             });
+            
             // SweetAlert2
             $('.delete-confirm').on('click', function(event) {
                 event.preventDefault();

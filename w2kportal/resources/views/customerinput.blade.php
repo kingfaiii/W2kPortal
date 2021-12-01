@@ -331,7 +331,7 @@
                                     <div class="input-group-text rounded-0"><i class="bi bi-currency-dollar"></i></div>
                                     <input type="text" name="items[{{ $item['serID'] }}][job_cost]"
                                         value="{{ explode('*', $item['job_cost'])[0] }} " id=""
-                                        class="form-control rounded-0 col-8 customerinput-text">
+                                        class="form-control rounded-0 col-8 customerinput-text job-cost">
                                 </div>
                             </td>
                             <td> <input placeholder="mm/dd/yyyy" data-id="{{ $item['id'] }}" type="text"
@@ -537,12 +537,14 @@
             if (inputStatus === 'On-going' && parseInt(turnAroundTime) > 0) {
                 $(this).closest('tr').find('.commitment-date').val(calcWorkingDays(new Date(
                     currentDate), turnAroundTime))
-
             }
-
         });
 
-        $('.qaScore').keypress(function(evt) {
+        $('.customer-pagecount').keypress(function(evt) {
+            return /\d/.test(String.fromCharCode(evt.keyCode));
+        })
+
+        $('.qaScore, .job-cost').keypress(function(evt) {
             evt = (evt) ? evt : window.event;
             let charCode = (evt.which) ? evt.which : evt.keyCode;
             if (charCode == 8 || charCode == 37) {
