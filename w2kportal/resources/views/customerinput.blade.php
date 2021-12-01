@@ -3,55 +3,58 @@
 @include('sweetalert::alert')
 
 @section('content')
-<form id="customerinput_form" name="customerinput_form" method="POST">
-    @csrf
-    <?php
-    $classification = ['eBook Conversion', 'Interior Formatting'];
-    $layout = ['eBook Conversion'];
-    $count = ['eBook Conversion', 'Interior Formatting', 'Development Editing', 'Copyediting'];
-    $qaAndQAScore = ['Development Editing', 'Copyediting'];
-    ?>
-@section('header')
-                    <div class="col-md-5">
-                     <p class="h2 text-white font-weight-bold">Convert Customer Details</p>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="row mt-2">
-                            <div class="col-md-3">
-                                @foreach ($customer_information as $customer_informations)
-                                <a href="{{ route('order',[$customer_informations->won_id]) }}" class="btn col-12 btn-info text-white ">Customer Information</a>
-                                @endforeach
-                            </div>
+    <form id="customerinput_form" name="customerinput_form" method="POST">
+        @csrf
+        <?php
+        $classification = ['eBook Conversion', 'Interior Formatting'];
+        $layout = ['eBook Conversion'];
+        $count = ['eBook Conversion', 'Interior Formatting', 'Development Editing', 'Copyediting'];
+        $qaAndQAScore = ['Development Editing', 'Copyediting'];
+        ?>
+    @section('header')
+        <div class="col-md-5">
+            <p class="h2 text-white font-weight-bold">Convert Customer Details</p>
+        </div>
+        <div class="col-md-7">
+            <div class="row mt-2">
+                <div class="col-md-3">
+                    @foreach ($customer_information as $customer_informations)
+                        <a href="{{ route('order', [$customer_informations->won_id]) }}"
+                            class="btn col-12 btn-info text-white ">Customer Information</a>
+                    @endforeach
+                </div>
 
-                            <div class="col-md-3">
-                                <x-modal-button >
-                                    <x-slot name="targetID">#updateBookTitle</x-slot>
-                                    <x-slot name="btnClass">btn btn-info text-white  col-12</x-slot>
-                                    Book Title
-                                </x-modal-button>
-                            </div>
-                            <div class="col-md-2">
-                                <a href="{{ route('HistoryLog', [request()->segment(count(request()->segments()))]) }}"
-                                    class="btn btn-info col-12  text-white ">History</a>
-                            </div>
-                                  
-                            <div class="col-md-2">
-                               @foreach ($customer_information as $c)
-                                <a href="javascript:void(0)" data-book="{{$c->bookID}}" data-customer="{{$c->id}}" data-package="{{$c->pckg_id}}" data-setup="1"
-                                    data-sibling="{{$c->sibling_id}}" class="btn btn-info text-white col-12" id="btn_uprade_package" data-target="#package_subscription" 
-                                    data-toggle="modal">Upgrade</a>
-                               @endforeach
-                            </div>
+                <div class="col-md-3">
+                    <x-modal-button>
+                        <x-slot name="targetID">#updateBookTitle</x-slot>
+                        <x-slot name="btnClass">btn btn-info text-white col-12</x-slot>
+                        Book Title
+                    </x-modal-button>
+                </div>
+                <div class="col-md-2">
+                    <a href="{{ route('HistoryLog', [request()->segment(count(request()->segments()))]) }}"
+                        class="btn btn-info col-12  text-white ">History</a>
+                </div>
 
-                            <div class="col-md-2">
-                                @foreach ($customer_information as $c)
-                                 <a href="javascript:void(0)" data-book="{{$c->bookID}}" data-customer="{{$c->id}}" data-package="{{$c->pckg_id}}" data-setup="2"
-                                     data-sibling="{{$c->sibling_id}}" data-package-id="{{$c->pckg_primary}}" class="btn btn-info text-white col-12" id="btn_downgrade_package" data-target="#package_subscription" 
-                                     data-toggle="modal">Downgrade</a>
-                                @endforeach
-                             </div>
-                        </div>
-                    </div>
+                <div class="col-md-2">
+                    @foreach ($customer_information as $c)
+                        <a href="javascript:void(0)" data-book="{{ $c->bookID }}" data-customer="{{ $c->id }}"
+                            data-package="{{ $c->pckg_id }}" data-setup="1" data-sibling="{{ $c->sibling_id }}"
+                            class="btn btn-info text-white col-12" id="btn_uprade_package"
+                            data-target="#package_subscription" data-toggle="modal">Upgrade</a>
+                    @endforeach
+                </div>
+
+                <div class="col-md-2">
+                    @foreach ($customer_information as $c)
+                        <a href="javascript:void(0)" data-book="{{ $c->bookID }}" data-customer="{{ $c->id }}"
+                            data-package="{{ $c->pckg_id }}" data-setup="2" data-sibling="{{ $c->sibling_id }}"
+                            data-package-id="{{ $c->pckg_primary }}" class="btn btn-info text-white col-12"
+                            id="btn_downgrade_package" data-target="#package_subscription" data-toggle="modal">Downgrade</a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     @endsection
 
     @section('otherforms')
@@ -134,7 +137,12 @@
 
                 </div>
                 <div class="col-md-5">
-                    
+                    <div class="form-group row">
+                        <p class="text-white h5">Project Manager:</p>
+                        <div class="col-sm-6">
+                            <h5 class="text-white">{{ $item->project_manager }}</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
         @endforeach
@@ -406,15 +414,16 @@
                 placeholder="Book Title" class="form-control">
             <input hidden type="text" name="old_book_title" id="" value="{{ $customer_informations->book_title }}"
                 placeholder="old Book Title" class="form-control">
-            <input hidden  type="text" name="customer_id" id="" value="{{ $customer_informations->won_id }}"
+            <input hidden type="text" name="customer_id" id="" value="{{ $customer_informations->won_id }}"
                 placeholder="old Book Title" class="form-control">
-            <input hidden type="text" name="book_id" id="" value="{{ request()->segment(count(request()->segments())) }}"
-                placeholder="book_id" class="form-control">
+            <input hidden type="text" name="book_id" id=""
+                value="{{ request()->segment(count(request()->segments())) }}" placeholder="book_id"
+                class="form-control">
         </x-modal>
     @endforeach
 
-     {{-- PACKAGE SUBSCRIPTION --}}
-     <form id="package_subscription_form">
+    {{-- PACKAGE SUBSCRIPTION --}}
+    <form id="package_subscription_form">
         @csrf
         <div class="modal fade" id="package_subscription" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -432,12 +441,14 @@
                         <input type="hidden" name="payload[book_id]" id="modal_current_book">
                         <input type="hidden" name="payload[customer_id]" id="modal_customer">
                         <input type="hidden" name="payload[selected_setup]" id="modal_setup">
-                        <select name="payload[selected_package]" id="modal_packages_id" class="form-control col-12" Value="">
+                        <select name="payload[selected_package]" id="modal_packages_id" class="form-control col-12"
+                            Value="">
                         </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <a href="javascript:void(0)" type="button" class="btn btn-secondary" id="modify_package" data-dismiss="modal">Submit</a>
+                        <a href="javascript:void(0)" type="button" class="btn btn-secondary" id="modify_package"
+                            data-dismiss="modal">Submit</a>
                     </div>
                 </div>
             </div>
@@ -445,8 +456,8 @@
     </form>
 @endsection
 
-   
-    {{-- PACKAGE SUBSCRIPTION --}}
+
+{{-- PACKAGE SUBSCRIPTION --}}
 <script>
     const calcWorkingDays = (fromDate, days) => {
         let count = 0;
@@ -638,7 +649,8 @@
                     data: decodeURIComponent(escape(arr)),
                     success: async function(data, xhr, status) {
                         if (xhr === 'success') {
-                            const res = await messagePrompt('Successfully Updated', "", false, "success", "Got it")
+                            const res = await messagePrompt('Successfully Updated', "",
+                                false, "success", "Got it")
 
                             return res.isConfirmed ? location.reload() : false
                         }
@@ -664,17 +676,17 @@
 
         })
 
-        
-        $('#package_subscription').on('hidden.bs.modal', function (e) {
+
+        $('#package_subscription').on('hidden.bs.modal', function(e) {
             $('#modal_packages_id').empty()
         })
 
         $('#btn_uprade_package').on('click', function(e) {
             e.preventDefault()
-            const sibling_id   = $(this).data('sibling')
-            const package_id   = $(this).data('package')
-            const customer_id  = $(this).data('customer')
-            const book_id      = $(this).data('book')
+            const sibling_id = $(this).data('sibling')
+            const package_id = $(this).data('package')
+            const customer_id = $(this).data('customer')
+            const book_id = $(this).data('book')
             const packageSetup = $(this).data('setup')
 
             $('#modal_current_package').val(package_id)
@@ -684,30 +696,31 @@
 
             $('#modal_packages_id').append(new Option('Select a Package', ''))
             $.ajax({
-                    type: "GET",
-                    url: `/order/list/packages/subscriptions/${sibling_id}/${package_id}/${packageSetup}/0`,
-                    success:  function(data, xhr, status) {
-                        if (xhr === 'success') {
-                                if(data.length > 0) {
-                                    data.map((k) => {
-                                        $('#modal_packages_id').append(new Option(k.package_name, k.id))
-                                    })
+                type: "GET",
+                url: `/order/list/packages/subscriptions/${sibling_id}/${package_id}/${packageSetup}/0`,
+                success: function(data, xhr, status) {
+                    if (xhr === 'success') {
+                        if (data.length > 0) {
+                            data.map((k) => {
+                                $('#modal_packages_id').append(new Option(k
+                                    .package_name, k.id))
+                            })
 
-                                }
-                        } 
-                    },
-                    complete: function() {},
-                    error:    function(data, xhr, status) {},
-                })
+                        }
+                    }
+                },
+                complete: function() {},
+                error: function(data, xhr, status) {},
+            })
         })
 
         $('#btn_downgrade_package').on('click', function(e) {
             e.preventDefault()
-            const sibling_id      = $(this).data('sibling')
-            const package_id      = $(this).data('package')
-            const customer_id     = $(this).data('customer')
-            const book_id         = $(this).data('book')
-            const packageSetup    = $(this).data('setup')
+            const sibling_id = $(this).data('sibling')
+            const package_id = $(this).data('package')
+            const customer_id = $(this).data('customer')
+            const book_id = $(this).data('book')
+            const packageSetup = $(this).data('setup')
             const package_primary = $(this).data('package-id')
 
             $('#modal_current_package').val(package_id)
@@ -717,36 +730,37 @@
 
             $('#modal_packages_id').append(new Option('Select a Package', ''))
             $.ajax({
-                    type: "GET",
-                    url: `/order/list/packages/subscriptions/${sibling_id}/${package_id}/${packageSetup}/${package_primary}`,
-                    success:  function(data, xhr, status) {
-                        if (xhr === 'success') {
-                                if(data.length > 0) {
-                                    data.map((k) => {
-                                        $('#modal_packages_id').append(new Option(k.package_name, k.id))
-                                    })
+                type: "GET",
+                url: `/order/list/packages/subscriptions/${sibling_id}/${package_id}/${packageSetup}/${package_primary}`,
+                success: function(data, xhr, status) {
+                    if (xhr === 'success') {
+                        if (data.length > 0) {
+                            data.map((k) => {
+                                $('#modal_packages_id').append(new Option(k
+                                    .package_name, k.id))
+                            })
 
-                                }
-                        } 
-                    },
-                    complete: function() {},
-                    error:    function(data, xhr, status) {},
-                })
+                        }
+                    }
+                },
+                complete: function() {},
+                error: function(data, xhr, status) {},
+            })
         })
 
         $('#modify_package').on('click', function(e) {
             $.ajax({
-                    type: "POST",
-                    url: `/order/modify/packages/subscriptions`,
-                    data: $('#package_subscription_form').serialize(),
-                    success:  function(data, xhr, status) {
-                       if(xhr === 'success') {
-                           location.reload()
-                       }
-                    },
-                    complete: function() {},
-                    error:    function(data, xhr, status) {},
-                })
+                type: "POST",
+                url: `/order/modify/packages/subscriptions`,
+                data: $('#package_subscription_form').serialize(),
+                success: function(data, xhr, status) {
+                    if (xhr === 'success') {
+                        location.reload()
+                    }
+                },
+                complete: function() {},
+                error: function(data, xhr, status) {},
+            })
         })
     })
 </script>

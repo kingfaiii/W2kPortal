@@ -207,7 +207,7 @@
                                     </div>
                                 </div>
                             </td>
-                            @endif
+                        @endif
                     @endif
                 </tr>
             @endforeach
@@ -369,6 +369,13 @@
                             class="form-control">
                         <input type="text" name="project_cost" placeholder="Total Project Cost" id="p_cost"
                             class="form-control">
+                        <select name="project_manager" required id="" class="form-control">
+                            <option value="" disabled selected>Please Add/Select Project Managers</option>
+                            @foreach ($pm as $projectManagers)
+                                <option value="{{ $projectManagers->pm_fname }} {{ $projectManagers->pm_lname }}">
+                                    {{ $projectManagers->pm_fname }} {{ $projectManagers->pm_lname }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -429,6 +436,10 @@
     @endforeach
 
     <script>
+        $('#p_cost').keypress(function(evt) {
+            return /\d/.test(String.fromCharCode(evt.keyCode));
+        })
+
         function show(select) {
             if (select.value === "Hold" || select === "Hold") {
 
@@ -468,7 +479,7 @@
                     p_cost.val('');
                 }
             });
-            
+
             // SweetAlert2
             $('.delete-confirm').on('click', function(event) {
                 event.preventDefault();

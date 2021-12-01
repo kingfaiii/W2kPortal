@@ -20,7 +20,7 @@ class CreateBooksTable extends Migration
             $table->string('old_book_title')->nullable();
             $table->string('package_id');
             $table->string('total_project_cost');
-            $table->string('project_manager')->nullable();
+            $table->string('project_manager');
             $table->string('won_id')->nullable();
 
             $table->timestamps();

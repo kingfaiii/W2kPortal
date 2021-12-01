@@ -8,6 +8,7 @@ use App\Models\order;
 use App\Models\book;
 use App\Models\service_inclusion;
 use App\Models\service_package;
+use App\Models\projectManager;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -46,19 +47,19 @@ class OrderController extends Controller
         [
             'service_name' => 'eBook Conversion',
             'project_cost' => 0,
-            'task'         => 'Conversion',
-            'status'       => 'On-going',
-            'parent'       => 1,
-            'calculate'    => 1,
+            'task' => 'Conversion',
+            'status' => 'On-going',
+            'parent' => 1,
+            'calculate' => 1,
         ],
 
         [
             'service_name' => 'Basic eBook Cover Art',
             'project_cost' => 0,
-            'task'         => 'Art Work - Cover',
-            'status'       => 'On-Hold',
-            'parent'       => 1,
-            'calculate'    => 0,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-Hold',
+            'parent' => 1,
+            'calculate' => 0,
         ],
         // EBOOK BASIC PACKAGE
 
@@ -67,37 +68,37 @@ class OrderController extends Controller
         [
             'service_name' => 'eBook Conversion',
             'project_cost' => 0,
-            'task'         => 'Conversion',
-            'status'       => 'On-going',
-            'parent'       => 2,
-            'calculate'    => 1,
+            'task' => 'Conversion',
+            'status' => 'On-going',
+            'parent' => 2,
+            'calculate' => 1,
         ],
 
         [
             'service_name' => 'Basic eBook Cover Art',
             'project_cost' => 0,
-            'task'         => 'Art Work - Cover',
-            'status'       => 'On-Hold',
-            'parent'       => 2,
-            'calculate'    => 0,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-Hold',
+            'parent' => 2,
+            'calculate' => 0,
         ],
 
         [
             'service_name' => 'Facebook Banner',
             'project_cost' => 0,
-            'task'         => 'Art Work - FB Cover',
-            'status'       => 'On-Hold',
-            'parent'       => 2,
-            'calculate'    => 0,
+            'task' => 'Art Work - FB Cover',
+            'status' => 'On-Hold',
+            'parent' => 2,
+            'calculate' => 0,
         ],
 
         [
             'service_name' => 'Facebook Page Creation',
             'project_cost' => 50,
-            'task'         => 'FB Page Creation',
-            'status'       => 'On-Hold',
-            'parent'       => 2,
-            'calculate'    => 0,
+            'task' => 'FB Page Creation',
+            'status' => 'On-Hold',
+            'parent' => 2,
+            'calculate' => 0,
         ],
         // EBOOK VALUE PACKAGE
 
@@ -106,46 +107,46 @@ class OrderController extends Controller
         [
             'service_name' => 'eBook Conversion',
             'project_cost' => 0,
-            'task'         => 'Conversion',
-            'status'       => 'On-going',
-            'parent'       => 3,
-            'calculate'    => 1,
+            'task' => 'Conversion',
+            'status' => 'On-going',
+            'parent' => 3,
+            'calculate' => 1,
         ],
 
         [
             'service_name' => 'Premium eBook Cover Art',
             'project_cost' => 100,
-            'task'         => 'Art Work - Cover',
-            'status'       => 'On-Hold',
-            'parent'       => 3,
-            'calculate'    => 0,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-Hold',
+            'parent' => 3,
+            'calculate' => 0,
         ],
 
         [
             'service_name' => 'Amazon eBook Upload',
             'project_cost' => 50,
-            'task'         => 'eBook Upload',
-            'status'       => 'On-Hold',
-            'parent'       => 3,
-            'calculate'    => 0,
+            'task' => 'eBook Upload',
+            'status' => 'On-Hold',
+            'parent' => 3,
+            'calculate' => 0,
         ],
 
         [
             'service_name' => 'Facebook Banner',
             'project_cost' => 0,
-            'task'         => 'Art Work - FB Cover',
-            'status'       => 'On-Hold',
-            'parent'       => 3,
-            'calculate'    => 0,
+            'task' => 'Art Work - FB Cover',
+            'status' => 'On-Hold',
+            'parent' => 3,
+            'calculate' => 0,
         ],
 
         [
             'service_name' => 'Facebook Page Creation',
             'project_cost' => 50,
-            'task'         => 'FB Page Creation',
-            'status'       => 'On-Hold',
-            'parent'       => 3,
-            'calculate'    => 0,
+            'task' => 'FB Page Creation',
+            'status' => 'On-Hold',
+            'parent' => 3,
+            'calculate' => 0,
         ],
         // EBOOK DELUXE PACKAGE
 
@@ -219,7 +220,6 @@ class OrderController extends Controller
             'calculate' => 0,
         ],
 
-
         [
             'service_name' => 'Facebook Page Creation',
             'project_cost' => 50,
@@ -234,64 +234,64 @@ class OrderController extends Controller
         [
             'service_name' => 'Interior Formatting',
             'project_cost' => 150,
-            'task'         => 'Interior Formatting',
-            'status'       => 'On-Hold',
-            'parent'       => 7,
-            'calculate'    => 0,
+            'task' => 'Interior Formatting',
+            'status' => 'On-Hold',
+            'parent' => 7,
+            'calculate' => 0,
         ],
 
         [
             'service_name' => 'Premium Book Cover Art',
             'project_cost' => 100,
-            'task'         => 'Art Work - Cover',
-            'status'       => 'On-Hold',
-            'parent'       => 7,
-            'calculate'    => 0,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-Hold',
+            'parent' => 7,
+            'calculate' => 0,
         ],
 
         [
             'service_name' => 'eBook Conversion',
             'project_cost' => 0,
-            'task'         => 'Conversion',
-            'status'       => 'On-Hold',
-            'parent'       => 7,
-            'calculate'    => 1,
+            'task' => 'Conversion',
+            'status' => 'On-Hold',
+            'parent' => 7,
+            'calculate' => 1,
         ],
 
         [
             'service_name' => 'Amazon Ebook Upload',
             'project_cost' => 50,
-            'task'         => 'eBook Upload',
-            'status'       => 'On-Hold',
-            'parent'       => 7,
-            'calculate'    => 0,
+            'task' => 'eBook Upload',
+            'status' => 'On-Hold',
+            'parent' => 7,
+            'calculate' => 0,
         ],
 
         [
             'service_name' => 'Amazon Print Upload',
             'project_cost' => '',
-            'task'         => 'Print Upload',
-            'status'       => 'On-Hold',
-            'parent'       => 7,
-            'calculate'    => 0,
+            'task' => 'Print Upload',
+            'status' => 'On-Hold',
+            'parent' => 7,
+            'calculate' => 0,
         ],
 
         [
             'service_name' => 'Facebook Banner',
             'project_cost' => '',
-            'task'         => 'Art Work - FB Cover',
-            'status'       => 'On-Hold',
-            'parent'       => 7,
-            'calculate'    => 0,
+            'task' => 'Art Work - FB Cover',
+            'status' => 'On-Hold',
+            'parent' => 7,
+            'calculate' => 0,
         ],
 
         [
             'service_name' => 'Facebook Page Creation',
             'project_cost' => 50,
-            'task'         => 'FB Page Creation',
-            'status'       => 'On-Hold',
-            'parent'       => 7,
-            'calculate'    => 0,
+            'task' => 'FB Page Creation',
+            'status' => 'On-Hold',
+            'parent' => 7,
+            'calculate' => 0,
         ],
 
         // EBOOK & PRINT DELUXE PACKAGE
@@ -415,9 +415,7 @@ class OrderController extends Controller
             'calculate' => 0,
         ],
         // EDITING SERVICES
-
     ];
-
 
     private $special_packages = [7, 8, 9];
 
@@ -433,6 +431,7 @@ class OrderController extends Controller
 
     public function index($id)
     {
+        $pm = projectManager::all();
         $order = order::leftJoin(
             'service_packages',
             'orders.Package_id',
@@ -460,6 +459,7 @@ class OrderController extends Controller
             'order' => $order,
             'customer' => $customer,
             'packages' => $packages,
+            'pm' => $pm,
         ])->with('id', $id);
     }
 
@@ -474,7 +474,9 @@ class OrderController extends Controller
         $status = customer::find(request('customer_id'));
         if ($status->customer_status === 'Hold') {
             if (
-                request('remarks') === '1st Follow up' || request('remarks') === '2nd Follow up' || request('remarks') === '3rd Follow up'
+                request('remarks') === '1st Follow up' ||
+                request('remarks') === '2nd Follow up' ||
+                request('remarks') === '3rd Follow up'
             ) {
                 $last_activity = order::create($request->all());
                 return redirect()
@@ -511,31 +513,54 @@ class OrderController extends Controller
         return view('order');
     }
 
-    public function package_siblings($sibling_id, $package_id, $setup, $package_primary)
-    {
+    public function package_siblings(
+        $sibling_id,
+        $package_id,
+        $setup,
+        $package_primary
+    ) {
         $package_siblings = [];
         $special_packages = [];
-        if ($setup === "1") {
-            $package_siblings = service_package::where('sibling_id', $sibling_id)->where('id', '<>', $package_id)->get()->toArray();
+        if ($setup === '1') {
+            $package_siblings = service_package::where(
+                'sibling_id',
+                $sibling_id
+            )
+                ->where('id', '<>', $package_id)
+                ->get()
+                ->toArray();
 
             if (!in_array($package_id, $this->special_packages)) {
-                $special_packages = service_package::whereIn('id', $this->special_packages)->where('id', '<>', $package_id)->get()->toArray();
+                $special_packages = service_package::whereIn(
+                    'id',
+                    $this->special_packages
+                )
+                    ->where('id', '<>', $package_id)
+                    ->get()
+                    ->toArray();
             }
 
-            if ($package_id === "7") {
+            if ($package_id === '7') {
                 $package_siblings = [];
                 $special_packages = [];
             }
 
-            return response()->json([...$package_siblings,  ...$special_packages], 200);
+            return response()->json(
+                [...$package_siblings, ...$special_packages],
+                200
+            );
         } else {
-
             $package_siblings = service_package::find($package_primary);
 
-            if ($package_siblings->is_lowest >  0) {
+            if ($package_siblings->is_lowest > 0) {
                 $package_siblings = [];
             } else {
-                $package_siblings = service_package::where('sibling_id', $sibling_id)->where('id', '<>', $package_id)->get();
+                $package_siblings = service_package::where(
+                    'sibling_id',
+                    $sibling_id
+                )
+                    ->where('id', '<>', $package_id)
+                    ->get();
             }
 
             return response()->json([...$package_siblings], 200);
@@ -565,91 +590,140 @@ class OrderController extends Controller
         */
         $payload = request()->input('payload');
 
-        $selected_package_inclusions = array_filter($this->inclusions_array, function ($var) use ($payload) {
-            return ($var['parent'] == $payload['selected_package']);
-        });
+        $selected_package_inclusions = array_filter(
+            $this->inclusions_array,
+            function ($var) use ($payload) {
+                return $var['parent'] == $payload['selected_package'];
+            }
+        );
 
-        if ($payload['selected_setup'] === "1") {
-            $won = won_customer::where('customer_id', $payload['customer_id'])->first();
+        if ($payload['selected_setup'] === '1') {
+            $won = won_customer::where(
+                'customer_id',
+                $payload['customer_id']
+            )->first();
 
-            $new_inc = service_inclusion::where('book_id', $payload['book_id'])->where('package_id', $payload['current_package'])->get()->toArray();
+            $new_inc = service_inclusion::where('book_id', $payload['book_id'])
+                ->where('package_id', $payload['current_package'])
+                ->get()
+                ->toArray();
             if (!empty($new_inc)) {
                 foreach ($new_inc as $key => $inc) {
-                    if (!$this->check_service_name_exists($selected_package_inclusions, $inc['service_name'])) {
-                        service_inclusion::where('book_id', $payload['book_id'])->where(
-                            'package_id',
-                            $payload['current_package']
-                        )->where('service_name', $inc['service_name'])->delete();
+                    if (
+                        !$this->check_service_name_exists(
+                            $selected_package_inclusions,
+                            $inc['service_name']
+                        )
+                    ) {
+                        service_inclusion::where('book_id', $payload['book_id'])
+                            ->where('package_id', $payload['current_package'])
+                            ->where('service_name', $inc['service_name'])
+                            ->delete();
                     }
                 }
             }
 
             foreach ($selected_package_inclusions as $s_key => $selected) {
-                $new_inlcusions = service_inclusion::where('book_id', $payload['book_id'])->where('service_name', $selected['service_name'])->get()->toArray();
+                $new_inlcusions = service_inclusion::where(
+                    'book_id',
+                    $payload['book_id']
+                )
+                    ->where('service_name', $selected['service_name'])
+                    ->get()
+                    ->toArray();
                 if (empty($new_inlcusions)) {
                     service_inclusion::insert([
-                        "project_cost" => $selected['project_cost'],
-                        "won_id"       => $won->id,
-                        "package_id"   => $payload['selected_package'],
-                        "book_id"      => $payload['book_id'],
-                        "service_name" => $selected['service_name'],
-                        "status"       => $selected['status'],
-                        "task"         => $selected['task']
+                        'project_cost' => $selected['project_cost'],
+                        'won_id' => $won->id,
+                        'package_id' => $payload['selected_package'],
+                        'book_id' => $payload['book_id'],
+                        'service_name' => $selected['service_name'],
+                        'status' => $selected['status'],
+                        'task' => $selected['task'],
                     ]);
                 }
             }
-            service_inclusion::where('book_id', $payload['book_id'])->update(['package_id' => $payload['selected_package']]);
+            service_inclusion::where('book_id', $payload['book_id'])->update([
+                'package_id' => $payload['selected_package'],
+            ]);
         } else {
-            $won = won_customer::where('customer_id', $payload['customer_id'])->first();
-            $new_inlcusions = service_inclusion::where('book_id', $payload['book_id'])->where('package_id', $payload['current_package'])->get()->toArray();
+            $won = won_customer::where(
+                'customer_id',
+                $payload['customer_id']
+            )->first();
+            $new_inlcusions = service_inclusion::where(
+                'book_id',
+                $payload['book_id']
+            )
+                ->where('package_id', $payload['current_package'])
+                ->get()
+                ->toArray();
 
             if (!empty($new_inlcusions)) {
                 foreach ($new_inlcusions as $key => $inc) {
-                    if (!$this->check_service_name_exists($selected_package_inclusions, $inc['service_name'])) {
-                        service_inclusion::where('book_id', $payload['book_id'])->where(
-                            'package_id',
-                            $payload['current_package']
-                        )->where('service_name', $inc['service_name'])->delete();
+                    if (
+                        !$this->check_service_name_exists(
+                            $selected_package_inclusions,
+                            $inc['service_name']
+                        )
+                    ) {
+                        service_inclusion::where('book_id', $payload['book_id'])
+                            ->where('package_id', $payload['current_package'])
+                            ->where('service_name', $inc['service_name'])
+                            ->delete();
                     }
                 }
             }
 
             foreach ($selected_package_inclusions as $s_key => $selected) {
-
                 // $new_inlcusions = service_inclusion::where('book_id', $payload['book_id'])->where('service_name', $selected['service_name'])->get()->toArray();
 
-                $is_empty = service_inclusion::where('book_id', $payload['book_id'])->where('package_id', $payload['current_package'])->where('service_name', $selected['service_name'])->get()->toArray();
+                $is_empty = service_inclusion::where(
+                    'book_id',
+                    $payload['book_id']
+                )
+                    ->where('package_id', $payload['current_package'])
+                    ->where('service_name', $selected['service_name'])
+                    ->get()
+                    ->toArray();
 
                 if (empty($is_empty)) {
                     service_inclusion::insert([
-                        "project_cost" => $selected['project_cost'],
-                        "won_id"       => $won->id,
-                        "package_id"   => $payload['selected_package'],
-                        "book_id"      => $payload['book_id'],
-                        "service_name" => $selected['service_name'],
-                        "status"       => $selected['status'],
-                        "task"         => $selected['task']
+                        'project_cost' => $selected['project_cost'],
+                        'won_id' => $won->id,
+                        'package_id' => $payload['selected_package'],
+                        'book_id' => $payload['book_id'],
+                        'service_name' => $selected['service_name'],
+                        'status' => $selected['status'],
+                        'task' => $selected['task'],
                     ]);
                 }
             }
         }
 
-        order::where('book_id', $payload['book_id'])->update(['package_id' => $payload['selected_package']]);
-        book::where('id', $payload['book_id'])->update(['package_id' => $payload['selected_package']]);
+        order::where('book_id', $payload['book_id'])->update([
+            'package_id' => $payload['selected_package'],
+        ]);
+        book::where('id', $payload['book_id'])->update([
+            'package_id' => $payload['selected_package'],
+        ]);
 
-        return response()->json(["msg" => "updated", "action" => "package_customize"], 200);
+        return response()->json(
+            ['msg' => 'updated', 'action' => 'package_customize'],
+            200
+        );
     }
 
     public function updateCustomerInformation($id)
     {
-        $customerInformation                  = customer::find($id);
-        $customerInformation->customer_email  = request('customer_email');
+        $customerInformation = customer::find($id);
+        $customerInformation->customer_email = request('customer_email');
         $customerInformation->secondary_email = request('secondary_email');
-        $customerInformation->first_email     = request('first_email');
-        $customerInformation->second_email    = request('second_email');
-        $customerInformation->third_email     = request('third_email');
-        $customerInformation->fourth_email    = request('fourth_email');
-        $customerInformation->fifth_email     = request('fifth_email');
+        $customerInformation->first_email = request('first_email');
+        $customerInformation->second_email = request('second_email');
+        $customerInformation->third_email = request('third_email');
+        $customerInformation->fourth_email = request('fourth_email');
+        $customerInformation->fifth_email = request('fifth_email');
         $customerInformation->update();
         return redirect()
             ->route('order', [$id])
@@ -727,50 +801,54 @@ class OrderController extends Controller
             $convert->save();
         }
 
-
         // BOOK TABLE
         $book = [];
         $book = new book();
-        $book->book_title         = request('customer_book');
-        $book->old_book_title     = request('customer_book');
-        $book->package_id         = request('Packages');
-        $book->transaction_ID     = request('transaction_id');
-        $book->won_id             = request('customer_id');
+        $book->book_title = request('customer_book');
+        $book->old_book_title = request('customer_book');
+        $book->package_id = request('Packages');
+        $book->transaction_ID = request('transaction_id');
+        $book->won_id = request('customer_id');
         $book->total_project_cost = request('project_cost');
+        $book->project_manager = request('project_manager');
         $book->save();
 
         // ORDER TABLE
         $activity = new order();
-        $activity->created_at    = now()->toDateTimeString();
-        $activity->updated_at    = now()->toDateTimeString();
-        $activity->customer_id   = request('customer_id');
-        $activity->user_id       = request('user_id');
-        $activity->sales_rep     = request('sales_rep');
+        $activity->created_at = now()->toDateTimeString();
+        $activity->updated_at = now()->toDateTimeString();
+        $activity->customer_id = request('customer_id');
+        $activity->user_id = request('user_id');
+        $activity->sales_rep = request('sales_rep');
         $activity->customer_book = request('customer_book');
-        $activity->remarks       = 'Won';
-        $activity->Package_id    = request('Packages');
-        $activity->book_id       = $book->id;
+        $activity->remarks = 'Won';
+        $activity->Package_id = request('Packages');
+        $activity->book_id = $book->id;
         $activity->save();
 
-        $group_transactions = book::select('transaction_ID')->where('won_id', '=',  request('customer_id'))->groupBy('transaction_ID')->get()->toArray();
+        $group_transactions = book::select('transaction_ID')
+            ->where('won_id', '=', request('customer_id'))
+            ->groupBy('transaction_ID')
+            ->get()
+            ->toArray();
 
         $client_type = '';
         if (count($group_transactions) > 1) {
             $client_type = 'Repeat';
-        } else if (empty($group_transactions)) {
+        } elseif (empty($group_transactions)) {
             $client_type = 'New';
-        } else if (count($group_transactions) === 1) {
+        } elseif (count($group_transactions) === 1) {
             $client_type = 'New';
         }
 
         // CUSTOMER
-        $status                   = customer::find(request('customer_id'));
-        $status->customer_status  = 'Won';
-        $status->reason_hold      = null;
-        $status->last_activity    = $activity['id'];
-        $status->reason_lost      = null;
+        $status = customer::find(request('customer_id'));
+        $status->customer_status = 'Won';
+        $status->reason_hold = null;
+        $status->last_activity = $activity['id'];
+        $status->reason_lost = null;
         $status->reason_hold_date = null;
-        $status->client_type      = $client_type;
+        $status->client_type = $client_type;
         $status->update();
 
         $chosen_num = 0;
@@ -838,15 +916,19 @@ class OrderController extends Controller
             ->with('success', config('messages.NewConvert'));
     }
 
-    private function createInclusions($arr_inclusions, $book, $parent_id, request $request)
-    {
+    private function createInclusions(
+        $arr_inclusions,
+        $book,
+        $parent_id,
+        request $request
+    ) {
         if ($parent_id === 11) {
             $found = '';
             foreach ($arr_inclusions as $key => $inclusion) {
                 if (
                     $inclusion['parent'] === $parent_id &&
                     $inclusion['service_name'] ===
-                    request()->input('fixed_inclusion')
+                        request()->input('fixed_inclusion')
                 ) {
                     $found = $inclusion['task'];
                 }
@@ -863,7 +945,9 @@ class OrderController extends Controller
             $found = '';
             foreach ($arr_inclusions as $key => $inclusion) {
                 if (
-                    $inclusion['parent'] === $parent_id && $inclusion['service_name'] === request()->input('fixed_editing')
+                    $inclusion['parent'] === $parent_id &&
+                    $inclusion['service_name'] ===
+                        request()->input('fixed_editing')
                 ) {
                     $found = $inclusion['task'];
                 }
@@ -881,7 +965,9 @@ class OrderController extends Controller
             foreach ($arr_inclusions as $key => $inclusion) {
                 if ($inclusion['parent'] === $parent_id) {
                     if ($inclusion['calculate'] === 1) {
-                        $inclusion['project_cost'] = $this->caculateInclusionCost(
+                        $inclusion[
+                            'project_cost'
+                        ] = $this->caculateInclusionCost(
                             $arr_inclusions,
                             $request,
                             $parent_id
