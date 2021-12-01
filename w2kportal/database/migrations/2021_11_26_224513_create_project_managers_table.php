@@ -17,7 +17,6 @@ class CreateProjectManagersTable extends Migration
             $table->id();
             $table->string('pm_fname');
             $table->string('pm_lname');
-            $table->string('pm_email');
             $table->timestamps();
         });
     }

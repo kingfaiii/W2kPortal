@@ -8,7 +8,6 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class QualityAssuranceController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
@@ -43,29 +42,20 @@ class QualityAssuranceController extends Controller
     public function create(request $request)
     {
         //
-        $users = QualityAssurance::where('qa_email', '=', $request->input('qa_email'))->first();
-        if ($users === null) {
-            // User does not exist
-           $qa = new QualityAssurance;
-           $qa->qa_fname = ucwords(strtolower(request('qa_fname')));
-           $qa->qa_lname = ucwords(strtolower(request('qa_lname')));
-           $qa->qa_email = ucfirst(strtolower(request('qa_email')));
-           $qa->save();
+        $qa = new QualityAssurance();
+        $qa->qa_fname = ucwords(strtolower(request('qa_fname')));
+        $qa->qa_lname = ucwords(strtolower(request('qa_lname')));
+        $qa->save();
 
-            return back()->with('success', 'Quality Assurance added successfully.');
-        } else {
-            // alert()->error('Sweet Alert with error.');
-            return back()->with('error', 'This Quality Assurance is already on the list.');
-        }
+        return back()->with('success', 'Quality Assurance added successfully.');
     }
-    
+
     public function update($id)
     {
         //
         $qaData = QualityAssurance::find($id);
         $qaData->qa_fname = ucwords(strtolower(request('qa_fname')));
         $qaData->qa_lname = ucwords(strtolower(request('qa_lname')));
-        $qaData->qa_email = ucfirst(strtolower(request('qa_email')));
         $qaData->update();
 
         return back();

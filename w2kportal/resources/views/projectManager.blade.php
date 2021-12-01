@@ -10,7 +10,8 @@
         </h3>
     </div>
     <div class="col-md-2">
-        <a type="button" href="#" class="btn btn-success col-5" data-toggle="modal" data-target="#exampleModalCenter"><i class="bi bi-person-plus-fill"></i> ADD</a>
+        <a type="button" href="#" class="btn btn-success col-5" data-toggle="modal" data-target="#exampleModalCenter"><i
+                class="bi bi-person-plus-fill"></i> ADD</a>
     </div>
 @endsection
 @section('table')
@@ -19,7 +20,6 @@
             <tr class="text-center">
                 <th>ID #</th>
                 <th>Name</th>
-                <th>Email</th>
                 <th>Date Created</th>
                 <th>Action</th>
             </tr>
@@ -29,7 +29,6 @@
                 <tr class="text-center">
                     <td>{{ $projectManagers->id }}</td>
                     <td>{{ $projectManagers->pm_fname }} {{ $projectManagers->pm_lname }}</td>
-                    <td>{{ $projectManagers->pm_email }}</td>
                     <td>{{ $projectManagers->created_at }}</td>
                     <td>
                         <div class="row">
@@ -38,10 +37,11 @@
                                     data-target="#exampleModalCenter{{ $projectManagers->id }}">Edit</a>
                             </div>
                             <div class="col-md-6">
-                                <form action="{{ route('ProjectManager.destroy',[$projectManagers->id]) }}" method="post">
+                                <form action="{{ route('ProjectManager.destroy', [$projectManagers->id]) }}"
+                                    method="post">
                                     @csrf
                                     @method('DELETE')
-                                <button class="btn btn-danger col-12">Delete</button>
+                                    <button class="btn btn-danger col-12">Delete</button>
                                 </form>
                             </div>
                         </div>
@@ -69,7 +69,6 @@
                         class="form-control">
                     <input type="text" placeholder="Project Manager Last Name" name="pm_lname" value="" id=""
                         class="form-control">
-                    <input type="email" name="pm_email" id="" placeholder="Project Manager Email" class="form-control">
                 </div>
                 <div class="modal-footer bg-secondary">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -84,7 +83,7 @@
 
 {{-- Update Owner Modal --}}
 @foreach ($pm as $projectManagers)
-    <form action="{{ route('ProjectManager.update',[$projectManagers->id]) }}" Method="POST">
+    <form action="{{ route('ProjectManager.update', [$projectManagers->id]) }}" Method="POST">
         @csrf
         @method('PUT')
 
@@ -104,7 +103,6 @@
                             value="{{ $projectManagers->pm_fname }}" id="" class="form-control">
                         <input type="text" placeholder="Owner Last Name" name="pm_lname"
                             value="{{ $projectManagers->pm_lname }}" id="" class="form-control">
-                        <input type="email" name="pm_email" value="{{ $projectManagers->pm_email }}" id="" class="form-control">
                     </div>
                     <div class="modal-footer bg-secondary">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

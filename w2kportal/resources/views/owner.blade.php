@@ -10,7 +10,8 @@
         </h3>
     </div>
     <div class="col-md-2">
-        <a type="button" href="#" class="btn btn-success col-5" data-toggle="modal" data-target="#exampleModalCenter"><i class="bi bi-person-plus-fill"></i> ADD</a>
+        <a type="button" href="#" class="btn btn-success col-5" data-toggle="modal" data-target="#exampleModalCenter"><i
+                class="bi bi-person-plus-fill"></i> ADD</a>
     </div>
 @endsection
 @section('table')
@@ -104,7 +105,7 @@
                             value="{{ $item->owner_fname }}" id="" class="form-control">
                         <input type="text" placeholder="Owner Last Name" name="owner_lname"
                             value="{{ $item->owner_lname }}" id="" class="form-control">
-                        <select name="owner_role" id="" class="form-control">
+                        <select name="role" id="" class="form-control">
                             <option value="{{ $item->role }}">{{ $item->role }}</option>
                             <option value="Ebook Converter">Ebook Converter</option>
                             <option value="Layout Artist">Layout Artist</option>
