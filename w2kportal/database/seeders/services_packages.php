@@ -51,7 +51,9 @@ class services_packages extends Seeder
             ],
             [
                 "package_name" => "eBook & Print Deluxe Package",
-                "sibling_id"   => 3
+                "sibling_id"   => 3,
+                "is_highest"    => 1
+
             ],
             [
                 "package_name" => "eBook & Print Basic Package",

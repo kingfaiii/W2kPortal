@@ -514,8 +514,20 @@ class OrderController extends Controller
     public function package_siblings($sibling_id, $package_id, $setup, $package_primary)
     {
         $package_siblings = [];
+        $special_packages = [];
         if ($setup === "1") {
-            $package_siblings = service_package::where('sibling_id', $sibling_id)->where('id', '<>', $package_id)->get();
+            $package_siblings = service_package::where('sibling_id', $sibling_id)->where('id', '<>', $package_id)->get()->toArray();
+
+            if (!in_array($package_id, $this->special_packages)) {
+                $special_packages = service_package::whereIn('id', $this->special_packages)->where('id', '<>', $package_id)->get()->toArray();
+            }
+
+            if ($package_id === "7") {
+                $package_siblings = [];
+                $special_packages = [];
+            }
+
+            return response()->json([...$package_siblings,  ...$special_packages], 200);
         } else {
 
             $package_siblings = service_package::find($package_primary);
@@ -525,9 +537,9 @@ class OrderController extends Controller
             } else {
                 $package_siblings = service_package::where('sibling_id', $sibling_id)->where('id', '<>', $package_id)->get();
             }
-        }
 
-        return response()->json($package_siblings, 200);
+            return response()->json([...$package_siblings], 200);
+        }
     }
 
     private function check_service_name_exists($array, $name)
@@ -561,7 +573,6 @@ class OrderController extends Controller
             $won = won_customer::where('customer_id', $payload['customer_id'])->first();
 
             $new_inc = service_inclusion::where('book_id', $payload['book_id'])->where('package_id', $payload['current_package'])->get()->toArray();
-
             if (!empty($new_inc)) {
                 foreach ($new_inc as $key => $inc) {
                     if (!$this->check_service_name_exists($selected_package_inclusions, $inc['service_name'])) {
@@ -575,7 +586,6 @@ class OrderController extends Controller
 
             foreach ($selected_package_inclusions as $s_key => $selected) {
                 $new_inlcusions = service_inclusion::where('book_id', $payload['book_id'])->where('service_name', $selected['service_name'])->get()->toArray();
-
                 if (empty($new_inlcusions)) {
                     service_inclusion::insert([
                         "project_cost" => $selected['project_cost'],
@@ -594,7 +604,6 @@ class OrderController extends Controller
             $new_inlcusions = service_inclusion::where('book_id', $payload['book_id'])->where('package_id', $payload['current_package'])->get()->toArray();
 
             if (!empty($new_inlcusions)) {
-
                 foreach ($new_inlcusions as $key => $inc) {
                     if (!$this->check_service_name_exists($selected_package_inclusions, $inc['service_name'])) {
                         service_inclusion::where('book_id', $payload['book_id'])->where(

@@ -18,6 +18,7 @@ class CreateServicePackagesTable extends Migration
             $table->string('package_name');
             $table->string('sibling_id')->default(0);
             $table->integer('is_lowest')->default(0);
+            $table->integer('is_highest')->default(0);
             $table->timestamps();
         });
     }
