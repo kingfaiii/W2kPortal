@@ -12,27 +12,44 @@
     $qaAndQAScore = ['Development Editing', 'Copyediting'];
     ?>
 @section('header')
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                      <p class="h2 text-white font-weight-bold">Convert Customer Details</p>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="row mt-2">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 @foreach ($customer_information as $customer_informations)
                                 <a href="{{ route('order',[$customer_informations->won_id]) }}" class="btn col-12 btn-info text-white ">Customer Information</a>
                                 @endforeach
                             </div>
-                            <div class="col-md-4">
+
+                            <div class="col-md-3">
                                 <x-modal-button >
                                     <x-slot name="targetID">#updateBookTitle</x-slot>
                                     <x-slot name="btnClass">btn btn-info text-white  col-12</x-slot>
                                     Book Title
                                 </x-modal-button>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <a href="{{ route('HistoryLog', [request()->segment(count(request()->segments()))]) }}"
                                     class="btn btn-info col-12  text-white ">History</a>
                             </div>
+                                  
+                            <div class="col-md-2">
+                               @foreach ($customer_information as $c)
+                                <a href="javascript:void(0)" data-book="{{$c->bookID}}" data-customer="{{$c->id}}" data-package="{{$c->pckg_id}}" data-setup="1"
+                                    data-sibling="{{$c->sibling_id}}" class="btn btn-info text-white col-12" id="btn_uprade_package" data-target="#package_subscription" 
+                                    data-toggle="modal">Upgrade</a>
+                               @endforeach
+                            </div>
+
+                            <div class="col-md-2">
+                                @foreach ($customer_information as $c)
+                                 <a href="javascript:void(0)" data-book="{{$c->bookID}}" data-customer="{{$c->id}}" data-package="{{$c->pckg_id}}" data-setup="2"
+                                     data-sibling="{{$c->sibling_id}}" data-package-id="{{$c->pckg_primary}}" class="btn btn-info text-white col-12" id="btn_downgrade_package" data-target="#package_subscription" 
+                                     data-toggle="modal">Downgrade</a>
+                                @endforeach
+                             </div>
                         </div>
                     </div>
     @endsection
@@ -395,8 +412,41 @@
                 placeholder="book_id" class="form-control">
         </x-modal>
     @endforeach
+
+     {{-- PACKAGE SUBSCRIPTION --}}
+     <form id="package_subscription_form">
+        @csrf
+        <div class="modal fade" id="package_subscription" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header text-center">
+                        <h5 class="modal-title text-white" id="exampleModalLongTitle">Package Subscription</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="text-white" aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-white">Available Packages:</p>
+                        <input type="hidden" name="payload[current_package]" id="modal_current_package">
+                        <input type="hidden" name="payload[book_id]" id="modal_current_book">
+                        <input type="hidden" name="payload[customer_id]" id="modal_customer">
+                        <input type="hidden" name="payload[selected_setup]" id="modal_setup">
+                        <select name="payload[selected_package]" id="modal_packages_id" class="form-control col-12" Value="">
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="javascript:void(0)" type="button" class="btn btn-secondary" id="modify_package" data-dismiss="modal">Submit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 @endsection
 
+   
+    {{-- PACKAGE SUBSCRIPTION --}}
 <script>
     const calcWorkingDays = (fromDate, days) => {
         let count = 0;
@@ -610,6 +660,91 @@
 
             }
 
+        })
+
+        
+        $('#package_subscription').on('hidden.bs.modal', function (e) {
+            $('#modal_packages_id').empty()
+        })
+
+        $('#btn_uprade_package').on('click', function(e) {
+            e.preventDefault()
+            const sibling_id   = $(this).data('sibling')
+            const package_id   = $(this).data('package')
+            const customer_id  = $(this).data('customer')
+            const book_id      = $(this).data('book')
+            const packageSetup = $(this).data('setup')
+
+            $('#modal_current_package').val(package_id)
+            $('#modal_current_book').val(book_id)
+            $('#modal_customer').val(customer_id)
+            $('#modal_setup').val(packageSetup)
+
+            $('#modal_packages_id').append(new Option('Select a Package', ''))
+            $.ajax({
+                    type: "GET",
+                    url: `/order/list/packages/subscriptions/${sibling_id}/${package_id}/${packageSetup}/0`,
+                    success:  function(data, xhr, status) {
+                        if (xhr === 'success') {
+                                if(data.length > 0) {
+                                    data.map((k) => {
+                                        $('#modal_packages_id').append(new Option(k.package_name, k.id))
+                                    })
+
+                                }
+                        } 
+                    },
+                    complete: function() {},
+                    error:    function(data, xhr, status) {},
+                })
+        })
+
+        $('#btn_downgrade_package').on('click', function(e) {
+            e.preventDefault()
+            const sibling_id      = $(this).data('sibling')
+            const package_id      = $(this).data('package')
+            const customer_id     = $(this).data('customer')
+            const book_id         = $(this).data('book')
+            const packageSetup    = $(this).data('setup')
+            const package_primary = $(this).data('package-id')
+
+            $('#modal_current_package').val(package_id)
+            $('#modal_current_book').val(book_id)
+            $('#modal_customer').val(customer_id)
+            $('#modal_setup').val(packageSetup)
+
+            $('#modal_packages_id').append(new Option('Select a Package', ''))
+            $.ajax({
+                    type: "GET",
+                    url: `/order/list/packages/subscriptions/${sibling_id}/${package_id}/${packageSetup}/${package_primary}`,
+                    success:  function(data, xhr, status) {
+                        if (xhr === 'success') {
+                                if(data.length > 0) {
+                                    data.map((k) => {
+                                        $('#modal_packages_id').append(new Option(k.package_name, k.id))
+                                    })
+
+                                }
+                        } 
+                    },
+                    complete: function() {},
+                    error:    function(data, xhr, status) {},
+                })
+        })
+
+        $('#modify_package').on('click', function(e) {
+            $.ajax({
+                    type: "POST",
+                    url: `/order/modify/packages/subscriptions`,
+                    data: $('#package_subscription_form').serialize(),
+                    success:  function(data, xhr, status) {
+                       if(xhr === 'success') {
+                           location.reload()
+                       }
+                    },
+                    complete: function() {},
+                    error:    function(data, xhr, status) {},
+                })
         })
     })
 </script>

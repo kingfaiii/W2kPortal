@@ -42,6 +42,195 @@ class OrderController extends Controller
     }
 
     private $inclusions_array = [
+        // EBOOK BASIC PACKAGE
+        [
+            'service_name' => 'eBook Conversion',
+            'project_cost' => 0,
+            'task'         => 'Conversion',
+            'status'       => 'On-going',
+            'parent'       => 1,
+            'calculate'    => 1,
+        ],
+
+        [
+            'service_name' => 'Basic eBook Cover Art',
+            'project_cost' => 0,
+            'task'         => 'Art Work - Cover',
+            'status'       => 'On-Hold',
+            'parent'       => 1,
+            'calculate'    => 0,
+        ],
+        // EBOOK BASIC PACKAGE
+
+        // EBOOK VALUE PACKAGE
+
+        [
+            'service_name' => 'eBook Conversion',
+            'project_cost' => 0,
+            'task'         => 'Conversion',
+            'status'       => 'On-going',
+            'parent'       => 2,
+            'calculate'    => 1,
+        ],
+
+        [
+            'service_name' => 'Basic eBook Cover Art',
+            'project_cost' => 0,
+            'task'         => 'Art Work - Cover',
+            'status'       => 'On-Hold',
+            'parent'       => 2,
+            'calculate'    => 0,
+        ],
+
+        [
+            'service_name' => 'Facebook Banner',
+            'project_cost' => 0,
+            'task'         => 'Art Work - FB Cover',
+            'status'       => 'On-Hold',
+            'parent'       => 2,
+            'calculate'    => 0,
+        ],
+
+        [
+            'service_name' => 'Facebook Page Creation',
+            'project_cost' => 50,
+            'task'         => 'FB Page Creation',
+            'status'       => 'On-Hold',
+            'parent'       => 2,
+            'calculate'    => 0,
+        ],
+        // EBOOK VALUE PACKAGE
+
+        // EBOOK DELUXE PACKAGE
+
+        [
+            'service_name' => 'eBook Conversion',
+            'project_cost' => 0,
+            'task'         => 'Conversion',
+            'status'       => 'On-going',
+            'parent'       => 3,
+            'calculate'    => 1,
+        ],
+
+        [
+            'service_name' => 'Premium eBook Cover Art',
+            'project_cost' => 100,
+            'task'         => 'Art Work - Cover',
+            'status'       => 'On-Hold',
+            'parent'       => 3,
+            'calculate'    => 0,
+        ],
+
+        [
+            'service_name' => 'Amazon eBook Upload',
+            'project_cost' => 50,
+            'task'         => 'eBook Upload',
+            'status'       => 'On-Hold',
+            'parent'       => 3,
+            'calculate'    => 0,
+        ],
+
+        [
+            'service_name' => 'Facebook Banner',
+            'project_cost' => 0,
+            'task'         => 'Art Work - FB Cover',
+            'status'       => 'On-Hold',
+            'parent'       => 3,
+            'calculate'    => 0,
+        ],
+
+        [
+            'service_name' => 'Facebook Page Creation',
+            'project_cost' => 50,
+            'task'         => 'FB Page Creation',
+            'status'       => 'On-Hold',
+            'parent'       => 3,
+            'calculate'    => 0,
+        ],
+        // EBOOK DELUXE PACKAGE
+
+        // PRINT BASIC PACKAGE
+
+        [
+            'service_name' => 'Interior Formatting',
+            'project_cost' => 0,
+            'task' => 'Interior Formatting',
+            'status' => 'On-Hold',
+            'parent' => 4,
+            'calculate' => 1,
+        ],
+        // PRINT BASIC PACKAGE
+
+        // PRINT VALUE PACKAGE
+
+        [
+            'service_name' => 'Interior Formatting',
+            'project_cost' => 0,
+            'task' => 'Interior Formatting',
+            'status' => 'On-Hold',
+            'parent' => 5,
+            'calculate' => 1,
+        ],
+
+        [
+            'service_name' => 'Premium Book Cover Art',
+            'project_cost' => 100,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-Hold',
+            'parent' => 5,
+            'calculate' => 0,
+        ],
+        // PRINT VALUE PACKAGE
+
+        // PRINT DELUXE PACKAGE
+        [
+            'service_name' => 'Interior Formatting',
+            'project_cost' => 0,
+            'task' => 'Interior Formatting',
+            'status' => 'On-Hold',
+            'parent' => 6,
+            'calculate' => 1,
+        ],
+
+        [
+            'service_name' => 'Premium Book Cover Art',
+            'project_cost' => 100,
+            'task' => 'Art Work - Cover',
+            'status' => 'On-Hold',
+            'parent' => 6,
+            'calculate' => 0,
+        ],
+
+        [
+            'service_name' => 'Amazon Print Upload',
+            'project_cost' => 50,
+            'task' => 'Print Upload',
+            'status' => 'On-Hold',
+            'parent' => 6,
+            'calculate' => 0,
+        ],
+
+        [
+            'service_name' => 'Facebook Banner',
+            'project_cost' => 0,
+            'task' => 'Art Work - FB Cover',
+            'status' => 'On-Hold',
+            'parent' => 6,
+            'calculate' => 0,
+        ],
+
+
+        [
+            'service_name' => 'Facebook Page Creation',
+            'project_cost' => 50,
+            'task' => 'FB Page Creation',
+            'status' => 'On-Hold',
+            'parent' => 6,
+            'calculate' => 0,
+        ],
+        // PRINT DELUXE PACKAGE
+
+        // EBOOK & PRINT DELUXE PACKAGE
         [
             'service_name' => 'Interior Formatting',
             'project_cost' => 150,
@@ -105,176 +294,9 @@ class OrderController extends Controller
             'calculate'    => 0,
         ],
 
-        [
-            'service_name' => 'eBook Conversion',
-            'project_cost' => 0,
-            'task'         => 'Conversion',
-            'status'       => 'On-going',
-            'parent'       => 2,
-            'calculate'    => 1,
-        ],
+        // EBOOK & PRINT DELUXE PACKAGE
 
-        [
-            'service_name' => 'Basic eBook Cover Art',
-            'project_cost' => 0,
-            'task'         => 'Art Work - Cover',
-            'status'       => 'On-Hold',
-            'parent'       => 2,
-            'calculate'    => 0,
-        ],
-
-        [
-            'service_name' => 'eBook Conversion',
-            'project_cost' => 0,
-            'task'         => 'Conversion',
-            'status'       => 'On-going',
-            'parent'       => 3,
-            'calculate'    => 1,
-        ],
-
-        [
-            'service_name' => 'Basic eBook Cover Art',
-            'project_cost' => 0,
-            'task'         => 'Art Work - Cover',
-            'status'       => 'On-Hold',
-            'parent'       => 3,
-            'calculate'    => 0,
-        ],
-
-        [
-            'service_name' => 'Facebook Banner',
-            'project_cost' => 0,
-            'task'         => 'Art Work - FB Cover',
-            'status'       => 'On-Hold',
-            'parent'       => 3,
-            'calculate'    => 0,
-        ],
-
-        [
-            'service_name' => 'Facebook Page Creation',
-            'project_cost' => 50,
-            'task'         => 'FB Page Creation',
-            'status'       => 'On-Hold',
-            'parent'       => 3,
-            'calculate'    => 0,
-        ],
-
-        [
-            'service_name' => 'eBook Conversion',
-            'project_cost' => 0,
-            'task'         => 'Conversion',
-            'status'       => 'On-going',
-            'parent'       => 4,
-            'calculate'    => 1,
-        ],
-
-        [
-            'service_name' => 'Premium eBook Cover Art',
-            'project_cost' => 100,
-            'task'         => 'Art Work - Cover',
-            'status'       => 'On-Hold',
-            'parent'       => 4,
-            'calculate'    => 0,
-        ],
-
-        [
-            'service_name' => 'Amazon eBook Upload',
-            'project_cost' => 50,
-            'task' => 'eBook Upload',
-            'status' => 'On-Hold',
-            'parent' => 4,
-            'calculate' => 0,
-        ],
-
-        [
-            'service_name' => 'Facebook Banner',
-            'project_cost' => 0,
-            'task' => 'Art Work - FB Cover',
-            'status' => 'On-Hold',
-            'parent' => 4,
-            'calculate' => 0,
-        ],
-
-        [
-            'service_name' => 'Facebook Page Creation',
-            'project_cost' => 50,
-            'task' => 'FB Page Creation',
-            'status' => 'On-Hold',
-            'parent' => 4,
-            'calculate' => 0,
-        ],
-
-        [
-            'service_name' => 'Interior Formatting',
-            'project_cost' => 0,
-            'task' => 'Interior Formatting',
-            'status' => 'On-Hold',
-            'parent' => 5,
-            'calculate' => 1,
-        ],
-
-        [
-            'service_name' => 'Interior Formatting',
-            'project_cost' => 0,
-            'task' => 'Interior Formatting',
-            'status' => 'On-Hold',
-            'parent' => 6,
-            'calculate' => 1,
-        ],
-
-        [
-            'service_name' => 'Premium Book Covert Art',
-            'project_cost' => 100,
-            'task' => 'Interior Formatting',
-            'status' => 'On-Hold',
-            'parent' => 6,
-            'calculate' => 0,
-        ],
-
-        [
-            'service_name' => 'Interior Formatting',
-            'project_cost' => 0,
-            'task' => 'Interior Formatting',
-            'status' => 'On-Hold',
-            'parent' => 1,
-            'calculate' => 1,
-        ],
-
-        [
-            'service_name' => 'Premium Book Cover Art',
-            'project_cost' => 100,
-            'task' => 'Art Work - Cover',
-            'status' => 'On-Hold',
-            'parent' => 1,
-            'calculate' => 0,
-        ],
-
-        [
-            'service_name' => 'Amazon Print Upload',
-            'project_cost' => 50,
-            'task' => 'Print Upload',
-            'status' => 'On-Hold',
-            'parent' => 1,
-            'calculate' => 0,
-        ],
-
-        [
-            'service_name' => 'Facebook Banner',
-            'project_cost' => 0,
-            'task' => 'Art Work - FB Cover',
-            'status' => 'On-Hold',
-            'parent' => 1,
-            'calculate' => 0,
-        ],
-
-        [
-            'service_name' => 'Facebook Page Creation',
-            'project_cost' => 50,
-            'task' => 'FB Page Creation',
-            'status' => 'On-Hold',
-            'parent' => 1,
-            'calculate' => 0,
-        ],
+        // EBOOK & PRINT BASIC PACKAGE
 
         [
             'service_name' => 'Interior Formatting',
@@ -302,6 +324,9 @@ class OrderController extends Controller
             'parent' => 8,
             'calculate' => 0,
         ],
+        // EBOOK & PRINT BASIC PACKAGE
+
+        // EBOOK & PRINT VALUE PACKAGE
 
         [
             'service_name' => 'Interior Formatting',
@@ -322,14 +347,16 @@ class OrderController extends Controller
         ],
 
         [
-            'service_name' => 'Basic eBook Cover Art',
+            'service_name' => 'Premium eBook Cover Art',
             'project_cost' => 49,
             'task' => 'Conversion',
             'status' => 'On-Hold',
             'parent' => 9,
             'calculate' => 0,
         ],
+        // EBOOK & PRINT VALUE PACKAGE
 
+        // WEB DESIGN
         [
             'service_name' => 'Web Design',
             'project_cost' => 0,
@@ -338,7 +365,9 @@ class OrderController extends Controller
             'parent' => 10,
             'calculate' => 1,
         ],
+        // WEB DESIGN
 
+        // PHYSICAL DIGITAL EBOOK
         [
             'service_name' => 'Physical to Digital',
             'project_cost' => 0,
@@ -356,7 +385,9 @@ class OrderController extends Controller
             'parent' => 11,
             'calculate' => 0,
         ],
+        // PHYSICAL DIGITAL EBOOK
 
+        // EDITING SERVICES
         [
             'service_name' => 'Copyediting',
             'project_cost' => 0,
@@ -383,6 +414,8 @@ class OrderController extends Controller
             'parent' => 12,
             'calculate' => 0,
         ],
+        // EDITING SERVICES
+
     ];
 
 
@@ -478,11 +511,34 @@ class OrderController extends Controller
         return view('order');
     }
 
-    public function package_siblings($sibling_id, $package_id,  $customer_id)
+    public function package_siblings($sibling_id, $package_id, $setup, $package_primary)
     {
-        $package_siblings = service_package::where('sibling_id', $sibling_id)->where('id', '<>', $package_id)->get();
+        $package_siblings = [];
+        if ($setup === "1") {
+            $package_siblings = service_package::where('sibling_id', $sibling_id)->where('id', '<>', $package_id)->get();
+        } else {
+
+            $package_siblings = service_package::find($package_primary);
+
+            if ($package_siblings->is_lowest >  0) {
+                $package_siblings = [];
+            } else {
+                $package_siblings = service_package::where('sibling_id', $sibling_id)->where('id', '<>', $package_id)->get();
+            }
+        }
 
         return response()->json($package_siblings, 200);
+    }
+
+    private function check_service_name_exists($array, $name)
+    {
+        foreach ($array as $key => $arr) {
+            if (strtolower($arr['service_name']) === strtolower($name)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function package_customize()
@@ -503,8 +559,23 @@ class OrderController extends Controller
 
         if ($payload['selected_setup'] === "1") {
             $won = won_customer::where('customer_id', $payload['customer_id'])->first();
+
+            $new_inc = service_inclusion::where('book_id', $payload['book_id'])->where('package_id', $payload['current_package'])->get()->toArray();
+
+            if (!empty($new_inc)) {
+                foreach ($new_inc as $key => $inc) {
+                    if (!$this->check_service_name_exists($selected_package_inclusions, $inc['service_name'])) {
+                        service_inclusion::where('book_id', $payload['book_id'])->where(
+                            'package_id',
+                            $payload['current_package']
+                        )->where('service_name', $inc['service_name'])->delete();
+                    }
+                }
+            }
+
             foreach ($selected_package_inclusions as $s_key => $selected) {
                 $new_inlcusions = service_inclusion::where('book_id', $payload['book_id'])->where('service_name', $selected['service_name'])->get()->toArray();
+
                 if (empty($new_inlcusions)) {
                     service_inclusion::insert([
                         "project_cost" => $selected['project_cost'],
@@ -517,19 +588,30 @@ class OrderController extends Controller
                     ]);
                 }
             }
+            service_inclusion::where('book_id', $payload['book_id'])->update(['package_id' => $payload['selected_package']]);
         } else {
             $won = won_customer::where('customer_id', $payload['customer_id'])->first();
+            $new_inlcusions = service_inclusion::where('book_id', $payload['book_id'])->where('package_id', $payload['current_package'])->get()->toArray();
+
+            if (!empty($new_inlcusions)) {
+
+                foreach ($new_inlcusions as $key => $inc) {
+                    if (!$this->check_service_name_exists($selected_package_inclusions, $inc['service_name'])) {
+                        service_inclusion::where('book_id', $payload['book_id'])->where(
+                            'package_id',
+                            $payload['current_package']
+                        )->where('service_name', $inc['service_name'])->delete();
+                    }
+                }
+            }
 
             foreach ($selected_package_inclusions as $s_key => $selected) {
 
                 // $new_inlcusions = service_inclusion::where('book_id', $payload['book_id'])->where('service_name', $selected['service_name'])->get()->toArray();
-                service_inclusion::where('book_id', $payload['book_id'])->where(
-                    'package_id',
-                    $payload['current_package']
-                )->delete();
 
-                $new_inlcusions = service_inclusion::where('book_id', $payload['book_id'])->where('service_name', $selected['service_name'])->get()->toArray();
-                if (empty($new_inlcusions)) {
+                $is_empty = service_inclusion::where('book_id', $payload['book_id'])->where('package_id', $payload['current_package'])->where('service_name', $selected['service_name'])->get()->toArray();
+
+                if (empty($is_empty)) {
                     service_inclusion::insert([
                         "project_cost" => $selected['project_cost'],
                         "won_id"       => $won->id,
@@ -543,7 +625,6 @@ class OrderController extends Controller
             }
         }
 
-        service_inclusion::where('book_id', $payload['book_id'])->update(['package_id' => $payload['selected_package']]);
         order::where('book_id', $payload['book_id'])->update(['package_id' => $payload['selected_package']]);
         book::where('id', $payload['book_id'])->update(['package_id' => $payload['selected_package']]);
 

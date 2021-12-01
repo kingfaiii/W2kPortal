@@ -145,6 +145,7 @@ class CustomerController extends Controller
                 'books.id AS bookID',
                 'customers.id',
                 'books.won_id',
+                "books.package_id AS pckg_id",
                 'customers.customer_fname',
                 'customers.customer_lname',
                 'books.transaction_ID',
@@ -153,7 +154,9 @@ class CustomerController extends Controller
                 'customers.customer_email',
                 'won_customers.created_at AS won_createdAt',
                 'books.total_project_cost AS cost',
-                'service_packages.package_name'
+                'service_packages.package_name',
+                "service_packages.sibling_id",
+                "service_packages.id AS pckg_primary"
             )
             ->where('books.id', '=', $id);
 

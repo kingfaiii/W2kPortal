@@ -177,12 +177,7 @@
                                 <div class="col-md-6">
                                     <a href="{{ route('customer',[$orders->book_id]) }}" class="btn btn-secondary col-12">View</a>
                                 </div>
-                                
-                                <div class="col-md-6">
-                                    <a href="javascript:void(0)" data-book="{{$orders->book_id}}" data-customer="{{$orders->customer_id}}" data-package="{{$orders->pckg_id}}" 
-                                        data-sibling="{{$orders->sibling_id}}" class="btn btn-secondary col-12 upgrade_package_btn" data-target="#package_subscription" 
-                                        data-toggle="modal">Upgrade</a>
-                                </div>
+                          
 
                                 <div class="col-md-6">
                                     <a href="{{ route('destroyBook', [$orders->book_id]) }}"
@@ -414,43 +409,6 @@
         </form>
     @endforeach
 
-    {{-- PACKAGE SUBSCRIPTION --}}
-    <form id="package_subscription_form">
-        @csrf
-        <div class="modal fade" id="package_subscription" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content bg-dark">
-                    <div class="modal-header text-center">
-                        <h5 class="modal-title text-white" id="exampleModalLongTitle">Package Subscription</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span class="text-white" aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-white">Available Packages:</p>
-                        <input type="hidden" name="payload[current_package]" id="modal_current_package">
-                        <input type="hidden" name="payload[book_id]" id="modal_current_book">
-                        <input type="hidden" name="payload[customer_id]" id="modal_customer">
-                        <select name="payload[selected_package]" id="modal_packages_id" class="form-control col-12" Value="">
-                        </select>
-
-                        <br />
-                        <p class="text-white">Update Subscription:</p>
-                        <select name="payload[selected_setup]"  class="form-control col-12" Value="">
-                            <option value="1">Upgrade</option>
-                            <option value="2">Downgrade</option>
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <a href="javascript:void(0)" type="button" class="btn btn-secondary" id="modify_package" data-dismiss="modal">Submit</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-    {{-- PACKAGE SUBSCRIPTION --}}
 <script>
 function show(select) {
     if (select.value === "Hold" || select === "Hold") {
@@ -515,53 +473,6 @@ $(document).ready(function() {
         let getValue = document.querySelector('#customer_status_test').selectedOptions[0].value
         show(getValue)
 
-        $('#package_subscription').on('hidden.bs.modal', function (e) {
-            $('#modal_packages_id').empty()
-        })
-
-        $('.upgrade_package_btn').on('click', function(e) {
-            e.preventDefault()
-            const sibling_id  = $(this).data('sibling')
-            const package_id  = $(this).data('package')
-            const customer_id = $(this).data('customer')
-            const book_id     = $(this).data('book')
-            $('#modal_current_package').val(package_id)
-            $('#modal_current_book').val(book_id)
-            $('#modal_customer').val(customer_id)
-
-            $('#modal_packages_id').append(new Option('Select a Package', ''))
-            $.ajax({
-                    type: "GET",
-                    url: `/order/list/packages/subscriptions/${sibling_id}/${package_id}/${customer_id}`,
-                    success:  function(data, xhr, status) {
-                        if (xhr === 'success') {
-                                if(data.length > 0) {
-                                    data.map((k) => {
-                                        $('#modal_packages_id').append(new Option(k.package_name, k.id))
-                                    })
-
-                                }
-                        } 
-                    },
-                    complete: function() {},
-                    error:    function(data, xhr, status) {},
-                })
-        })
-
-        $('#modify_package').on('click', function(e) {
-            $.ajax({
-                    type: "POST",
-                    url: `/order/modify/packages/subscriptions`,
-                    data: $('#package_subscription_form').serialize(),
-                    success:  function(data, xhr, status) {
-                       if(xhr === 'success') {
-                           location.reload()
-                       }
-                    },
-                    complete: function() {},
-                    error:    function(data, xhr, status) {},
-                })
-        })
 })
 </script>
 @endsection
