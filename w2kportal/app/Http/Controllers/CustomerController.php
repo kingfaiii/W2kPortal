@@ -261,6 +261,11 @@ class CustomerController extends Controller
                         2
                     );
                 }
+
+                if (!empty($inclusions['job_cost'])) {
+                    $inclusions['job_cost'] = round(floatval($inclusions['job_cost']), 2);
+                }
+
                 $service->update($inclusions);
             }
 
@@ -350,11 +355,13 @@ class CustomerController extends Controller
                 );
                 if (!empty($diff_log)) {
                     if (!empty($inclusions['quality_score'])) {
-                        $inclusions['quality_score'] = round(
-                            floatval($inclusions['quality_score']),
-                            2
-                        );
+                        $inclusions['quality_score'] = round(floatval($inclusions['quality_score']), 2);
                     }
+
+                    if (!empty($inclusions['job_cost'])) {
+                        $inclusions['job_cost'] = round(floatval($inclusions['job_cost']), 2);
+                    }
+
                     if (!empty(array_filter($inclusions))) {
                         $inclusions['log_id'] = $get_foreign_ids['id'];
                         $inclusions['won_id'] = $get_foreign_ids['won_id'];
