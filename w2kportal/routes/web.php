@@ -30,7 +30,7 @@ Route::group(
     function () {
         Route::resource('home', HomeController::class);
         Route::resource('list', CustomerlistController::class);
-        Route::resource('ProjectManager',ProjectManagerController::class);
+        Route::resource('ProjectManager', ProjectManagerController::class);
         Route::get('/home', [
             App\Http\Controllers\HomeController::class,
             'index',
@@ -122,34 +122,52 @@ Route::group(
                 App\Http\Controllers\OrderController::class,
                 'index',
             ])->name('order');
+
             Route::post('/store', [
                 App\Http\Controllers\OrderController::class,
                 'Store',
             ])->name('StoreOrder');
+
             Route::post('/update/{id}', [
                 App\Http\Controllers\OrderController::class,
                 'update',
             ])->name('UpdateOrder');
+
             Route::post('/ActivityUpdate/{id}', [
                 App\Http\Controllers\OrderController::class,
                 'updateactivity',
+
             ])->name('UpdateActivity');
             Route::post('/UpdateCustomerInformation/{id}', [
                 App\Http\Controllers\OrderController::class,
                 'updateCustomerInformation',
             ])->name('updateCustomerInformation');
+
             Route::get('/delete/{id}', [
                 App\Http\Controllers\OrderController::class,
                 'DestroyActivity',
             ])->name('DestroyActivity');
+
             Route::get('/delete/book/{id}', [
                 App\Http\Controllers\OrderController::class,
                 'deleteServiceInclusions',
             ])->name('destroyBook');
+
             Route::post('/convert', [
                 App\Http\Controllers\OrderController::class,
                 'ConvertCustomer',
             ])->name('convert');
+
+
+            Route::get('/list/packages/subscriptions/{sibling_id}/{package_id}/{customer_id}', [
+                App\Http\Controllers\OrderController::class,
+                'package_siblings',
+            ])->name('getCustomerPackages');
+
+            Route::post('/modify/packages/subscriptions', [
+                App\Http\Controllers\OrderController::class,
+                'package_customize',
+            ])->name('modifyCustomerPackage');
         });
 
         // Owners Functions Routes
