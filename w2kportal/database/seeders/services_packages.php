@@ -24,7 +24,8 @@ class services_packages extends Seeder
         return [
             [
                 "package_name" => "eBook Basic Package",
-                "sibling_id"   => 1
+                "sibling_id"   => 1,
+                "is_lowest"    => 1
             ],
 
             [
@@ -37,7 +38,8 @@ class services_packages extends Seeder
             ],
             [
                 "package_name" => "Print Basic Package",
-                "sibling_id"   => 2
+                "sibling_id"   => 2,
+                "is_lowest"    => 1
             ],
             [
                 "package_name" => "Print Value Package",
@@ -49,11 +51,14 @@ class services_packages extends Seeder
             ],
             [
                 "package_name" => "eBook & Print Deluxe Package",
-                "sibling_id"   => 3
+                "sibling_id"   => 3,
+                "is_highest"    => 1
+
             ],
             [
                 "package_name" => "eBook & Print Basic Package",
-                "sibling_id"   => 3
+                "sibling_id"   => 3,
+                "is_lowest"    => 1
             ],
             [
                 "package_name" => "eBook & Print Value Package",

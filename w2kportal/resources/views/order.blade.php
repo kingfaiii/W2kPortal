@@ -21,12 +21,18 @@
                                     <div class="col-md-9">
                                         <h1 class="text-white font-weight-bolder">Customer Information</h1>
                                     </div>
-                                    <div class="col-md-3">
-                                        <button type="button" class="btn btn-primary px-5 py-2" data-toggle="modal"
-                                            data-target="#EditCustomer">
-                                            Edit
-                                        </button>
+                                    <div class="col-md-5">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-primary px-5 py-2" data-toggle="modal"
+                                                    data-target="#EditCustomer">
+                                                    Edit
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
+
+
                                 </div>
                             </div>
                             <div class="card-body">
@@ -49,34 +55,6 @@
                                         <p>{{ $customers->customer_email }}</p>
                                     </div>
                                 </div>
-                                @if ($customers->secondary_email !== null || $customers->first_email !== null || $customers->second_email !== null || $customers->third_email !== null || $customers->fourth_email !== null || $customers->fifth_email !== null)
-                                    <div class="form-group row">
-                                        <p for="emailaddress" class="text-dark col-md-2">Alternate Email Address:</p>
-                                        <div class="col-md-6">
-                                            <p>
-                                                @if ($customers->secondary_email)
-                                                    {{ $customers->secondary_email }},
-                                                @endif
-                                                @if ($customers->first_email)
-                                                    {{ $customers->first_email }},
-                                                @endif
-                                                @if ($customers->second_email)
-                                                    {{ $customers->second_email }},
-                                                @endif
-                                                @if ($customers->third_email)
-                                                    {{ $customers->third_email }},
-                                                @endif
-                                                @if ($customers->fourth_email)
-                                                    {{ $customers->fourth_email }},
-                                                @endif
-                                                @if ($customers->fifth_email)
-                                                    {{ $customers->fifth_email }},
-                                                @endif
-
-                                            </p>
-                                        </div>
-                                    </div>
-                                @endif
                                 <div class="form-group row">
                                     <label for="status" class="text-dark col-md-2">Status:</label>
                                     <div class="col-md-6">
@@ -200,15 +178,6 @@
                                     <div class="col-md-6">
                                         <a href="{{ route('customer', [$orders->book_id]) }}"
                                             class="btn btn-secondary col-12">View</a>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <a href="javascript:void(0)" data-book="{{ $orders->book_id }}"
-                                            data-customer="{{ $orders->customer_id }}"
-                                            data-package="{{ $orders->pckg_id }}"
-                                            data-sibling="{{ $orders->sibling_id }}"
-                                            class="btn btn-secondary col-12 upgrade_package_btn"
-                                            data-target="#package_subscription" data-toggle="modal">Upgrade</a>
                                     </div>
 
                                     <div class="col-md-6">
@@ -366,7 +335,6 @@
                                 <option value="{{ $item->id }}">{{ $item->package_name }}</option>
                             @endforeach
                         </select>
-
                         <select name="fixed_inclusion" class="form-control" id="fixed_inclusions">
                             <option value="Physical to Digital">Physical to Digital</option>
                             <option value="Physical to eBook">Physical to eBook</option>
@@ -463,7 +431,6 @@
             }
         }
         $(document).ready(function() {
-
             $("#orders_packages").change(function() {
                 var conceptName = $('#orders_packages').find(":selected").text();
                 var p_cost = $('#p_cost');
@@ -481,8 +448,6 @@
                     p_cost.val('');
                 }
             });
-
-
             // SweetAlert2
             $('.delete-confirm').on('click', function(event) {
                 event.preventDefault();
@@ -523,54 +488,6 @@
             let getValue = document.querySelector('#customer_status_test').selectedOptions[0].value
             show(getValue)
 
-            $('#package_subscription').on('hidden.bs.modal', function(e) {
-                $('#modal_packages_id').empty()
-            })
-
-            $('.upgrade_package_btn').on('click', function(e) {
-                e.preventDefault()
-                const sibling_id = $(this).data('sibling')
-                const package_id = $(this).data('package')
-                const customer_id = $(this).data('customer')
-                const book_id = $(this).data('book')
-                $('#modal_current_package').val(package_id)
-                $('#modal_current_book').val(book_id)
-                $('#modal_customer').val(customer_id)
-
-                $('#modal_packages_id').append(new Option('Select a Package', ''))
-                $.ajax({
-                    type: "GET",
-                    url: `/order/list/packages/subscriptions/${sibling_id}/${package_id}/${customer_id}`,
-                    success: function(data, xhr, status) {
-                        if (xhr === 'success') {
-                            if (data.length > 0) {
-                                data.map((k) => {
-                                    $('#modal_packages_id').append(new Option(k
-                                        .package_name, k.id))
-                                })
-
-                            }
-                        }
-                    },
-                    complete: function() {},
-                    error: function(data, xhr, status) {},
-                })
-            })
-
-            $('#modify_package').on('click', function(e) {
-                $.ajax({
-                    type: "POST",
-                    url: `/order/modify/packages/subscriptions`,
-                    data: $('#package_subscription_form').serialize(),
-                    success: function(data, xhr, status) {
-                        if (xhr === 'success') {
-                            location.reload()
-                        }
-                    },
-                    complete: function() {},
-                    error: function(data, xhr, status) {},
-                })
-            })
         })
     </script>
 @endsection

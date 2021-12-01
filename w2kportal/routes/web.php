@@ -159,7 +159,7 @@ Route::group(
             ])->name('convert');
 
 
-            Route::get('/list/packages/subscriptions/{sibling_id}/{package_id}/{customer_id}', [
+            Route::get('/list/packages/subscriptions/{sibling_id}/{package_id}/{setup}/{package_primary}', [
                 App\Http\Controllers\OrderController::class,
                 'package_siblings',
             ])->name('getCustomerPackages');
