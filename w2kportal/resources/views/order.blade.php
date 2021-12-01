@@ -21,18 +21,12 @@
                                     <div class="col-md-9">
                                         <h1 class="text-white font-weight-bolder">Customer Information</h1>
                                     </div>
-                                    <div class="col-md-5">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <button type="button" class="btn btn-primary px-5 py-2" data-toggle="modal"
-                                                    data-target="#EditCustomer">
-                                                    Edit
-                                                </button>
-                                            </div>
-                                        </div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-primary px-5 py-2" data-toggle="modal"
+                                            data-target="#EditCustomer">
+                                            Edit
+                                        </button>
                                     </div>
-
-
                                 </div>
                             </div>
                             <div class="card-body">
@@ -55,6 +49,33 @@
                                         <p>{{ $customers->customer_email }}</p>
                                     </div>
                                 </div>
+                                @if ($customers->secondary_email || $customers->fifth_email || $customers->fourth_email || $customers->third_email || $customers->second_email || $customers->first_email)
+                                    <div class="form-group row">
+                                        <p for="emailaddress" class="text-dark col-md-2">Alternate Email Address:</p>
+                                        <div class="col-md-6">
+                                            <p>
+                                                @if ($customers->secondary_email)
+                                                    {{ $customers->secondary_email }},
+                                                @endif
+                                                @if ($customers->first_email)
+                                                    {{ $customers->first_email }},
+                                                @endif
+                                                @if ($customers->second_email)
+                                                    {{ $customers->second_email }},
+                                                @endif
+                                                @if ($customers->third_email)
+                                                    {{ $customers->third_email }},
+                                                @endif
+                                                @if ($customers->fourth_email)
+                                                    {{ $customers->fourth_email }},
+                                                @endif
+                                                @if ($customers->fifth_email)
+                                                    {{ $customers->fifth_email }}
+                                                @endif
+                                            </p>
+                                        </div>
+                                    </div>
+                                @endif
                                 <div class="form-group row">
                                     <label for="status" class="text-dark col-md-2">Status:</label>
                                     <div class="col-md-6">
@@ -193,7 +214,6 @@
         </tbody>
     </table>
     </div>
-
     </div>
     <div class="card-footer bg-secondary">
         <div class="row">
